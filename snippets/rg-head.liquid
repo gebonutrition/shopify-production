@@ -1,0 +1,33 @@
+{%- comment -%}
+  RAW GRAVITY brand foundation: self-hosted fonts + brand stylesheet.
+  Rendered in layout/theme.liquid after {{ content_for_header }} so brand rules
+  load after Horizon's base and compiled section styles.
+
+  Fonts (SIL Open Font License 1.1, https://openfontlicense.org), latin subsets:
+  - rg-inter-var.woff2   Inter, variable weight 400–900 (opsz 14)
+  - rg-archivo-var.woff2 Archivo, variable weight 800–900 (wdth 100)
+{%- endcomment -%}
+<link
+  rel="preload"
+  href="{{ 'rg-inter-var.woff2' | asset_url }}"
+  as="font"
+  type="font/woff2"
+  crossorigin
+>
+<style>
+  @font-face {
+    font-family: 'RG Inter';
+    src: url('{{ 'rg-inter-var.woff2' | asset_url }}') format('woff2');
+    font-weight: 400 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'RG Archivo';
+    src: url('{{ 'rg-archivo-var.woff2' | asset_url }}') format('woff2');
+    font-weight: 800 900;
+    font-style: normal;
+    font-display: swap;
+  }
+</style>
+{{ 'rg-base.css' | asset_url | stylesheet_tag }}

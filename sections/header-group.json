@@ -11,36 +11,6 @@
   "type": "header",
   "name": "t:names.header",
   "sections": {
-    "header_announcements_9jGBFp": {
-      "type": "header-announcements",
-      "blocks": {
-        "announcement_BxgCk9": {
-          "type": "_announcement",
-          "settings": {
-            "text": "Welcome to our store",
-            "link": "",
-            "font": "var(--font-subheading--family)",
-            "font_size": "0.75rem",
-            "weight": "",
-            "letter_spacing": "normal",
-            "case": "none"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "announcement_BxgCk9"
-      ],
-      "name": "t:names.announcement_bar",
-      "settings": {
-        "speed": 5,
-        "section_width": "page-width",
-        "divider_width": 1,
-        "padding-block-start": 15,
-        "padding-block-end": 15,
-        "divider_color": "{{ settings.color_palette.color3 }}"
-      }
-    },
     "header_section": {
       "type": "header",
       "blocks": {
@@ -62,30 +32,30 @@
             "type_font_primary_size": "0.875rem",
             "menu_font_style": "inverse",
             "type_font_primary_link": "body",
-            "type_case_primary_link": "none",
-            "menu_style": "featured_products",
+            "type_case_primary_link": "uppercase",
+            "menu_style": "text",
             "featured_products_aspect_ratio": "4 / 5",
             "featured_collections_aspect_ratio": "16 / 9",
             "image_border_radius": 0,
             "navigation_bar": false,
             "drawer_accordion": false,
             "drawer_accordion_expand_first": false,
-            "drawer_dividers": false
+            "drawer_dividers": true
           },
           "blocks": {}
         }
       },
       "settings": {
-        "logo_position": "left",
+        "logo_position": "center",
         "menu_position": "left",
         "menu_row": "top",
         "show_search": true,
         "search_position": "right",
         "search_row": "top",
-        "show_country": true,
+        "show_country": false,
         "country_selector_style": false,
-        "show_language": true,
-        "localization_font": "heading",
+        "show_language": false,
+        "localization_font": "body",
         "localization_font_size": "0.875rem",
         "localization_position": "right",
         "localization_row": "top",
@@ -97,12 +67,78 @@
         "border_width": 0,
         "enable_transparent_header_home": false,
         "enable_transparent_header_product": false,
-        "enable_transparent_header_collection": false
+        "enable_transparent_header_collection": false,
+        "actions_display_style": "icon",
+        "bubble_style": "custom",
+        "bubble_background_color": "#1CCBF5",
+        "bubble_text_color": "#1A1A1A"
+      }
+    },
+    "rg_announcement": {
+      "type": "rg-marquee",
+      "blocks": {
+        "rg_ann_first_order": {
+          "type": "text",
+          "settings": {
+            "text": "25% OFF YOUR FIRST ORDER",
+            "link": "",
+            "icon": "none"
+          }
+        },
+        "rg_ann_shipping": {
+          "type": "text",
+          "settings": {
+            "text": "FREE US SHIPPING",
+            "link": "",
+            "icon": "none"
+          }
+        },
+        "rg_ann_countdown": {
+          "type": "countdown",
+          "settings": {
+            "label": "SALE ENDS IN",
+            "minutes": 15,
+            "show_on": "product"
+          }
+        },
+        "rg_ann_guarantee": {
+          "type": "text",
+          "settings": {
+            "text": "60-DAY MONEY-BACK GUARANTEE",
+            "link": "",
+            "icon": "none"
+          }
+        }
+      },
+      "block_order": [
+        "rg_ann_first_order",
+        "rg_ann_shipping",
+        "rg_ann_countdown",
+        "rg_ann_guarantee"
+      ],
+      "settings": {
+        "color_background": "#2B2B2B",
+        "color_text": "#FFFFFF",
+        "color_accent": "#1CCBF5",
+        "alternate_colors": true,
+        "show_borders": false,
+        "height": 42,
+        "height_mobile": 34,
+        "separator": "dot",
+        "icon_gap": 14,
+        "item_spacing": 14,
+        "font_size": 12,
+        "font_size_mobile": 10,
+        "font_weight": "600",
+        "letter_spacing": 22,
+        "speed": 40,
+        "copies": 4,
+        "pause_on_hover": true
       }
     }
   },
   "order": [
-    "header_announcements_9jGBFp",
-    "header_section"
+    "header_section",
+    "rg_announcement"
   ]
 }

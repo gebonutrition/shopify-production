@@ -1,0 +1,513 @@
+{%- comment -%}
+  RAW GRAVITY · Marquee
+  Continuous scrolling band. Used for the header announcement bar (header group)
+  and for in-page bands such as the benefits strip. Design: Claude Design rgMarquee.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign copies_per_half = s.copies | default: 6
+  assign total_copies = copies_per_half | times: 2
+
+  assign has_items = false
+  for block in section.blocks
+    case block.type
+      when 'text'
+        if block.settings.text != blank
+          assign has_items = true
+        endif
+      when 'countdown'
+        if block.settings.show_on == 'all' or template.name == 'product'
+          assign has_items = true
+        endif
+    endcase
+  endfor
+
+  assign rg_mq_classes = 'rg-marquee'
+  if s.alternate_colors
+    assign rg_mq_classes = rg_mq_classes | append: ' rg-marquee--alt'
+  endif
+  if s.show_borders
+    assign rg_mq_classes = rg_mq_classes | append: ' rg-marquee--borders'
+  endif
+  if s.pause_on_hover
+    assign rg_mq_classes = rg_mq_classes | append: ' rg-marquee--pausable'
+  endif
+-%}
+
+{%- if has_items -%}
+  <div
+    class="{{ rg_mq_classes }}"
+    style="
+      --rg-mq-bg: {{ s.color_background }};
+      --rg-mq-text: {{ s.color_text }};
+      --rg-mq-accent: {{ s.color_accent }};
+      --rg-mq-h: {{ s.height_mobile }}px;
+      --rg-mq-h-d: {{ s.height }}px;
+      --rg-mq-fs: {{ s.font_size_mobile }}px;
+      --rg-mq-fs-d: {{ s.font_size }}px;
+      --rg-mq-ls: {{ s.letter_spacing | divided_by: 100.0 }}em;
+      --rg-mq-fw: {{ s.font_weight }};
+      --rg-mq-gap: {{ s.icon_gap }}px;
+      --rg-mq-space: {{ s.item_spacing }}px;
+      --rg-mq-duration: {{ s.speed }}s;
+    "
+  >
+    <div class="rg-marquee__track">
+      {%- for copy in (1..total_copies) -%}
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'text' -%}
+              {%- if block.settings.text != blank -%}
+                <span
+                  class="rg-marquee__item"
+                  {% if copy == 1 %}
+                    {{ block.shopify_attributes }}
+                  {% else %}
+                    aria-hidden="true"
+                  {% endif %}
+                >
+                  {%- if block.settings.icon != 'none' -%}
+                    {%- render 'rg-icon', name: block.settings.icon, size: 20, class: 'rg-marquee__icon' -%}
+                  {%- endif -%}
+                  {%- if block.settings.link != blank -%}
+                    <a
+                      class="rg-marquee__link"
+                      href="{{ block.settings.link }}"
+                      {% if copy != 1 %}
+                        tabindex="-1"
+                      {% endif %}
+                    >
+                      {{- block.settings.text | escape -}}
+                    </a>
+                  {%- else -%}
+                    <span>{{ block.settings.text | escape }}</span>
+                  {%- endif -%}
+                  {%- if s.separator == 'dot' -%}
+                    <span class="rg-marquee__dot" aria-hidden="true"></span>
+                  {%- endif -%}
+                </span>
+              {%- endif -%}
+            {%- when 'countdown' -%}
+              {%- if block.settings.show_on == 'all' or template.name == 'product' -%}
+                <span
+                  class="rg-marquee__item rg-marquee__item--countdown"
+                  {% if copy == 1 %}
+                    {{ block.shopify_attributes }}
+                  {% else %}
+                    aria-hidden="true"
+                  {% endif %}
+                >
+                  <span>
+                    {{- block.settings.label | escape }}
+                    <rg-countdown class="rg-marquee__clock" data-minutes="{{ block.settings.minutes }}">
+                      {{- block.settings.minutes | prepend: '0' | slice: -2, 2 | prepend: '00:' | append: ':00' -}}
+                    </rg-countdown>
+                  </span>
+                  {%- if s.separator == 'dot' -%}
+                    <span class="rg-marquee__dot" aria-hidden="true"></span>
+                  {%- endif -%}
+                </span>
+              {%- endif -%}
+          {%- endcase -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .rg-marquee {
+    display: flex;
+    align-items: center;
+    height: var(--rg-mq-h);
+    overflow: hidden;
+    background: var(--rg-mq-bg);
+    color: var(--rg-mq-text);
+    font-family: var(--rg-font-body, sans-serif);
+    font-size: var(--rg-mq-fs);
+    font-weight: var(--rg-mq-fw);
+    line-height: 1;
+    letter-spacing: var(--rg-mq-ls);
+    white-space: nowrap;
+  }
+
+  .rg-marquee--borders {
+    border-block: 1px solid var(--rg-accent-line, rgba(28, 203, 245, 0.25));
+  }
+
+  .rg-marquee__track {
+    display: flex;
+    flex: none;
+    width: max-content;
+    animation: rg-marquee-scroll var(--rg-mq-duration) linear infinite;
+  }
+
+  .rg-marquee--pausable:hover .rg-marquee__track {
+    animation-play-state: paused;
+  }
+
+  .rg-marquee__item {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: var(--rg-mq-gap);
+    padding-inline-end: var(--rg-mq-space);
+  }
+
+  .rg-marquee--alt .rg-marquee__item:nth-child(even) {
+    color: var(--rg-mq-accent);
+  }
+
+  .rg-marquee__icon {
+    flex: none;
+    color: var(--rg-mq-accent);
+  }
+
+  .rg-marquee__dot {
+    flex: none;
+    width: 4px;
+    height: 4px;
+    margin: 0 10px;
+    border-radius: 50%;
+    background: var(--rg-mq-accent);
+  }
+
+  .rg-marquee__link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .rg-marquee__link:hover {
+    color: var(--rg-mq-accent);
+  }
+
+  .rg-marquee__clock {
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media screen and (min-width: 750px) {
+    .rg-marquee {
+      height: var(--rg-mq-h-d);
+      font-size: var(--rg-mq-fs-d);
+    }
+  }
+
+  @keyframes rg-marquee-scroll {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rg-marquee__track {
+      animation: none;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  /* RAW GRAVITY · countdown used inside rg-marquee.
+     Per-session timer: restarts when it reaches zero (matches the Claude Design behaviour). */
+  if (!customElements.get('rg-countdown')) {
+    customElements.define(
+      'rg-countdown',
+      class RgCountdown extends HTMLElement {
+        connectedCallback() {
+          this.minutes = Number(this.dataset.minutes) || 15;
+          this.storageKey = 'rg-countdown-end-' + this.minutes;
+          this.end = this.readEnd();
+          this.tick();
+          this.timer = window.setInterval(() => this.tick(), 1000);
+        }
+
+        disconnectedCallback() {
+          window.clearInterval(this.timer);
+        }
+
+        readEnd() {
+          let end = 0;
+          try {
+            end = Number(window.sessionStorage.getItem(this.storageKey)) || 0;
+          } catch (error) {
+            end = 0;
+          }
+          return end > Date.now() ? end : this.restart();
+        }
+
+        restart() {
+          const end = Date.now() + this.minutes * 60000;
+          try {
+            window.sessionStorage.setItem(this.storageKey, String(end));
+          } catch (error) {
+            /* storage unavailable: timer still runs for this page view */
+          }
+          return end;
+        }
+
+        tick() {
+          if (this.end <= Date.now()) this.end = this.restart();
+          const left = Math.max(0, Math.floor((this.end - Date.now()) / 1000));
+          const pad = (value) => String(value).padStart(2, '0');
+          this.textContent = pad(Math.floor(left / 3600)) + ':' + pad(Math.floor(left / 60) % 60) + ':' + pad(left % 60);
+        }
+      }
+    );
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "RG · Marquee",
+  "class": "rg-marquee-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_background",
+      "label": "Background",
+      "default": "#2B2B2B"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color_accent",
+      "label": "Accent (icons, dots, alternate items)",
+      "default": "#1CCBF5"
+    },
+    {
+      "type": "checkbox",
+      "id": "alternate_colors",
+      "label": "Alternate text and accent colors",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_borders",
+      "label": "Thin accent lines top and bottom",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Height (desktop)",
+      "min": 28,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Height (mobile)",
+      "min": 28,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "select",
+      "id": "separator",
+      "label": "Separator",
+      "options": [
+        { "value": "dot", "label": "Dot" },
+        { "value": "none", "label": "None" }
+      ],
+      "default": "dot"
+    },
+    {
+      "type": "range",
+      "id": "icon_gap",
+      "label": "Gap inside item",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "item_spacing",
+      "label": "Space after item",
+      "min": 0,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size (desktop)",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Font size (mobile)",
+      "min": 9,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter spacing (1/100 em)",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "type": "header",
+      "content": "Motion"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Loop duration (higher is slower)",
+      "min": 10,
+      "max": 120,
+      "step": 2,
+      "unit": "s",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "copies",
+      "label": "Repeats (raise if the band shows gaps on wide screens)",
+      "min": 2,
+      "max": 12,
+      "step": 2,
+      "default": 6
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "FREE US SHIPPING"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "star", "label": "Star" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "target", "label": "Target" },
+            { "value": "check", "label": "Check" },
+            { "value": "zap", "label": "Zap" },
+            { "value": "flask", "label": "Flask" },
+            { "value": "spark", "label": "Spark" },
+            { "value": "dollar", "label": "Dollar" },
+            { "value": "gift", "label": "Gift" }
+          ],
+          "default": "none"
+        }
+      ]
+    },
+    {
+      "type": "countdown",
+      "name": "Countdown",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "SALE ENDS IN"
+        },
+        {
+          "type": "range",
+          "id": "minutes",
+          "label": "Timer length",
+          "min": 1,
+          "max": 60,
+          "step": 1,
+          "unit": "min",
+          "default": 15
+        },
+        {
+          "type": "select",
+          "id": "show_on",
+          "label": "Show on",
+          "options": [
+            { "value": "product", "label": "Product pages only" },
+            { "value": "all", "label": "All pages" }
+          ],
+          "default": "product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RG · Marquee",
+      "blocks": [
+        { "type": "text", "settings": { "text": "25% OFF YOUR FIRST ORDER" } },
+        { "type": "text", "settings": { "text": "FREE US SHIPPING" } },
+        { "type": "text", "settings": { "text": "60-DAY MONEY-BACK GUARANTEE" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -29,6 +29,9 @@
     {% endif %}
 
     {{ content_for_header }}
+
+    {%- comment -%} RAW GRAVITY: brand fonts + rg-base.css (after Horizon styles) {%- endcomment -%}
+    {%- render 'rg-head' -%}
   </head>
 
   <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
