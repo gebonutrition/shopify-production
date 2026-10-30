@@ -1,0 +1,693 @@
+{%- comment -%}
+  RAW GRAVITY · Differentiators ("What Makes It Different")
+  Photo + dark accordion (exclusive <details>, no JS) + 4 benefit cards.
+  Reference: Raw Gravity Landing(.dc.html) + Mobile, section#benefits.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign accordion_name = 'rg-diff-' | append: section.id
+  assign has_cards = false
+  for block in section.blocks
+    if block.type == 'card'
+      assign has_cards = true
+      break
+    endif
+  endfor
+-%}
+
+<section class="rg rg-diff" id="rg-diff-{{ section.id }}">
+  <div class="rg-container rg-diff__wrap">
+    <div class="rg-diff__top">
+      <div class="rg-diff__media" aria-hidden="true">
+        {%- if s.image != blank -%}
+          {{
+            s.image
+            | image_url: width: 1400
+            | image_tag:
+              widths: '600, 900, 1100, 1400',
+              sizes: '(min-width: 990px) 55vw, 120vw',
+              loading: 'lazy',
+              alt: '',
+              class: 'rg-diff__image'
+          }}
+        {%- endif -%}
+        <span class="rg-diff__shade"></span>
+      </div>
+
+      <div class="rg-diff__body">
+        <div class="rg-diff__head">
+          {%- if s.eyebrow != blank -%}
+            <p class="rg-diff__eyebrow">{{ s.eyebrow | escape }}</p>
+          {%- endif -%}
+          <h2 class="rg-diff__title">
+            {{- s.heading_start | escape }}
+            {% if s.heading_accent != blank -%}
+              <span class="rg-diff__accent">{{ s.heading_accent | escape }}</span>
+            {%- endif -%}
+          </h2>
+        </div>
+
+        <div class="rg-diff__list">
+          {%- assign accordion_index = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'item', 'facts' -%}
+                <details
+                  class="rg-diff__item"
+                  name="{{ accordion_name }}"
+                  {% if accordion_index == 0 and s.open_first %}
+                    open
+                  {% endif %}
+                  {{ block.shopify_attributes }}
+                >
+                  <summary class="rg-diff__summary">
+                    <span class="rg-diff__item-title">{{ block.settings.title | escape }}</span>
+                    <span class="rg-diff__chevron" aria-hidden="true">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+                    </span>
+                  </summary>
+                  {%- if block.type == 'item' -%}
+                    {%- if block.settings.text != blank -%}
+                      <p class="rg-diff__item-text">{{ block.settings.text | escape | newline_to_br }}</p>
+                    {%- endif -%}
+                  {%- else -%}
+                    <div class="rg-diff__facts">
+                      {%- if block.settings.serving != blank -%}
+                        <p class="rg-diff__facts-head">{{ block.settings.serving | escape }}</p>
+                      {%- endif -%}
+                      <dl class="rg-diff__facts-list">
+                        {%- assign rows = block.settings.rows | newline_to_br | split: '<br />' -%}
+                        {%- for row in rows -%}
+                          {%- assign parts = row | split: '|' -%}
+                          {%- assign fact_name = parts[0] | strip -%}
+                          {%- assign fact_dose = parts[1] | strip -%}
+                          {%- if fact_name != blank -%}
+                            <div class="rg-diff__fact">
+                              <dt>{{ fact_name | escape }}</dt>
+                              <dd>{{ fact_dose | escape }}</dd>
+                            </div>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </dl>
+                    </div>
+                  {%- endif -%}
+                </details>
+                {%- assign accordion_index = accordion_index | plus: 1 -%}
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+
+    {%- if has_cards -%}
+      <ul class="rg-diff__cards" role="list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'card' -%}
+            <li class="rg-diff__card" {{ block.shopify_attributes }}>
+              <div class="rg-diff__card-icon">
+                {%- if block.settings.image != blank -%}
+                  {{
+                    block.settings.image
+                    | image_url: width: 240
+                    | image_tag: width: 84, height: 84, loading: 'lazy', alt: ''
+                  }}
+                {%- endif -%}
+              </div>
+              <h3 class="rg-diff__card-title">{{ block.settings.title | escape }}</h3>
+              {%- if block.settings.text != blank -%}
+                <p class="rg-diff__card-text">{{ block.settings.text | escape }}</p>
+              {%- endif -%}
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  /* ---------- Mobile ---------- */
+  .rg-diff {
+    position: relative;
+    overflow: hidden;
+    background: var(--rg-bg);
+    padding-bottom: 32px;
+  }
+
+  .rg-diff p,
+  .rg-diff h2,
+  .rg-diff h3,
+  .rg-diff dl,
+  .rg-diff dd {
+    margin: 0;
+  }
+
+  .rg-diff__wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .rg-diff__top {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'media'
+      'list';
+    row-gap: 12px;
+  }
+
+  /* On mobile the heading overlays the photo: flatten the body wrapper */
+  .rg-diff__body {
+    display: contents;
+  }
+
+  .rg-diff__media {
+    grid-area: media;
+    position: relative;
+    height: 400px;
+    margin-inline: calc(var(--rg-gutter) * -1);
+    overflow: hidden;
+    background: var(--rg-white);
+  }
+
+  .rg-diff__image {
+    position: absolute;
+    /* Design frame is 430px wide; on narrower phones shift the photo left so the
+       jars stay clear of the right-aligned heading. */
+    left: min(-30px, calc(100vw - 460px));
+    bottom: -10px;
+    display: block;
+    width: auto;
+    max-width: none;
+    height: 104%;
+    mix-blend-mode: multiply;
+    -webkit-mask-image: linear-gradient(to right, #000 78%, transparent 100%);
+    mask-image: linear-gradient(to right, #000 78%, transparent 100%);
+  }
+
+  .rg-diff__shade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(247, 247, 245, 0) 78%, var(--rg-bg) 100%);
+  }
+
+  .rg-diff__head {
+    grid-area: media;
+    position: relative;
+    z-index: 1;
+    align-self: start;
+    justify-self: end;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    width: 60%;
+    margin-top: 32px;
+    text-align: right;
+  }
+
+  .rg-diff__eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.32em;
+    color: var(--rg-accent);
+    text-transform: uppercase;
+  }
+
+  .rg-diff__title {
+    font-family: var(--rg-font-display);
+    font-size: clamp(22px, 6.4vw, 27px);
+    font-weight: 900;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--rg-ink);
+  }
+
+  .rg-diff__accent {
+    color: var(--rg-accent);
+  }
+
+  .rg-diff__list {
+    grid-area: list;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .rg-diff__item {
+    overflow: hidden;
+    border-radius: 18px;
+    background: #323232;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    color: var(--rg-on-dark);
+  }
+
+  .rg-diff__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 9px 12px 9px 16px;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .rg-diff__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .rg-diff__summary:focus-visible {
+    outline: 2px solid var(--rg-accent);
+    outline-offset: -2px;
+    border-radius: 18px;
+  }
+
+  .rg-diff__item-title {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+  }
+
+  .rg-diff__chevron {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #464646;
+    color: var(--rg-accent);
+    transition: transform 0.3s var(--rg-ease);
+  }
+
+  .rg-diff__chevron svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .rg-diff__item[open] .rg-diff__chevron {
+    transform: rotate(90deg);
+  }
+
+  .rg-diff__item-text {
+    padding: 0 18px 16px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--rg-on-dark-2);
+    text-wrap: pretty;
+  }
+
+  .rg-diff__facts {
+    margin: 0 14px 16px;
+    padding: 16px 16px 6px;
+    border-radius: 14px;
+    background: #3b3b3b;
+  }
+
+  .rg-diff__facts-head {
+    padding-bottom: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.32em;
+    color: var(--rg-accent);
+  }
+
+  .rg-diff__fact {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 0;
+    border-top: 1px solid #464646;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--rg-on-dark-2);
+  }
+
+  .rg-diff__fact dd {
+    flex: none;
+    font-weight: 700;
+    white-space: nowrap;
+    color: var(--rg-on-dark);
+  }
+
+  .rg-diff__cards {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin: 4px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rg-diff__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 10px 12px;
+    border-radius: 18px;
+    background: var(--rg-white);
+    text-align: center;
+    box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04), 0 24px 60px -28px rgba(26, 26, 26, 0.14);
+    transition: transform 0.25s var(--rg-ease), box-shadow 0.25s var(--rg-ease);
+  }
+
+  .rg-diff__card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 2px;
+  }
+
+  .rg-diff__card-icon img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+  }
+
+  .rg-diff__card-title {
+    font-family: var(--rg-font-body);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0.04em;
+    color: var(--rg-ink);
+  }
+
+  .rg-diff__card-text {
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--rg-text-2);
+  }
+
+  /* ---------- Desktop ---------- */
+  @media screen and (min-width: 990px) {
+    .rg-diff {
+      padding-block: 56px;
+    }
+
+    .rg-diff__wrap {
+      gap: 24px;
+    }
+
+    .rg-diff__top {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-areas: 'spacer body';
+      gap: 24px;
+      align-items: center;
+      min-height: max(380px, min(520px, calc(100vh - 330px)));
+      padding-bottom: 20px;
+    }
+
+    .rg-diff__body {
+      grid-area: body;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Photo fills the left half and bleeds to the section edges */
+    .rg-diff__media {
+      position: absolute;
+      z-index: 0;
+      top: -56px;
+      bottom: -8px;
+      left: calc(var(--rg-gutter) * -1);
+      width: calc(50% + 72px);
+      height: auto;
+      margin: 0;
+      background: transparent;
+    }
+
+    .rg-diff__image {
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 62%;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+
+    .rg-diff__shade {
+      background:
+        linear-gradient(90deg, rgba(247, 247, 245, 0) 55%, var(--rg-bg) 100%),
+        linear-gradient(270deg, rgba(247, 247, 245, 0) 88%, var(--rg-bg) 100%),
+        linear-gradient(180deg, var(--rg-bg) 0%, rgba(247, 247, 245, 0) 22%, rgba(247, 247, 245, 0) 85%, var(--rg-bg) 100%);
+    }
+
+    .rg-diff__head {
+      grid-area: auto;
+      align-self: auto;
+      justify-self: auto;
+      align-items: flex-start;
+      gap: 18px;
+      width: auto;
+      margin: 0 0 12px;
+      text-align: left;
+    }
+
+    .rg-diff__eyebrow {
+      font-size: 13px;
+      letter-spacing: 0.38em;
+    }
+
+    .rg-diff__title {
+      font-size: 44px;
+    }
+
+    .rg-diff__item {
+      border-radius: 20px;
+    }
+
+    .rg-diff__summary {
+      gap: 16px;
+      padding: 14px 22px;
+    }
+
+    .rg-diff__summary:focus-visible {
+      border-radius: 20px;
+    }
+
+    .rg-diff__item-title {
+      font-size: 16px;
+      letter-spacing: 0.01em;
+    }
+
+    .rg-diff__chevron {
+      width: 32px;
+      height: 32px;
+    }
+
+    .rg-diff__chevron svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .rg-diff__item-text {
+      padding: 0 22px 18px;
+      font-size: 15px;
+    }
+
+    .rg-diff__facts {
+      margin: 0 22px 18px;
+      padding: 14px 18px;
+    }
+
+    .rg-diff__facts-head {
+      padding-bottom: 10px;
+      font-size: 12px;
+      line-height: 1;
+      letter-spacing: 0.38em;
+    }
+
+    .rg-diff__fact {
+      gap: 24px;
+      padding: 7px 0;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .rg-diff__cards {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+      margin: 0;
+    }
+
+    .rg-diff__card {
+      gap: 6px;
+      padding: 18px 18px 22px;
+      border-radius: 24px;
+    }
+
+    .rg-diff__card-icon {
+      width: 84px;
+      height: 84px;
+    }
+
+    .rg-diff__card-title {
+      padding: 0 8px;
+      font-size: 17px;
+      line-height: 1.3;
+      letter-spacing: 0.01em;
+    }
+
+    .rg-diff__card-text {
+      padding: 0 12px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  }
+
+  @media (hover: hover) and (min-width: 990px) {
+    .rg-diff__card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04), 0 40px 80px -30px rgba(26, 26, 26, 0.22);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rg-diff__chevron,
+    .rg-diff__card {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RG · Differentiators",
+  "class": "rg-diff-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Photo",
+      "info": "Shown on a light background with multiply blending; use a photo on white."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "FUNCTIONAL BENEFITS"
+    },
+    {
+      "type": "text",
+      "id": "heading_start",
+      "label": "Heading — start",
+      "default": "What Makes It"
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Heading — accent (blue)",
+      "default": "Different"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first",
+      "label": "Open the first accordion item",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Accordion item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "STEADY ENERGY"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "facts",
+      "name": "Accordion: label facts",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "READ THE LABEL"
+        },
+        {
+          "type": "text",
+          "id": "serving",
+          "label": "Serving line",
+          "default": "SERVING SIZE: 1 SCOOP (7G) · 30 SERVINGS"
+        },
+        {
+          "type": "textarea",
+          "id": "rows",
+          "label": "Rows",
+          "info": "One ingredient per line: Name | Dose"
+        }
+      ]
+    },
+    {
+      "type": "card",
+      "name": "Benefit card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "SHARP MENTAL FOCUS"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Clear head and better focus on anything you do."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RG · Differentiators",
+      "blocks": [
+        { "type": "item", "settings": { "title": "STEADY ENERGY" } },
+        { "type": "item", "settings": { "title": "GUT HEALTH" } },
+        { "type": "facts" },
+        { "type": "card" },
+        { "type": "card" }
+      ]
+    }
+  ]
+}
+{% endschema %}

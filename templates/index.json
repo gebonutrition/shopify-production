@@ -172,10 +172,213 @@
         "copies": 2,
         "pause_on_hover": true
       }
+    },
+    "rg_differentiators": {
+      "type": "rg-differentiators",
+      "blocks": {
+        "rg_diff_item_1": {
+          "type": "item",
+          "settings": {
+            "title": "STEADY ENERGY",
+            "text": "Low caffeine, smart energy support. L-Theanine and Taurine keep your energy calm and even, while 3,000mg of Creatine helps your body make more of its own natural energy. No jitters, no 3pm crash."
+          }
+        },
+        "rg_diff_item_2": {
+          "type": "item",
+          "settings": {
+            "title": "GUT HEALTH",
+            "text": "Regular coffee can be rough on your stomach. Ours is made with 100% low-caffeine Arabica for a smoother, gentler cup, with no added sugar, no fillers and nothing artificial. Real coffee taste that's easier on your gut."
+          }
+        },
+        "rg_diff_item_3": {
+          "type": "item",
+          "settings": {
+            "title": "FOCUS & MENTAL SUPPORT",
+            "text": "1,000mg of Lion's Mane, made only from the mushroom itself, supports brain health and sharp thinking. L-Tyrosine keeps you motivated, Bacopa helps you remember more, Ginkgo keeps your mind alert, and Holy Basil helps you stay calm under pressure."
+          }
+        },
+        "rg_diff_item_4": {
+          "type": "item",
+          "settings": {
+            "title": "CLEAN FORMULA",
+            "text": "9 active ingredients, no secret blends, no hidden amounts, no guessing. Every ingredient and its exact dose is right on the label. Vegan, non-GMO, made in the USA and tested by an independent lab."
+          }
+        },
+        "rg_diff_facts": {
+          "type": "facts",
+          "settings": {
+            "title": "READ THE LABEL",
+            "serving": "SERVING SIZE: 1 SCOOP (7G) · 30 SERVINGS",
+            "rows": "Creatine Monohydrate | 3,000 mg\n100% Arabica Coffee, Decaffeinated (<2% caffeine) | 2,300 mg\nLion's Mane Mushroom Extract (10:1, 50% polysaccharides) | 1,000 mg\nTaurine | 200 mg\nL-Theanine | 100 mg\nL-Tyrosine | 100 mg\nHoly Basil Extract | 100 mg\nBacopa Monnieri (20% bacosides) | 100 mg\nGinkgo Biloba Leaf Extract (10:1) | 100 mg"
+          }
+        },
+        "rg_diff_card_1": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/rg-benefit-1.png",
+            "title": "SHARP MENTAL FOCUS",
+            "text": "Clear head and better focus on anything you do."
+          }
+        },
+        "rg_diff_card_2": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/rg-benefit-2.png",
+            "title": "HEALTHY STRESS SUPPORT",
+            "text": "Less stress, more calm, even when life gets busy."
+          }
+        },
+        "rg_diff_card_3": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/rg-benefit-3.png",
+            "title": "ADAPTIVE RESILIENCE",
+            "text": "Faster recovery and more energy after tough days."
+          }
+        },
+        "rg_diff_card_4": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/rg-benefit-4.png",
+            "title": "IMMUNE SUPPORT",
+            "text": "Stronger body defenses all year round."
+          }
+        }
+      },
+      "block_order": [
+        "rg_diff_item_1",
+        "rg_diff_item_2",
+        "rg_diff_item_3",
+        "rg_diff_item_4",
+        "rg_diff_facts",
+        "rg_diff_card_1",
+        "rg_diff_card_2",
+        "rg_diff_card_3",
+        "rg_diff_card_4"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/rg-different.jpg",
+        "eyebrow": "FUNCTIONAL BENEFITS",
+        "heading_start": "What Makes It",
+        "heading_accent": "Different",
+        "open_first": true
+      }
+    },
+    "rg_reviews": {
+      "type": "rg-reviews",
+      "blocks": {
+        "rg_review_1": {
+          "type": "review",
+          "settings": {
+            "group": "ENERGY",
+            "photo": "shopify://shop_images/rg-review-1.jpg",
+            "title": "Just amazing",
+            "text": "I was looking for something with less caffeine because regular coffee gave me energy spikes and made my hands shake, it was just too strong for me. This coffee was perfect instead. It's also really instant, it dissolves completely, with no clumps, unlike other 'instant' coffees I've tried. Now I can drink it a few times a day and feel fine, no shakes, no crash. Would definitely order it again.",
+            "name": "Kate St",
+            "badge": "✓ Verified Buyer"
+          }
+        },
+        "rg_review_2": {
+          "type": "review",
+          "settings": {
+            "group": "ENERGY",
+            "photo": "shopify://shop_images/rg-review-2.jpg",
+            "title": "Excellent coffee replacement",
+            "text": "I'm extremely happy with this one. The blend of herbs and mushrooms is excellent for giving you a sharp mind without the caffeine jitters. …In the morning, I mix some of this with cold water and chocolate syrup for added flavor. Shake it up, drink it on the way to work, and I'm nice and alert by the time I get there. Definitely recommend.",
+            "name": "P. Chu",
+            "badge": "Amazon Vine Review"
+          }
+        },
+        "rg_review_3": {
+          "type": "review",
+          "settings": {
+            "group": "FOCUS",
+            "photo": "shopify://shop_images/rg-review-3.jpg",
+            "title": "Great Coffee with Added Creatine",
+            "text": "I already take creatine every day for focus and workouts, so having it in my coffee too is very convenient, like two products in one. I also like that this coffee is really made in the USA. Before, I bought products that were actually made somewhere else. It's convenient and I trust it.",
+            "name": "Stanislav Kolomiiets",
+            "badge": "✓ Verified Buyer"
+          }
+        },
+        "rg_review_4": {
+          "type": "review",
+          "settings": {
+            "group": "FOCUS",
+            "photo": "shopify://shop_images/rg-review-4.jpg",
+            "title": "Pretty good coffee",
+            "text": "Raw Coffee+ delivers a smooth, mellow coffee experience with significantly less caffeine than regular coffee, making it ideal for those who want focus without jitters. The addition of Lion's Mane and other nootropics provides a noticeable boost in mental clarity and sustained energy, rather than a quick spike and crash. …This coffee is a great choice for productivity and focus.",
+            "name": "Ms White",
+            "badge": "Amazon Vine Review"
+          }
+        },
+        "rg_review_5": {
+          "type": "review",
+          "settings": {
+            "group": "TASTE",
+            "photo": "shopify://shop_images/rg-review-5.jpg",
+            "title": "Nice energy without the jitters",
+            "text": "I've been taking creatine regularly, so I wanted to try this since it already has creatine in it. I actually really like it. The taste is good, and I don't notice any weird aftertaste. What I like most is the energy. It feels smooth and gives me a nice little boost without making me jittery like stronger coffee sometimes does. I usually have it in the morning and it's been an easy addition to my routine.",
+            "name": "Yulia Wilson",
+            "badge": "✓ Verified Buyer"
+          }
+        },
+        "rg_review_6": {
+          "type": "review",
+          "settings": {
+            "group": "TASTE",
+            "photo": "shopify://shop_images/rg-review-6.jpg",
+            "title": "Great flavor, low-caffeine coffee with lion's mane & creatine",
+            "text": "The taste is probably my favorite part. It has a really nice, rich coffee flavor and doesn't have that overly earthy mushroom taste that some mushroom coffees can have. I usually mix mine with almond milk and a little natural sweetener, and it turns into almost a dessert-like coffee drink.",
+            "name": "Elle",
+            "badge": "Amazon Vine Review"
+          }
+        },
+        "rg_review_7": {
+          "type": "review",
+          "settings": {
+            "group": "INGREDIENTS",
+            "photo": "shopify://shop_images/rg-review-7.jpg",
+            "title": "Great Quality, Clean Taste, and Excellent Value",
+            "text": "I tried other coffee brands before this one, and the price is really good for the quality. The ingredient list is very clear, you know exactly what you're getting, which isn't true for other brands. The taste is clean, with no strange aftertaste. I will buy this again.",
+            "name": "Olga",
+            "badge": "✓ Verified Buyer"
+          }
+        },
+        "rg_review_8": {
+          "type": "review",
+          "settings": {
+            "group": "INGREDIENTS",
+            "photo": "shopify://shop_images/rg-review-8.jpg",
+            "title": "So good!",
+            "text": "This is my new favorite morning drink! It's great hot or cold… The ingredients list is impressive and the quality is high. Provides steady energy throughout the day without the 2 o'clock slump. I made one into a latte this morning and it was fabulous. Highly recommend this coffee.",
+            "name": "KP",
+            "badge": "Amazon Vine Review"
+          }
+        }
+      },
+      "block_order": [
+        "rg_review_1",
+        "rg_review_2",
+        "rg_review_3",
+        "rg_review_4",
+        "rg_review_5",
+        "rg_review_6",
+        "rg_review_7",
+        "rg_review_8"
+      ],
+      "settings": {
+        "eyebrow": "RATED 4.8 ON AMAZON",
+        "show_stars": true,
+        "heading": "Read Our Reviews",
+        "button_label": "TRY IT NOW",
+        "button_link": ""
+      }
     }
   },
   "order": [
     "rg_hero",
-    "rg_benefits_band"
+    "rg_benefits_band",
+    "rg_differentiators",
+    "rg_reviews"
   ]
 }
