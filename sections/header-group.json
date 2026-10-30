@@ -65,13 +65,13 @@
         "divider_width": 0,
         "divider_size": "page-width",
         "border_width": 0,
-        "enable_transparent_header_home": false,
-        "enable_transparent_header_product": false,
-        "enable_transparent_header_collection": false,
         "actions_display_style": "icon",
         "bubble_style": "custom",
         "bubble_background_color": "#1CCBF5",
-        "bubble_text_color": "#1A1A1A"
+        "bubble_text_color": "#1A1A1A",
+        "enable_transparent_header_home": false,
+        "enable_transparent_header_product": false,
+        "enable_transparent_header_collection": false
       }
     },
     "rg_announcement": {
@@ -133,9 +133,7 @@
         "letter_spacing": 22,
         "speed": 80,
         "copies": 4,
-        "pause_on_hover": true,
-        "item_spacing_mobile": 14,
-        "letter_spacing_mobile": 20
+        "pause_on_hover": true
       }
     }
   },

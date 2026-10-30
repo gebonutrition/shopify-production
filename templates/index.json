@@ -37,8 +37,9 @@
         "rg_badge_3"
       ],
       "settings": {
+        "anchor": "top",
         "image": "shopify://shop_images/rg-hero-bg.png",
-        "mobile_background": "#EFE9E0",
+        "mobile_background": "#efe9e0",
         "rating_text": "Rated 4.8 on Amazon",
         "heading_start": "Fuel Your Brain with Clean &",
         "heading_accent": "Jitter-Free",
@@ -52,8 +53,7 @@
         "button_link": "",
         "guarantee_image": "shopify://shop_images/rg-guarantee-seal.png",
         "guarantee_title": "60-Day Money-Back Guarantee",
-        "guarantee_text": "Results or a full refund. No return required. No questions asked.",
-        "anchor": "top"
+        "guarantee_text": "Results or a full refund. No return required. No questions asked."
       }
     },
     "rg_benefits_band": {
@@ -153,9 +153,9 @@
         "rg_benefit_10"
       ],
       "settings": {
-        "color_background": "#2B2B2B",
-        "color_text": "#FFFFFF",
-        "color_accent": "#1CCBF5",
+        "color_background": "#2b2b2b",
+        "color_text": "#ffffff",
+        "color_accent": "#1ccbf5",
         "alternate_colors": false,
         "show_borders": true,
         "height": 72,
@@ -258,12 +258,58 @@
         "rg_diff_card_4"
       ],
       "settings": {
+        "anchor": "benefits",
         "image": "shopify://shop_images/rg-different.jpg",
         "eyebrow": "FUNCTIONAL BENEFITS",
         "heading_start": "What Makes It",
         "heading_accent": "Different",
-        "open_first": true,
-        "anchor": "benefits"
+        "open_first": true
+      }
+    },
+    "rg_video_reviews": {
+      "type": "rg-video-reviews",
+      "blocks": {
+        "rg_video_1": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/review.MOV",
+            "caption": "My morning starts with this cup"
+          }
+        },
+        "rg_video_2": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/Talking Head.mp4",
+            "caption": "My new pre-workout ritual"
+          }
+        },
+        "rg_video_3": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/22AB9584-0A69-458C-B70D-8BC20B416E72.mov",
+            "caption": "Always in my bag, wherever I go"
+          }
+        },
+        "rg_video_4": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/A5A77E57-AF72-4C60-B956-3B48DF91CB17.mov",
+            "caption": "Ready in 30 seconds"
+          }
+        }
+      },
+      "block_order": [
+        "rg_video_1",
+        "rg_video_2",
+        "rg_video_3",
+        "rg_video_4"
+      ],
+      "settings": {
+        "anchor": "reviews",
+        "eyebrow": "REAL PEOPLE. REAL MORNINGS.",
+        "heading": "Join the Community",
+        "button_label": "GET STARTED NOW",
+        "button_link": ""
       }
     },
     "rg_reviews": {
@@ -369,53 +415,11 @@
         "rg_review_8"
       ],
       "settings": {
+        "anchor": "reviews-list",
         "eyebrow": "RATED 4.8 ON AMAZON",
         "show_stars": true,
         "heading": "Read Our Reviews",
         "button_label": "TRY IT NOW",
-        "button_link": "",
-        "anchor": "reviews-list"
-      }
-    },
-    "rg_video_reviews": {
-      "type": "rg-video-reviews",
-      "blocks": {
-        "rg_video_1": {
-          "type": "video",
-          "settings": {
-            "caption": "My morning starts with this cup"
-          }
-        },
-        "rg_video_2": {
-          "type": "video",
-          "settings": {
-            "caption": "My new pre-workout ritual"
-          }
-        },
-        "rg_video_3": {
-          "type": "video",
-          "settings": {
-            "caption": "Always in my bag, wherever I go"
-          }
-        },
-        "rg_video_4": {
-          "type": "video",
-          "settings": {
-            "caption": "Ready in 30 seconds"
-          }
-        }
-      },
-      "block_order": [
-        "rg_video_1",
-        "rg_video_2",
-        "rg_video_3",
-        "rg_video_4"
-      ],
-      "settings": {
-        "anchor": "reviews",
-        "eyebrow": "REAL PEOPLE. REAL MORNINGS.",
-        "heading": "Join the Community",
-        "button_label": "GET STARTED NOW",
         "button_link": ""
       }
     }
