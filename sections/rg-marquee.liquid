@@ -45,10 +45,12 @@
       --rg-mq-h-d: {{ s.height }}px;
       --rg-mq-fs: {{ s.font_size_mobile }}px;
       --rg-mq-fs-d: {{ s.font_size }}px;
-      --rg-mq-ls: {{ s.letter_spacing | divided_by: 100.0 }}em;
+      --rg-mq-ls: {{ s.letter_spacing_mobile | divided_by: 100.0 }}em;
+      --rg-mq-ls-d: {{ s.letter_spacing | divided_by: 100.0 }}em;
       --rg-mq-fw: {{ s.font_weight }};
       --rg-mq-gap: {{ s.icon_gap }}px;
-      --rg-mq-space: {{ s.item_spacing }}px;
+      --rg-mq-space: {{ s.item_spacing_mobile }}px;
+      --rg-mq-space-d: {{ s.item_spacing }}px;
       --rg-mq-duration: {{ s.speed }}s;
     "
   >
@@ -160,6 +162,8 @@
 
   .rg-marquee__icon {
     flex: none;
+    width: 16px;
+    height: 16px;
     color: var(--rg-mq-accent);
   }
 
@@ -189,6 +193,16 @@
     .rg-marquee {
       height: var(--rg-mq-h-d);
       font-size: var(--rg-mq-fs-d);
+      letter-spacing: var(--rg-mq-ls-d);
+    }
+
+    .rg-marquee__item {
+      padding-inline-end: var(--rg-mq-space-d);
+    }
+
+    .rg-marquee__icon {
+      width: 20px;
+      height: 20px;
     }
   }
 
@@ -345,7 +359,17 @@
     {
       "type": "range",
       "id": "item_spacing",
-      "label": "Space after item",
+      "label": "Space after item (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "item_spacing_mobile",
+      "label": "Space after item (mobile)",
       "min": 0,
       "max": 96,
       "step": 2,
@@ -391,11 +415,20 @@
     {
       "type": "range",
       "id": "letter_spacing",
-      "label": "Letter spacing (1/100 em)",
+      "label": "Letter spacing, desktop (1/100 em)",
       "min": 0,
       "max": 50,
       "step": 1,
       "default": 22
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing_mobile",
+      "label": "Letter spacing, mobile (1/100 em)",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 20
     },
     {
       "type": "header",

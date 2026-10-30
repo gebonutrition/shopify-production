@@ -9,274 +9,173 @@
  */
 {
   "sections": {
-    "hero_jVaWmY": {
-      "type": "hero",
+    "rg_hero": {
+      "type": "rg-hero",
       "blocks": {
-        "text_YLPk4p": {
-          "type": "text",
-          "name": "t:names.heading",
+        "rg_badge_1": {
+          "type": "badge",
           "settings": {
-            "text": "<p>Browse our latest products</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "text_color": "{{ settings.color_palette.background }}",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "text": "LOW CAFFEINE"
+          }
         },
-        "button_H9gpTf": {
-          "type": "button",
-          "name": "t:names.button",
+        "rg_badge_2": {
+          "type": "badge",
           "settings": {
-            "label": "Shop all",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button-custom",
-            "custom_button_background": "rgba(0, 0, 0, 0)",
-            "custom_button_text": "{{ settings.color_palette.background }}",
-            "custom_button_border": "{{ settings.color_palette.background }}",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
+            "text": "+ CREATINE"
+          }
+        },
+        "rg_badge_3": {
+          "type": "badge",
+          "settings": {
+            "text": "LION'S MANE"
+          }
         }
       },
       "block_order": [
-        "text_YLPk4p",
-        "button_H9gpTf"
+        "rg_badge_1",
+        "rg_badge_2",
+        "rg_badge_3"
       ],
-      "name": "t:names.hero",
       "settings": {
-        "media_type_1": "image",
-        "media_type_2": "image",
-        "link": "",
-        "open_in_new_tab": false,
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "space-between",
-        "vertical_alignment": "flex-end",
-        "align_baseline": true,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "flex-end",
-        "gap": 24,
-        "section_width": "page-width",
-        "section_height": "medium",
-        "section_height_custom": 50,
-        "toggle_overlay": true,
-        "overlay_color": "#12121266",
-        "overlay_style": "solid",
-        "gradient_direction": "to bottom",
-        "blurred_reflection": false,
-        "reflection_opacity": 75,
-        "padding-block-start": 100,
-        "padding-block-end": 72
+        "image": "shopify://shop_images/rg-hero-bg.png",
+        "mobile_background": "#EFE9E0",
+        "rating_text": "Rated 4.8 on Amazon",
+        "heading_start": "Fuel Your Brain with Clean &",
+        "heading_accent": "Jitter-Free",
+        "heading_end": "Energy",
+        "offer_eyebrow": "New customer offer",
+        "offer_start": "Get",
+        "offer_accent": "25% Off",
+        "offer_end": "Your First Order",
+        "offer_text": "Low-caffeine coffee with Lion's Mane & Creatine",
+        "button_label": "TRY RAW COFFEE",
+        "button_link": "",
+        "guarantee_image": "shopify://shop_images/rg-guarantee-seal.png",
+        "guarantee_title": "60-Day Money-Back Guarantee",
+        "guarantee_text": "Results or a full refund. No return required. No questions asked."
       }
     },
-    "product_list_fa6P9H": {
-      "type": "product-list",
+    "rg_benefits_band": {
+      "type": "rg-marquee",
       "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "name": "t:names.header",
-          "static": true,
+        "rg_benefit_01": {
+          "type": "text",
           "settings": {
-            "content_direction": "row",
-            "vertical_on_mobile": false,
-            "horizontal_alignment": "space-between",
-            "vertical_alignment": "flex-end",
-            "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_list_text_YFtzcL": {
-              "type": "_product-list-text",
-              "name": "t:names.collection_title",
-              "settings": {
-                "text": "<h3>{{ closest.collection.title }}</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h4",
-                "font": "var(--font-body--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_list_button_MWeP9V": {
-              "type": "_product-list-button",
-              "name": "t:names.product_list_button",
-              "settings": {
-                "label": "View all",
-                "open_in_new_tab": false,
-                "style_class": "button-unstyled",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_list_text_YFtzcL",
-            "product_list_button_MWeP9V"
-          ]
+            "text": "GUT FRIENDLY",
+            "link": "",
+            "icon": "heart"
+          }
         },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
+        "rg_benefit_02": {
+          "type": "text",
           "settings": {
-            "product_card_gap": 4,
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_677WP3": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_YXxMTj": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "paragraph",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_JQzVV4": {
-              "type": "price",
-              "name": "t:names.product_price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_gallery_677WP3",
-            "product_title_YXxMTj",
-            "price_JQzVV4"
-          ]
+            "text": "VEGAN",
+            "link": "",
+            "icon": "leaf"
+          }
+        },
+        "rg_benefit_03": {
+          "type": "text",
+          "settings": {
+            "text": "MADE IN USA",
+            "link": "",
+            "icon": "star"
+          }
+        },
+        "rg_benefit_04": {
+          "type": "text",
+          "settings": {
+            "text": "NON-GMO",
+            "link": "",
+            "icon": "shield"
+          }
+        },
+        "rg_benefit_05": {
+          "type": "text",
+          "settings": {
+            "text": "MENTAL CLARITY",
+            "link": "",
+            "icon": "spark"
+          }
+        },
+        "rg_benefit_06": {
+          "type": "text",
+          "settings": {
+            "text": "ZERO JITTERS",
+            "link": "",
+            "icon": "check"
+          }
+        },
+        "rg_benefit_07": {
+          "type": "text",
+          "settings": {
+            "text": "NO CRASHES",
+            "link": "",
+            "icon": "zap"
+          }
+        },
+        "rg_benefit_08": {
+          "type": "text",
+          "settings": {
+            "text": "LASER FOCUS",
+            "link": "",
+            "icon": "target"
+          }
+        },
+        "rg_benefit_09": {
+          "type": "text",
+          "settings": {
+            "text": "NO HIDDEN BLENDS",
+            "link": "",
+            "icon": "flask"
+          }
+        },
+        "rg_benefit_10": {
+          "type": "text",
+          "settings": {
+            "text": "CLEAN FORMULA",
+            "link": "",
+            "icon": "spark"
+          }
         }
       },
-      "name": "t:names.featured_collection",
+      "block_order": [
+        "rg_benefit_01",
+        "rg_benefit_02",
+        "rg_benefit_03",
+        "rg_benefit_04",
+        "rg_benefit_05",
+        "rg_benefit_06",
+        "rg_benefit_07",
+        "rg_benefit_08",
+        "rg_benefit_09",
+        "rg_benefit_10"
+      ],
       "settings": {
-        "collection": "all",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 8,
-        "columns": 4,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "color_background": "#2B2B2B",
+        "color_text": "#FFFFFF",
+        "color_accent": "#1CCBF5",
+        "alternate_colors": false,
+        "show_borders": true,
+        "height": 72,
+        "height_mobile": 56,
+        "separator": "none",
+        "icon_gap": 14,
+        "item_spacing": 48,
+        "item_spacing_mobile": 32,
+        "font_size": 14,
+        "font_size_mobile": 12,
+        "font_weight": "600",
+        "letter_spacing": 26,
+        "letter_spacing_mobile": 22,
+        "speed": 110,
+        "copies": 2,
+        "pause_on_hover": true
       }
     }
   },
   "order": [
-    "hero_jVaWmY",
-    "product_list_fa6P9H"
+    "rg_hero",
+    "rg_benefits_band"
   ]
 }

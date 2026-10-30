@@ -131,9 +131,11 @@
         "font_size_mobile": 10,
         "font_weight": "600",
         "letter_spacing": 22,
-        "speed": 40,
+        "speed": 80,
         "copies": 4,
-        "pause_on_hover": true
+        "pause_on_hover": true,
+        "item_spacing_mobile": 14,
+        "letter_spacing_mobile": 20
       }
     }
   },

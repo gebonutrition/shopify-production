@@ -1,0 +1,658 @@
+{%- comment -%}
+  RAW GRAVITY · Hero (main landing, first screen)
+  Desktop: full-bleed product photo, content column on the left.
+  Mobile: stacked; photo strip with the offer overlaid on its left side.
+  Reference: Raw Gravity Landing(.dc.html) + Mobile, section#top.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign button_link = s.button_link | default: routes.all_products_collection_url
+  assign image_alt = s.image.alt | default: s.heading_accent | escape
+-%}
+
+<section
+  class="rg rg-hero"
+  id="rg-hero-{{ section.id }}"
+  style="--rg-hero-mobile-bg: {{ s.mobile_background }};"
+>
+  <div class="rg-hero__inner rg-container">
+    <div class="rg-hero__content">
+      {%- if s.rating_text != blank -%}
+        <p class="rg-hero__rating">
+          <span class="rg-hero__stars" aria-hidden="true">★★★★★</span>
+          {{ s.rating_text | escape }}
+        </p>
+      {%- endif -%}
+
+      <h1 class="rg-hero__title">
+        {{- s.heading_start | escape }}
+        {% if s.heading_accent != blank -%}
+          <span class="rg-hero__accent">{{ s.heading_accent | escape }}</span>
+        {%- endif %}
+        {{ s.heading_end | escape -}}
+      </h1>
+
+      <div class="rg-hero__media">
+        {%- if s.image != blank -%}
+          {%- liquid
+            assign mobile_image = s.image_mobile | default: s.image
+          -%}
+          <picture>
+            <source
+              media="(min-width: 990px)"
+              srcset="
+                {{ s.image | image_url: width: 1100 }} 1100w,
+                {{ s.image | image_url: width: 1500 }} 1500w,
+                {{ s.image | image_url: width: 1920 }} 1920w,
+                {{ s.image | image_url: width: 2400 }} 2400w
+              "
+              sizes="100vw"
+            >
+            {{
+              mobile_image
+              | image_url: width: 1200
+              | image_tag:
+                widths: '450, 750, 1000, 1200',
+                sizes: '100vw',
+                loading: 'eager',
+                fetchpriority: 'high',
+                alt: image_alt,
+                class: 'rg-hero__image'
+            }}
+          </picture>
+        {%- endif -%}
+        <span class="rg-hero__shade" aria-hidden="true"></span>
+      </div>
+
+      <div class="rg-hero__offer">
+        {%- if s.offer_eyebrow != blank -%}
+          <p class="rg-hero__offer-eyebrow">
+            <span class="rg-hero__offer-line" aria-hidden="true"></span>
+            {{- s.offer_eyebrow | escape -}}
+          </p>
+        {%- endif -%}
+        {%- if s.offer_start != blank or s.offer_accent != blank or s.offer_end != blank -%}
+          <p class="rg-hero__offer-title">
+            {{- s.offer_start | escape }}
+            {% if s.offer_accent != blank -%}
+              <span class="rg-hero__offer-accent">{{ s.offer_accent | escape }}</span>
+            {%- endif %}
+            {{ s.offer_end | escape -}}
+          </p>
+        {%- endif -%}
+        {%- if s.offer_text != blank -%}
+          <p class="rg-hero__offer-text">{{ s.offer_text | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="rg-hero__actions">
+        {%- if s.button_label != blank -%}
+          <a class="rg-btn rg-hero__button" href="{{ button_link }}">
+            {{- s.button_label | escape }} <span aria-hidden="true">→</span>
+          </a>
+        {%- endif -%}
+
+        {%- if s.guarantee_title != blank -%}
+          <div class="rg-hero__guarantee">
+            {%- if s.guarantee_image != blank -%}
+              {{
+                s.guarantee_image
+                | image_url: width: 160
+                | image_tag:
+                  width: 54,
+                  height: 54,
+                  loading: 'eager',
+                  alt: s.guarantee_image.alt,
+                  class: 'rg-hero__seal'
+              }}
+            {%- endif -%}
+            <div class="rg-hero__guarantee-copy">
+              <p class="rg-hero__guarantee-title">{{ s.guarantee_title | escape }}</p>
+              {%- if s.guarantee_text != blank -%}
+                <p class="rg-hero__guarantee-text">{{ s.guarantee_text | escape }}</p>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if section.blocks.size > 0 -%}
+        <ul class="rg-hero__badges" role="list">
+          {%- for block in section.blocks -%}
+            <li class="rg-hero__badge" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  /* ---------- Mobile / tablet (stacked) ---------- */
+  .rg-hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--rg-hero-mobile-bg, #efe9e0);
+  }
+
+  .rg-hero p {
+    margin: 0;
+  }
+
+  .rg-hero__content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'rating'
+      'title'
+      'media'
+      'actions'
+      'badges';
+    row-gap: 14px;
+    padding-block: 16px 36px;
+  }
+
+  .rg-hero__rating {
+    grid-area: rating;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .rg-hero__stars {
+    color: var(--rg-accent);
+    letter-spacing: 0.1em;
+  }
+
+  .rg-hero__title {
+    grid-area: title;
+    margin: 0;
+    font-family: var(--rg-font-body);
+    font-size: 29px;
+    font-weight: 900;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    color: var(--rg-ink);
+    text-wrap: balance;
+  }
+
+  .rg-hero__accent {
+    color: var(--rg-accent);
+    white-space: nowrap;
+  }
+
+  .rg-hero__media {
+    grid-area: media;
+    position: relative;
+    height: min(250px, 30dvh);
+    min-height: 200px;
+    margin-inline: calc(var(--rg-gutter) * -1);
+    margin-top: -4px;
+    overflow: hidden;
+  }
+
+  .rg-hero__media picture,
+  .rg-hero__image {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .rg-hero__image {
+    object-fit: cover;
+    object-position: 100% 60%;
+  }
+
+  .rg-hero__shade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        180deg,
+        var(--rg-hero-mobile-bg) 0%,
+        transparent 16%,
+        transparent 84%,
+        var(--rg-hero-mobile-bg) 100%
+      ),
+      linear-gradient(90deg, rgba(239, 233, 224, 0.7) 0%, rgba(239, 233, 224, 0) 42%);
+  }
+
+  /* Offer sits over the left part of the photo on mobile */
+  .rg-hero__offer {
+    grid-area: media;
+    position: relative;
+    z-index: 1;
+    align-self: center;
+    justify-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 38%;
+  }
+
+  .rg-hero__offer-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 8px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--rg-accent-dark);
+  }
+
+  .rg-hero__offer-line {
+    display: none;
+    flex: none;
+    width: 28px;
+    height: 2px;
+    background: var(--rg-accent);
+  }
+
+  .rg-hero__offer-title {
+    font-size: 17px;
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--rg-ink);
+    text-wrap: balance;
+  }
+
+  .rg-hero__offer-accent {
+    color: var(--rg-accent-dark);
+  }
+
+  .rg-hero__offer-text {
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--rg-text-2);
+    text-wrap: pretty;
+  }
+
+  .rg-hero__actions {
+    grid-area: actions;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* .rg-hero prefix: beats .rg-btn from rg-base.css, which loads after compiled section CSS */
+  .rg-hero .rg-hero__button {
+    width: 100%;
+  }
+
+  .rg-hero__guarantee {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 14px 10px 10px;
+    border: 1px solid var(--rg-line-2);
+    border-radius: 14px;
+    background: var(--rg-white);
+    box-shadow: 0 10px 30px -20px rgba(0, 0, 0, 0.25);
+  }
+
+  .rg-hero__seal {
+    flex: none;
+    display: block;
+    width: 50px;
+    height: 50px;
+  }
+
+  .rg-hero__guarantee-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .rg-hero__guarantee-title {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--rg-ink);
+  }
+
+  .rg-hero__guarantee-text {
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--rg-text-2);
+    text-wrap: pretty;
+  }
+
+  .rg-hero__badges {
+    grid-area: badges;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rg-hero__badge {
+    padding: 9px 12px;
+    border-radius: 999px;
+    background: var(--rg-offer);
+    color: var(--rg-ink);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.18em;
+  }
+
+  /* ---------- Tablet tweaks ---------- */
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .rg-hero__title {
+      font-size: 40px;
+    }
+
+    .rg-hero__media {
+      height: 380px;
+    }
+
+    .rg-hero__offer-title {
+      font-size: 26px;
+    }
+
+    .rg-hero__offer-eyebrow {
+      font-size: 11px;
+    }
+
+    .rg-hero__offer-text {
+      font-size: 14px;
+    }
+  }
+
+  /* ---------- Desktop ---------- */
+  @media screen and (min-width: 990px) {
+    .rg-hero {
+      background:
+        radial-gradient(50% 65% at 0% 20%, rgba(201, 182, 245, 0.38) 0%, rgba(201, 182, 245, 0) 70%),
+        radial-gradient(45% 60% at 100% 10%, rgba(198, 236, 250, 0.55) 0%, rgba(198, 236, 250, 0) 70%),
+        var(--rg-bg);
+    }
+
+    .rg-hero__inner {
+      display: flex;
+      align-items: center;
+      min-height: min(640px, calc(100vh - 140px));
+      padding-block: 40px 44px;
+    }
+
+    .rg-hero__content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 50%;
+      padding: 0 40px 0 0;
+    }
+
+    .rg-hero__content > :not(.rg-hero__media) {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Photo becomes the section background */
+    .rg-hero__media {
+      position: absolute;
+      inset: 0;
+      height: auto;
+      min-height: 0;
+      margin: 0;
+    }
+
+    .rg-hero__image {
+      object-position: right center;
+    }
+
+    .rg-hero__shade {
+      inset: 0 auto 0 0;
+      width: 45%;
+      background: linear-gradient(90deg, rgba(243, 238, 230, 0.55) 0%, rgba(243, 238, 230, 0) 100%);
+    }
+
+    .rg-hero__rating {
+      gap: 12px;
+      font-size: 18px;
+    }
+
+    .rg-hero__stars {
+      letter-spacing: 0.12em;
+    }
+
+    .rg-hero__title {
+      font-size: 50px;
+    }
+
+    .rg-hero__offer {
+      align-self: auto;
+      gap: 10px;
+      width: auto;
+      padding-block: 4px;
+    }
+
+    .rg-hero__offer-eyebrow {
+      gap: 12px;
+      font-size: 12px;
+      letter-spacing: 0.32em;
+    }
+
+    .rg-hero__offer-line {
+      display: block;
+    }
+
+    .rg-hero__offer-title {
+      font-size: 32px;
+    }
+
+    .rg-hero__offer-text {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .rg-hero .rg-hero__button {
+      width: 100%;
+      min-height: 60px;
+      padding: 0 48px;
+    }
+
+    .rg-hero__guarantee {
+      padding: 10px 18px 10px 12px;
+      border-radius: 16px;
+    }
+
+    .rg-hero__seal {
+      width: 54px;
+      height: 54px;
+    }
+
+    .rg-hero__guarantee-copy {
+      gap: 3px;
+    }
+
+    .rg-hero__guarantee-title {
+      font-size: 16px;
+    }
+
+    .rg-hero__guarantee-text {
+      line-height: 1.4;
+    }
+
+    .rg-hero__badges {
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      gap: 10px;
+    }
+
+    .rg-hero__badge {
+      padding: 11px 18px;
+      font-size: 12px;
+      letter-spacing: 0.22em;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RG · Hero",
+  "class": "rg-hero-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Photo",
+      "info": "Desktop: full-width background, anchored right. 1720 × 823 px or larger."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile photo (optional)"
+    },
+    {
+      "type": "color",
+      "id": "mobile_background",
+      "label": "Mobile background",
+      "default": "#EFE9E0"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Rating line",
+      "default": "Rated 4.8 on Amazon",
+      "info": "Shown after five stars. Leave empty to hide. Must match a real, current rating."
+    },
+    {
+      "type": "text",
+      "id": "heading_start",
+      "label": "Heading — start",
+      "default": "Fuel Your Brain with Clean &"
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Heading — accent (blue)",
+      "default": "Jitter-Free"
+    },
+    {
+      "type": "text",
+      "id": "heading_end",
+      "label": "Heading — end",
+      "default": "Energy"
+    },
+    {
+      "type": "header",
+      "content": "Offer"
+    },
+    {
+      "type": "text",
+      "id": "offer_eyebrow",
+      "label": "Eyebrow",
+      "default": "New customer offer"
+    },
+    {
+      "type": "text",
+      "id": "offer_start",
+      "label": "Offer — start",
+      "default": "Get"
+    },
+    {
+      "type": "text",
+      "id": "offer_accent",
+      "label": "Offer — accent (blue)",
+      "default": "25% Off"
+    },
+    {
+      "type": "text",
+      "id": "offer_end",
+      "label": "Offer — end",
+      "default": "Your First Order"
+    },
+    {
+      "type": "text",
+      "id": "offer_text",
+      "label": "Offer — supporting text",
+      "default": "Low-caffeine coffee with Lion's Mane & Creatine"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Label",
+      "default": "TRY RAW COFFEE"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link",
+      "info": "Defaults to All products when empty."
+    },
+    {
+      "type": "header",
+      "content": "Guarantee"
+    },
+    {
+      "type": "image_picker",
+      "id": "guarantee_image",
+      "label": "Seal image"
+    },
+    {
+      "type": "text",
+      "id": "guarantee_title",
+      "label": "Title",
+      "default": "60-Day Money-Back Guarantee"
+    },
+    {
+      "type": "text",
+      "id": "guarantee_text",
+      "label": "Text",
+      "default": "Results or a full refund. No return required. No questions asked."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "LOW CAFFEINE"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "RG · Hero",
+      "blocks": [
+        { "type": "badge", "settings": { "text": "LOW CAFFEINE" } },
+        { "type": "badge", "settings": { "text": "+ CREATINE" } },
+        { "type": "badge", "settings": { "text": "LION'S MANE" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
