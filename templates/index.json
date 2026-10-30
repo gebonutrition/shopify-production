@@ -422,6 +422,223 @@
         "button_label": "TRY IT NOW",
         "button_link": ""
       }
+    },
+    "rg_ingredients": {
+      "type": "rg-ingredients",
+      "blocks": {
+        "rg_ing_1": {
+          "type": "ingredient",
+          "settings": {
+            "name": "CREATINE MONOHYDRATE",
+            "dose": "3,000 mg",
+            "sub": "More power for your body and your brain.",
+            "text": "Creatine is your body's natural energy reserve. It's stored in your muscles and brain and helps them recharge fast. It's one of the most studied supplements in the world, and Raw Gravity is one of the only coffees that puts a full 3,000mg in your cup. No extra shakers, no extra pills.",
+            "image": "shopify://shop_images/rg-ing-1.jpg"
+          }
+        },
+        "rg_ing_2": {
+          "type": "ingredient",
+          "settings": {
+            "name": "100% ARABICA COFFEE DECAFFEINATED (<2% CAFFEINE)",
+            "dose": "2,300 mg",
+            "sub": "Real coffee taste. Smooth energy. No jitters.",
+            "text": "Arabica is the world's favorite coffee bean: smooth, rich and less bitter. We use 100% Arabica with less than 2% caffeine, only ~23mg per cup, about a quarter of a regular coffee. You keep the taste and the morning ritual you love, without the racing heart, the shaky hands or the afternoon crash.",
+            "image": "shopify://shop_images/rg-ing-2.jpg"
+          }
+        },
+        "rg_ing_3": {
+          "type": "ingredient",
+          "settings": {
+            "name": "LION'S MANE MUSHROOM EXTRACT 10:1 (50% POLYSACCHARIDES)",
+            "dose": "1,000 mg",
+            "sub": "Stay sharp, focused and clear-headed.",
+            "text": "Lion's Mane is a unique white mushroom, valued in Asia for centuries as \"food for the mind.\" Many brands hide a tiny amount in a blend. We give you a full 1,000mg of a 10:1 extract from 100% fruiting body, standardized to 50% polysaccharides: 10 kg of real mushrooms concentrated into every 1 kg we use.",
+            "image": "shopify://shop_images/rg-ing-3.jpg"
+          }
+        },
+        "rg_ing_4": {
+          "type": "ingredient",
+          "settings": {
+            "name": "TAURINE",
+            "dose": "200 mg",
+            "sub": "Energy that lasts all day.",
+            "text": "Taurine is an amino acid your body already makes, found naturally in your heart, brain and muscles. We added it to help keep your energy steady and your stamina up, so your cup works longer than regular coffee. Clean energy support, without the sugar or crazy doses of energy drinks.",
+            "image": "shopify://shop_images/rg-ing-4.jpg"
+          }
+        },
+        "rg_ing_5": {
+          "type": "ingredient",
+          "settings": {
+            "name": "L-THEANINE",
+            "dose": "100 mg",
+            "sub": "Calm focus, zero jitters.",
+            "text": "L-Theanine comes from tea leaves. It's the secret behind that \"awake but relaxed\" feeling you get from green tea. Paired with our low caffeine, it smooths out your energy, so you stay alert and calm at the same time. It's a favorite combo of biohackers worldwide.",
+            "image": "shopify://shop_images/rg-ing-5.jpg"
+          }
+        },
+        "rg_ing_6": {
+          "type": "ingredient",
+          "settings": {
+            "name": "L-TYROSINE",
+            "dose": "100 mg",
+            "sub": "Motivation to get things done.",
+            "text": "L-Tyrosine is an amino acid your body uses to make dopamine, your brain's \"let's do this\" signal. You'll find it in foods like eggs, cheese and fish. In your cup, it helps you stay driven and on task, whether that's a work project, a workout or a to-do list.",
+            "image": "shopify://shop_images/rg-ing-6.jpg"
+          }
+        },
+        "rg_ing_7": {
+          "type": "ingredient",
+          "settings": {
+            "name": "HOLY BASIL EXTRACT",
+            "dose": "100 mg",
+            "sub": "Stay calm when life gets busy.",
+            "text": "Holy Basil, or Tulsi, is called the \"Queen of Herbs\" in India and has been used in Ayurveda for over 3,000 years. It's a true adaptogen: a plant that helps your body handle everyday stress. One more reason your coffee leaves you balanced, not wired.",
+            "image": "shopify://shop_images/rg-ing-7.jpg"
+          }
+        },
+        "rg_ing_8": {
+          "type": "ingredient",
+          "settings": {
+            "name": "BACOPA MONNIERI (20% BACOSIDES)",
+            "dose": "100 mg",
+            "sub": "Remember more, forget less.",
+            "text": "Bacopa is a small water plant used in Ayurveda for centuries to support memory and learning. Its active compounds are called bacosides, and our extract is standardized to 20%, so you know exactly what you're getting. It helps you hold on to names, details and ideas a little better every day.",
+            "image": "shopify://shop_images/rg-ing-8.jpg"
+          }
+        },
+        "rg_ing_9": {
+          "type": "ingredient",
+          "settings": {
+            "name": "GINKGO BILOBA LEAF EXTRACT 10:1",
+            "dose": "100 mg",
+            "sub": "Feel mentally sharp and alert.",
+            "text": "Ginkgo is one of the oldest tree species on Earth, often called a \"living fossil.\" Its leaves have been used for centuries to support healthy blood flow to the brain. We use a concentrated 10:1 leaf extract to help you stay sharp, quick and clear.",
+            "image": "shopify://shop_images/rg-ing-9.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "rg_ing_1",
+        "rg_ing_2",
+        "rg_ing_3",
+        "rg_ing_4",
+        "rg_ing_5",
+        "rg_ing_6",
+        "rg_ing_7",
+        "rg_ing_8",
+        "rg_ing_9"
+      ],
+      "settings": {
+        "anchor": "ingredients",
+        "image": "shopify://shop_images/rg-nootropics-glass.jpg",
+        "eyebrow": "NOOTROPICS",
+        "heading": "Nootropics For Your Mind",
+        "intro": "<p>Nootropics are known as “<strong>cognitive enhancers</strong>”. They boost <strong>brain function</strong> including <strong>memory</strong>, <strong>alertness</strong>, <strong>focus</strong> and <strong>mood</strong></p>",
+        "fun_fact": "Fun Fact: <strong>Caffeine</strong> is also considered a nootropic.",
+        "left_count": 5,
+        "button_label": "TRY RAW COFFEE",
+        "button_link": ""
+      }
+    },
+    "rg_shop": {
+      "type": "rg-shop",
+      "blocks": {
+        "rg_shop_jar": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/rg-jar.jpg",
+            "link": "",
+            "badge": "BEST SELLER",
+            "pre": "Raw Coffee+",
+            "title": "Signature Jar",
+            "description": "Our signature blend in a reusable jar",
+            "why": "PERFECT TO START · REUSABLE JAR · 30 SERVINGS",
+            "button_label": "TRY NOW"
+          }
+        },
+        "rg_shop_refill": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/rg-refill.jpg",
+            "link": "",
+            "badge": "BEST VALUE",
+            "pre": "Raw Coffee+",
+            "title": "Refill Pouch",
+            "description": "Same formula, lighter pack. Refill your jar and save",
+            "why": "LESS PLASTIC · BETTER PRICE · EASY TO TRAVEL",
+            "button_label": "TRY NOW"
+          }
+        },
+        "rg_shop_tmm": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/rg-tmm.jpg",
+            "link": "",
+            "badge": "LIMITED EDITION",
+            "pre": "Raw Gravity ×",
+            "title": "Take My Muffin",
+            "description": "Your favorite cartoon crew, now in your morning cup",
+            "why": "MADE FOR FANS · GREAT GIFT IDEA · ONLY FOR A LIMITED TIME",
+            "button_label": "TRY NOW"
+          }
+        }
+      },
+      "block_order": [
+        "rg_shop_jar",
+        "rg_shop_refill",
+        "rg_shop_tmm"
+      ],
+      "settings": {
+        "anchor": "shop",
+        "eyebrow": "SHOP",
+        "heading": "Find Your Blend"
+      }
+    },
+    "rg_ambassador": {
+      "type": "rg-ambassador",
+      "blocks": {
+        "rg_amb_perk_1": {
+          "type": "perk",
+          "settings": {
+            "icon": "dollar",
+            "title": "EARN COMMISSION",
+            "text": "Up to 25% on every sale"
+          }
+        },
+        "rg_amb_perk_2": {
+          "type": "perk",
+          "settings": {
+            "icon": "gift",
+            "title": "FREE PRODUCTS",
+            "text": "Monthly product drops"
+          }
+        },
+        "rg_amb_perk_3": {
+          "type": "perk",
+          "settings": {
+            "icon": "zap",
+            "title": "EARLY ACCESS",
+            "text": "New launches before anyone else"
+          }
+        }
+      },
+      "block_order": [
+        "rg_amb_perk_1",
+        "rg_amb_perk_2",
+        "rg_amb_perk_3"
+      ],
+      "settings": {
+        "anchor": "ambassador",
+        "image": "shopify://shop_images/rg-ambassador-2.jpg",
+        "label_eyebrow": "BRAND PROGRAM",
+        "label_title": "Raw Gravity Ambassadors",
+        "eyebrow": "JOIN THE COMMUNITY",
+        "heading_start": "Become a Raw Gravity",
+        "heading_accent": "Ambassador",
+        "text": "Love creating content? Join creators, athletes and wellness pros who get free coffee every month, first dibs on new drops, and real commission on every order they bring in. No follower minimum, just real love for the product.",
+        "button_label": "APPLY NOW",
+        "button_link": ""
+      }
     }
   },
   "order": [
@@ -429,6 +646,9 @@
     "rg_benefits_band",
     "rg_differentiators",
     "rg_video_reviews",
-    "rg_reviews"
+    "rg_reviews",
+    "rg_ingredients",
+    "rg_shop",
+    "rg_ambassador"
   ]
 }
