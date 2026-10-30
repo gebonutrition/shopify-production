@@ -1,151 +1,176 @@
-<!DOCTYPE html>
-<html lang="{{ request.locale.iso_code }}">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0a0a0a">
-  <title>
-    {%- if page_title -%}
-      {{ page_title }} | {{ shop.name }}
-    {%- else -%}
-      {{ shop.name }} — Premium Mushroom Coffee
+<!doctype html>
+<html
+  {% if request.design_mode %}
+    class="shopify-design-mode"
+  {% endif %}
+  lang="{{ request.locale.iso_code }}"
+  dir="{{ request.locale.direction | default: 'ltr' }}"
+>
+  <head>
+    {%- if settings.favicon != blank -%}
+      <link
+        rel="icon"
+        type="image/png"
+        href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
+      >
     {%- endif -%}
-  </title>
-  <meta name="description" content="{{ page_description | escape }}">
-  <link rel="canonical" href="{{ canonical_url }}">
 
-  {%- if settings.favicon != blank -%}
-    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32 }}">
-  {%- endif -%}
+    {%- render 'view-transition-opt-in' -%}
 
-  {{ content_for_header }}
+    {%- render 'meta-tags' -%}
+    {%- render 'stylesheets' -%}
+    {%- render 'card-hover-effect-styles' -%}
+    {%- render 'scripts' -%}
+    {%- render 'theme-styles-variables' -%}
+    {%- render 'color-palette' -%}
 
-  {{ 'theme.css' | asset_url | stylesheet_tag }}
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300..900&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
+    {% if request.design_mode %}
+      {%- render 'theme-editor' -%}
+    {% endif %}
 
-<body class="rg-body">
+    {{ content_for_header }}
+  </head>
 
-  <div class="rg-bg-blobs" aria-hidden="true">
-    <span class="rg-bg-blob rg-bg-blob--1"></span>
-    <span class="rg-bg-blob rg-bg-blob--2"></span>
-    <span class="rg-bg-blob rg-bg-blob--3"></span>
-  </div>
+  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
+    {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
 
-  {%- sections 'header-group' -%}
+    {% render 'chat-drawer' %}
 
-  <main id="main-content" role="main">
-    {{ content_for_layout }}
-  </main>
+    <div class="page-wrapper">
+      <div id="header-group">
+        {% sections 'header-group' %}
+      </div>
 
-  {%- sections 'footer-group' -%}
+      <script>
+        /**
+         * Sets `--header-height` and `--header-group-height` to measured values before first paint.
+         *
+         * A few CSS rules position content relative to the header at first paint — a hero sized to
+         * the remaining viewport, a transparent header's negative margin. Without a measured value
+         * those rules use the `60px` fallback from `sections/header.liquid`, and the content visibly
+         * jumps once `header.js` corrects the values after load.
+         *
+         * Measuring forces layout mid-parse, so it only runs where a consuming rule exists.
+         * Callers opt in: the transparent-header branch below, or `snippets/measure-header-heights.liquid`,
+         * which any new first-paint consumer must render too.
+         *
+         * Measures once per page; after load, header.js's ResizeObservers keep the values fresh.
+         * The group-height walk mimics calculateHeaderGroupHeight() in utilities.js — keep them
+         * in sync.
+         */
+        window.measureHeaderHeights = (function () {
+          let measured = false;
 
-  <script>
-    // Cart drawer / mini-cart count updater
-    document.addEventListener('DOMContentLoaded', function () {
-      // Accordion logic
-      document.querySelectorAll('.rg-accordion-trigger').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var panel = document.getElementById(btn.getAttribute('aria-controls'));
-          var expanded = btn.getAttribute('aria-expanded') === 'true';
-          btn.setAttribute('aria-expanded', String(!expanded));
-          panel.hidden = expanded;
-          btn.querySelector('.rg-accordion-icon').textContent = expanded ? '+' : '−';
-        });
-      });
+          return function measureHeaderHeights() {
+            if (measured) return;
 
-      // Ticker duplicate for seamless loop
-      document.querySelectorAll('.rg-ticker-track').forEach(function (track) {
-        track.innerHTML += track.innerHTML;
-      });
+            const header = document.querySelector('#header-component');
+            const headerGroup = document.querySelector('#header-group');
 
-      // Product image carousel
-      var carousels = document.querySelectorAll('.rg-carousel');
-      carousels.forEach(function (carousel) {
-        var slides = carousel.querySelectorAll('.rg-carousel-slide');
-        var thumbs = carousel.querySelectorAll('.rg-carousel-thumb');
-        var current = 0;
-        function goTo(idx) {
-          slides[current].classList.remove('active');
-          if (thumbs[current]) thumbs[current].classList.remove('active');
-          current = idx;
-          slides[current].classList.add('active');
-          if (thumbs[current]) thumbs[current].classList.add('active');
-        }
-        thumbs.forEach(function (t, i) { t.addEventListener('click', function () { goTo(i); }); });
-        var prev = carousel.querySelector('.rg-carousel-prev');
-        var next = carousel.querySelector('.rg-carousel-next');
-        if (prev) prev.addEventListener('click', function () { goTo((current - 1 + slides.length) % slides.length); });
-        if (next) next.addEventListener('click', function () { goTo((current + 1) % slides.length); });
-      });
+            if (!header || !headerGroup) return;
+            measured = true;
 
-      // Purchase option tabs (one-time vs subscribe)
-      document.querySelectorAll('.rg-purchase-option').forEach(function (opt) {
-        opt.addEventListener('click', function () {
-          document.querySelectorAll('.rg-purchase-option').forEach(function (o) { o.classList.remove('active'); });
-          opt.classList.add('active');
-        });
-      });
+            const headerHeight = header.offsetHeight;
 
-      // Review tabs
-      document.querySelectorAll('.rg-review-tab').forEach(function (tab) {
-        tab.addEventListener('click', function () {
-          document.querySelectorAll('.rg-review-tab').forEach(function (t) { t.classList.remove('active'); });
-          tab.classList.add('active');
-        });
-      });
+            let headerGroupHeight = 0;
+            for (const element of headerGroup.children) {
+              if (element instanceof HTMLElement) headerGroupHeight += element.offsetHeight;
+            }
 
-      // Header + announcement bar, both fixed.
-      // Announcement is visible ONLY while scrollY is within its own height (i.e. at the
-      // very top of the page) — this is based on absolute scroll position, not direction,
-      // so it never flickers and never reappears mid-page.
-      // Header separately hides on scroll down / shows on scroll up, and its "top" offset
-      // shifts down to make room for the announcement bar only while that bar is visible.
-      var rgHeader = document.querySelector('.rg-header');
-      var rgAnnouncement = document.querySelector('.rg-announcement');
-      if (rgHeader) {
-        var rgSpacer = document.createElement('div');
-        rgSpacer.id = 'rg-header-spacer';
-        rgHeader.parentNode.insertBefore(rgSpacer, rgHeader.nextSibling);
+            /**
+             * A transparent header is absolutely positioned, so the loop above counts its section
+             * wrapper as 0px. When a section follows it in the group, header.liquid pushes that
+             * section down by the header's height using a margin, which offsetHeight also
+             * excludes — so the header's height has to be added back manually.
+             */
+            if (header.hasAttribute('transparent') && header.parentElement?.nextElementSibling) {
+              headerGroupHeight += headerHeight;
+            }
 
-        var lastScrollY = window.scrollY;
-        var scrollTicking = false;
+            document.body.style.setProperty('--header-height', `${headerHeight}px`);
+            document.body.style.setProperty('--header-group-height', `${headerGroupHeight}px`);
+          };
+        })();
 
-        function updateScrollState() {
-          var currentScrollY = window.scrollY;
-          var headerHeight = rgHeader.offsetHeight;
-          var announcementHeight = rgAnnouncement ? rgAnnouncement.offsetHeight : 0;
-
-          // Header always sits at the very top, announcement directly below it.
-          rgHeader.style.top = '0px';
-          if (rgAnnouncement) rgAnnouncement.style.top = headerHeight + 'px';
-
-          // Both are visible ONLY at the very top of the page (hero block).
-          // Based on absolute scroll position, not direction — once scrolled
-          // down they stay hidden, and come back only at the top again.
-          var atTop = currentScrollY < 40;
-          rgHeader.classList.toggle('rg-header--hidden', !atTop);
-          if (rgAnnouncement) rgAnnouncement.classList.toggle('rg-announcement--hidden', !atTop);
-
-          document.documentElement.style.setProperty('--rg-header-h', headerHeight + 'px');
-          // Constant spacer height so page content never jumps when they hide.
-          rgSpacer.style.height = (headerHeight + announcementHeight) + 'px';
-
-          scrollTicking = false;
+        /**
+         * Transparent-header rules consume the measured heights at first paint on every
+         * template, so the transparent case opts in globally here instead of per-section.
+         */
+        if (document.querySelector('#header-component')?.hasAttribute('transparent')) {
+          measureHeaderHeights();
         }
 
-        updateScrollState();
-        window.addEventListener('resize', updateScrollState);
-        window.addEventListener('scroll', function () {
-          if (!scrollTicking) {
-            window.requestAnimationFrame(updateScrollState);
-            scrollTicking = true;
+        /**
+         * Sets `--top-row-height`, consumed by the header underlays and submenus. Deferred to a
+         * rAF so the height read doesn't force layout mid-parse, and scoped to the
+         * header, where all consumers live, so the write only invalidates the header subtree.
+         * Mimics the `--top-row-height` write in updateHeaderHeights() in utilities.js
+         */
+        (function setTopRowHeight() {
+          const header = document.querySelector('#header-component');
+          const headerTopRow = header?.querySelector('.header__row--top');
+          if (!headerTopRow) return;
+
+          window.requestAnimationFrame(function () {
+            header.style.setProperty('--top-row-height', `${headerTopRow.getBoundingClientRect().height}px`);
+          });
+        })();
+
+        /**
+         * Sets `--transparent-header-offset-boolean` when the first section must offset itself
+         * under a transparent header. The non-offset case relies on the `0` default declared in
+         * sections/header.liquid — unlike updateTransparentHeaderOffset() in utilities.js, which
+         * re-runs on editor changes and must write '0' to reset a previously written '1'.
+         */
+        (function updateTransparentHeaderOffset() {
+          const header = document.querySelector('#header-component');
+          const headerSection = document.querySelector('#header-group .header-section');
+          if (!headerSection || !header?.hasAttribute('transparent')) return;
+
+          const hasImmediateSection = headerSection.nextElementSibling?.classList.contains('shopify-section');
+          if (!hasImmediateSection) {
+            document.body.style.setProperty('--transparent-header-offset-boolean', '1');
           }
-        });
-      }
-    });
-  </script>
-</body>
+        })();
+
+        /**
+         * Sets the initial menu style (inline menu vs. drawer) on the header component.
+         * Mimics setHeaderMenuStyle() in utilities.js
+         */
+        (function setHeaderMenuStyle() {
+          const headerComponent = document.querySelector('#header-component');
+          if (headerComponent) {
+            const isTouchDevice = 'ontouchstart' in window && navigator.maxTouchPoints > 0;
+            const overflowList = headerComponent.querySelector('overflow-list');
+            const hasReachedMinimum = overflowList && overflowList.hasAttribute('minimum-reached');
+            headerComponent.dataset.menuStyle = isTouchDevice || hasReachedMinimum ? 'drawer' : 'menu';
+          }
+        })();
+      </script>
+
+      <main
+        id="MainContent"
+        class="content-for-layout"
+        role="main"
+        data-page-transition-enabled="{{ settings.page_transition_enabled }}"
+        data-product-transition="{{ settings.transition_to_main_product }}"
+        data-template="{{ template }}"
+      >
+        {{ content_for_layout }}
+      </main>
+
+      <footer>
+        {% sections 'footer-group' %}
+      </footer>
+    </div>
+
+    {% render 'cart-drawer', render_wrapper: true %}
+    {% render 'theme-drawer' %}
+
+    {% render 'search-modal' %}
+
+    {% if settings.quick_add or settings.mobile_quick_add %}
+      {% render 'quick-add-modal' %}
+    {% endif %}
+  </body>
 </html>
