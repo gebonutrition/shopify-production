@@ -1,0 +1,1116 @@
+<section class="rg-product-hero">
+  <div class="rg-container">
+    <div class="rg-product-hero__grid">
+
+      <!-- Left Column: Images -->
+      <div class="rg-product-hero__media">
+        <div class="rg-carousel">
+          <div class="rg-carousel__main" style="border-radius: 24px; box-shadow: 0 8px 0 0 #e2e2e5; border: 2px solid #e2e2e5; box-sizing: border-box; overflow: hidden;">
+            {%- assign first = true -%}
+            {%- for image in product.images -%}
+              <div class="rg-carousel-slide {% if first %}active{% endif %}" data-index="{{ forloop.index0 }}">
+                <img
+                  src="{{ image | image_url: width: 900 }}"
+                  alt="{{ image.alt | default: product.title }}"
+                  width="900"
+                  height="900"
+                  {%- if first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                >
+              </div>
+              {%- assign first = false -%}
+            {%- else -%}
+              {%- for i in (1..6) -%}
+                <div class="rg-carousel-slide {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}">
+                  <img src="{{ 'product-mushrooms.jpg' | asset_url }}" alt="Product Image {{ i }}" width="900" height="900">
+                </div>
+              {%- endfor -%}
+            {%- endfor -%}
+
+            <div class="rg-carousel__dots">
+              {%- assign first_dot = true -%}
+              {%- for image in product.images -%}
+                <span class="rg-carousel__dot {% if first_dot %}active{% endif %}"></span>
+                {%- assign first_dot = false -%}
+              {%- else -%}
+                {%- for i in (1..6) -%}
+                  <span class="rg-carousel__dot {% if forloop.first %}active{% endif %}"></span>
+                {%- endfor -%}
+              {%- endfor -%}
+            </div>
+          </div>
+
+          <div class="rg-carousel__thumbs-wrap" style="margin-top: 20px;">
+             <button class="rg-carousel-prev" aria-label="Previous image">‹</button>
+             <div class="rg-carousel__thumbs">
+                {%- for image in product.images -%}
+                  <div class="rg-carousel-thumb {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}">
+                    <img src="{{ image | image_url: width: 150 }}" alt="{{ image.alt | default: product.title }}" width="150" height="150" loading="lazy">
+                  </div>
+                {%- else -%}
+                   {%- for i in (1..6) -%}
+                    <div class="rg-carousel-thumb {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}">
+                      <img src="{{ 'product-mushrooms.jpg' | asset_url }}" alt="Thumb {{ i }}" width="150" height="150">
+                    </div>
+                  {%- endfor -%}
+                {%- endfor -%}
+             </div>
+             <button class="rg-carousel-next" aria-label="Next image">›</button>
+          </div>
+        </div>
+
+        <!-- Benefit Tags -->
+        <div class="rg-product-hero__tags" style="justify-content: center;">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'benefit_pill' -%}
+              <div class="rg-product-hero__tag" {{ block.shopify_attributes }}>
+                <span class="rg-product-hero__tag-check">✓</span>
+                {{ block.settings.label }}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- Right Column: Info -->
+      <div class="rg-product-info">
+        
+        <h1 class="rg-product-info__title-serif" style="margin-bottom: -6px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 800;">RAW COFFEE +</h1>
+        <p class="rg-product-info__subtitle" style="margin-top: 0; margin-bottom: 8px;">
+          Your functional coffee-blend that helps boost energy, improve mental clarity &amp; supports gut health without the crash.
+        </p>
+
+        <div class="rg-product-info__reviews-row" style="margin-bottom: 1px;">
+          <div class="rg-stars" style="display: flex; gap: 3px; color: var(--rg-accent);"><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          <span class="rg-product-info__reviews-count" style="font-size: 19px;">{{ section.settings.review_count }} Reviews</span>
+        </div>
+
+        <div class="rg-product-info__pricing" style="margin-bottom: 12px;">
+          <div class="rg-product-info__price-main">
+            <span class="rg-product-info__price-current" style="font-family: var(--rg-font-display);">{{ section.settings.subscribe_price }}</span>
+            <span class="rg-product-info__price-was" style="font-family: var(--rg-font-display); font-size: 42px; font-weight: 600;">{{ section.settings.subscribe_was }}</span>
+            <span class="rg-product-info__price-discount" style="font-size: 18px; background: #d2d2ff94; padding: 5px 12px; border-radius: 6px; color: #000000; position: relative; top: -8px;">40% OFF TODAY</span>
+          </div>
+        </div>
+
+        <div class="rg-product-info__cta-block">
+          <form action="/cart/add" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="rg-btn rg-btn--primary rg-btn--full rg-btn--glow">
+              TRY RAW COFFEE TODAY
+            </button>
+          </form>
+        </div>
+
+        <div style="display: flex; gap: 24px; margin: 20px 0 0;">
+          <ul class="rg-product-info__focus-list" style="flex: 1; display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; list-style: none;">
+            <li style="display: flex; align-items: flex-start; gap: 8px; font-size: 14px; font-weight: 600; color: var(--rg-text);"><span class="rg-trust-check">✓</span> Active & Clean Energy</li>
+            <li style="display: flex; align-items: flex-start; gap: 8px; font-size: 14px; font-weight: 600; color: var(--rg-text);"><span class="rg-trust-check">✓</span> Sharp Focus & Clear Mind</li>
+          </ul>
+          <ul style="flex: 1; display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; list-style: none;">
+            <li style="display: flex; align-items: flex-start; gap: 8px; font-size: 14px; font-weight: 600; color: var(--rg-text);"><span class="rg-trust-check">✓</span> No Bloating</li>
+            <li style="display: flex; align-items: flex-start; gap: 8px; font-size: 14px; font-weight: 600; color: var(--rg-text);"><span class="rg-trust-check">✓</span> No Energy Crash</li>
+          </ul>
+        </div>
+
+        <div class="rg-product-info__trust-grid" style="margin-top: 28px; background: #d2d2ff94;; border-radius: 12px; padding: 16px 20px;">
+          <div class="rg-trust-item"><span class="rg-trust-check">✓</span> $36 Refill ships in 30 days</div>
+          <div class="rg-trust-item"><span class="rg-trust-check">✓</span> Skip, pause or cancel anytime</div>
+          <div class="rg-trust-item"><span class="rg-trust-check">✓</span> 45-Day Money-Back Guarantee</div>
+          <div class="rg-trust-item"><span class="rg-trust-check">✓</span> FREE avg 3-day shipping today</div>
+        </div>
+
+        <p class="rg-product-info__footer-note">
+          3 days before your next shipment is set to go through, we will email you a reminder. By default, it will be another 30 servings delivered to you, and you can easily adjust or cancel at anytime.
+        </p>
+
+      </div>
+    </div>
+
+    <!-- Purchase Options -->
+    <div style="background: linear-gradient(to bottom, rgba(250,250,250,0) 0%, #fafafaff 120px); width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding: 72px 24px 0;">
+    <div class="rg-purchase-options-wrap" style="max-width: 560px; margin: 0 auto;">
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+
+      <div style="border-radius: 16px; overflow: hidden; border: 1px solid var(--rg-border); position: relative;">
+        <div style="padding: 28px 24px 20px; background: #fafafaff;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span style="font-size: 17px; font-weight: 700;">Buy One</span>
+            <span style="font-size: 20px; font-weight: 800; color: var(--rg-accent);">{{ section.settings.subscribe_price }} <span style="font-size: 13px; font-weight: 500; color: var(--rg-muted); text-decoration: line-through;">{{ section.settings.subscribe_was }}</span></span>
+          </div>
+          <div style="font-size: 13px; color: var(--rg-muted); margin-top: 4px;">You save $18</div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; background: #d2d2ff94;">
+          <span style="font-size: 13px; font-weight: 600;"><span style="color: var(--rg-accent);">✓</span> Free Frother + Mug + Spoon</span>
+          <span style="font-size: 13px; color: var(--rg-muted); text-decoration: line-through;">$25</span>
+        </div>
+      </div>
+
+      <div style="border-radius: 16px; border: 2px solid var(--rg-accent); position: relative;">
+        <span style="position: absolute; top: -13px; right: 20px; background: var(--rg-accent); color: #fff; font-size: 11px; font-weight: 700; padding: 5px 14px; border-radius: 9999px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); z-index: 2;">Most Popular</span>
+        <div style="border-radius: 14px; overflow: hidden;">
+          <div style="padding: 20px 24px; background: #fafafaff;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <span style="font-size: 17px; font-weight: 700;">Buy 2, Get 1 FREE</span>
+              <span style="font-size: 20px; font-weight: 800; color: var(--rg-accent);">$54 <span style="font-size: 13px; font-weight: 500; color: var(--rg-muted); text-decoration: line-through;">$90</span></span>
+            </div>
+            <div style="font-size: 13px; color: var(--rg-muted); margin-top: 4px;">You save $36</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; background: #d2d2ff94;">
+            <span style="font-size: 13px; font-weight: 600;"><span style="color: var(--rg-accent);">✓</span> Free extra Rainbow Dust + Frother + Mug + Spoon</span>
+            <span style="font-size: 13px; color: var(--rg-muted); text-decoration: line-through; white-space: nowrap;">$74</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; font-size: 13px; color: var(--rg-muted); display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--rg-accent); display: inline-block;"></span>
+        Ready to ship — arrives by <a href="#" style="text-decoration: underline; color: var(--rg-text); font-weight: 600;">Jul 10th</a>
+      </div>
+
+      <div class="rg-product-info__cta-block">
+        <form action="/cart/add" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button type="submit" class="rg-btn rg-btn--primary rg-btn--full rg-btn--glow" style="flex-direction: column; gap: 2px; padding: 14px;">
+            <span>ADD TO CART — {{ section.settings.subscribe_price }} <span style="text-decoration: line-through; opacity: 0.7; font-weight: 500;">{{ section.settings.subscribe_was }}</span></span>
+            <span style="font-size: 12px; font-weight: 500; opacity: 0.85;">60-Day Money Back Guarantee</span>
+          </button>
+        </form>
+      </div>
+
+      <div style="display: flex; justify-content: center; gap: 24px; font-size: 12px; color: var(--rg-muted); font-weight: 600;">
+        <span>↻ Refills Ship Every Month</span>
+        <span>✕ Cancel Anytime</span>
+      </div>
+
+      <div class="rg-reviews-block" style="background: #fafafaff; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding: 40px 24px 0;">
+        <div style="max-width: 1500px; margin: 0 auto; position: relative;">
+
+          <div style="overflow: hidden;">
+            <div id="rg-rev-track" style="display: flex; gap: 16px; will-change: transform;">
+
+              <div class="rg-rev-card" data-rev="0" style="flex-shrink: 0; background: #393939; border-radius: 20px; padding: 36px 32px; transform-origin: center center; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.6s cubic-bezier(0.4,0,0.2,1), border-color 0.4s; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid transparent;">
+                <div>
+                  <div style="color: var(--rg-accent); display: flex; gap: 3px; margin-bottom: 14px;"><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg></div>
+                  <p style="font-size: 16px; line-height: 1.6; color: #fff; margin: 0 0 20px;">"It has definitely changed my <strong style="color: var(--rg-accent);">gut health</strong> for the better. I have had bad heartburn for years and have noticed a <strong style="color: var(--rg-accent);">HUGE difference</strong>"</p>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: #fff;"><span style="width: 22px; height: 22px; border-radius: 50%; background: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;"><svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: #2D2D2D;"><path d="M5 20V19C5 15.134 8.13401 12 12 12V12C15.866 12 19 15.134 19 19V20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span> Mariah P., 45 yo</span>
+                  <span style="display: inline-flex; align-items: center; gap: 5px; background: #fafafaff; border-radius: 9999px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: #2D2D2D; white-space: nowrap;">✓ Verified Buyer</span>
+                </div>
+              </div>
+
+              <div class="rg-rev-card" data-rev="1" style="flex-shrink: 0; background: #393939; border-radius: 20px; padding: 36px 32px; transform-origin: center center; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.6s cubic-bezier(0.4,0,0.2,1), border-color 0.4s; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid transparent;">
+                <div>
+                  <div style="color: var(--rg-accent); display: flex; gap: 3px; margin-bottom: 14px;"><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg></div>
+                  <p style="font-size: 16px; line-height: 1.6; color: #fff; margin: 0 0 20px;">"I used to hit a wall every afternoon around 2pm. Since switching to Raw Coffee, my <strong style="color: var(--rg-accent);">energy stays steady</strong> all day long, and I don't get that jittery crash I used to get from regular coffee. It's honestly become part of my daily routine now."</p>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: #fff;"><span style="width: 22px; height: 22px; border-radius: 50%; background: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">👤</span> James K., 38 yo</span>
+                  <span style="display: inline-flex; align-items: center; gap: 5px; background: #fafafaff; border-radius: 9999px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: #2D2D2D; white-space: nowrap;">✓ Verified Buyer</span>
+                </div>
+              </div>
+
+              <div class="rg-rev-card" data-rev="2" style="flex-shrink: 0; background: #393939; border-radius: 20px; padding: 36px 32px; transform-origin: center center; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.6s cubic-bezier(0.4,0,0.2,1), border-color 0.4s; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid transparent;">
+                <div>
+                  <div style="color: var(--rg-accent); display: flex; gap: 3px; margin-bottom: 14px;"><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg></div>
+                  <p style="font-size: 16px; line-height: 1.6; color: #fff; margin: 0 0 20px;">"My focus during work has been so much sharper since I started drinking this every morning. I also noticed my <strong style="color: var(--rg-accent);">mood feels more balanced</strong> throughout the day, not just a quick spike and then nothing. Really happy with the results so far."</p>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: #fff;"><span style="width: 22px; height: 22px; border-radius: 50%; background: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">👤</span> Priya R., 29 yo</span>
+                  <span style="display: inline-flex; align-items: center; gap: 5px; background: #fafafaff; border-radius: 9999px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: #2D2D2D; white-space: nowrap;">✓ Verified Buyer</span>
+                </div>
+              </div>
+
+              <div class="rg-rev-card" data-rev="3" style="flex-shrink: 0; background: #393939; border-radius: 20px; padding: 36px 32px; transform-origin: center center; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.6s cubic-bezier(0.4,0,0.2,1), border-color 0.4s; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid transparent;">
+                <div>
+                  <div style="color: var(--rg-accent); display: flex; gap: 3px; margin-bottom: 14px;"><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg></div>
+                  <p style="font-size: 16px; line-height: 1.6; color: #fff; margin: 0 0 20px;">"I was skeptical about mushroom coffee at first, but this has genuinely helped with my <strong style="color: var(--rg-accent);">digestion</strong>. No more bloating after my morning cup, and I actually look forward to drinking it now instead of just needing the caffeine."</p>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: #fff;"><span style="width: 22px; height: 22px; border-radius: 50%; background: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">👤</span> Daniel S., 51 yo</span>
+                  <span style="display: inline-flex; align-items: center; gap: 5px; background: #fafafaff; border-radius: 9999px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: #2D2D2D; white-space: nowrap;">✓ Verified Buyer</span>
+                </div>
+              </div>
+
+              <div class="rg-rev-card" data-rev="4" style="flex-shrink: 0; background: #393939; border-radius: 20px; padding: 36px 32px; transform-origin: center center; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.6s cubic-bezier(0.4,0,0.2,1), border-color 0.4s; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid transparent;">
+                <div>
+                  <div style="color: var(--rg-accent); display: flex; gap: 3px; margin-bottom: 14px;"><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg><svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.58737 8.23597L11.1849 3.00376C11.5183 2.33208 12.4817 2.33208 12.8151 3.00376L15.4126 8.23597L21.2215 9.08017C21.9668 9.18848 22.2638 10.0994 21.7243 10.6219L17.5217 14.6918L18.5135 20.4414C18.6409 21.1798 17.8614 21.7428 17.1945 21.3941L12 18.678L6.80547 21.3941C6.1386 21.7428 5.35909 21.1798 5.48645 20.4414L6.47825 14.6918L2.27575 10.6219C1.73617 10.0994 2.03322 9.18848 2.77852 9.08017L8.58737 8.23597Z" fill="currentColor"></path></svg></div>
+                  <p style="font-size: 16px; line-height: 1.6; color: #fff; margin: 0 0 20px;">"Switched from my usual coffee three weeks ago and honestly can't go back. My <strong style="color: var(--rg-accent);">sleep improved</strong> too, which I wasn't expecting since it still has caffeine in it. Feels like a smarter way to start the day."</p>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: #fff;"><span style="width: 22px; height: 22px; border-radius: 50%; background: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">👤</span> Emily T., 33 yo</span>
+                  <span style="display: inline-flex; align-items: center; gap: 5px; background: #fafafaff; border-radius: 9999px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: #2D2D2D; white-space: nowrap;">✓ Verified Buyer</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: center; gap: 16px; margin-top: 20px;">
+            <button type="button" id="rg-rev-prev" aria-label="Previous review" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(10,10,10,0.7); border: 1px solid var(--rg-border); font-size: 18px; color: #fff; cursor: pointer;">‹</button>
+            <button type="button" id="rg-rev-next" aria-label="Next review" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(10,10,10,0.7); border: 1px solid var(--rg-border); font-size: 18px; color: #fff; cursor: pointer;">›</button>
+          </div>
+
+        </div>
+      </div>
+
+      </div>
+    </div>
+    </div>
+
+    <!-- Jump-to Menu -->
+    <div style="background: #fafafaff; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); height: 80px;"></div>
+
+    <div style="background: #393939; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding: 100px 24px 60px;">
+    <div class="rg-product-details" style="max-width: 700px; margin: 0 auto;">
+      <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; margin-bottom: 32px; text-align: center; color: #fff;">EVERYTHING YOU NEED TO KNOW</h2>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+
+        <a href="#section-description" class="rg-menu-link">
+          <span class="rg-menu-link__icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+          </span>
+          <span class="rg-menu-link__text">
+            <strong>Product Description</strong>
+            What makes RAW COFFEE + different from a regular cup
+          </span>
+        </a>
+
+        <a href="#section-how-to-use" class="rg-menu-link">
+          <span class="rg-menu-link__icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          </span>
+          <span class="rg-menu-link__text">
+            <strong>How To Use</strong>
+            Simple steps to brew it hot, cold, or blended
+          </span>
+        </a>
+
+        <a href="#section-why-need" class="rg-menu-link">
+          <span class="rg-menu-link__icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          </span>
+          <span class="rg-menu-link__text">
+            <strong>Why You Need Raw Coffee</strong>
+            Energy and focus without the spike or the crash
+          </span>
+        </a>
+
+        <a href="#section-ingredients" class="rg-menu-link">
+          <span class="rg-menu-link__icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          </span>
+          <span class="rg-menu-link__text">
+            <strong>Ingredients</strong>
+            Clinically dosed nootropics and adaptogens, nothing filler
+          </span>
+        </a>
+
+        <a href="#section-benefits" class="rg-menu-link">
+          <span class="rg-menu-link__icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </span>
+          <span class="rg-menu-link__text">
+            <strong>Benefits</strong>
+            Active energy, sharper focus, and a happier gut
+          </span>
+        </a>
+
+        <a href="#section-shipping" class="rg-menu-link">
+          <span class="rg-menu-link__icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16,8 20,8 23,11 23,16 16,16"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </span>
+          <span class="rg-menu-link__text">
+            <strong>Shipping, Returns &amp; Guarantees</strong>
+            Fast shipping and a 45-day money-back guarantee
+          </span>
+        </a>
+
+        <div style="margin-top: 12px; text-align: center;">
+          <form action="/cart/add" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="rg-btn rg-btn--primary rg-btn--glow" style="width: 380px; max-width: 100%;">
+              TRY RAW COFFEE
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+    </div>
+
+    <!-- Feel the Difference — numbered functional benefits -->
+    <style>
+      .rg-benefits-item {
+        display: flex; gap: 24px; align-items: flex-start;
+        padding: 28px 0; border-bottom: 1px solid var(--rg-border);
+        position: relative; transition: padding-left 0.35s cubic-bezier(0.22,1,.36,1);
+      }
+      .rg-benefits-item:first-child { padding-top: 0; }
+      .rg-benefits-item:last-child { border-bottom: none; }
+      .rg-benefits-item::before {
+        content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+        background: var(--rg-accent); transform: scaleY(0); transform-origin: top;
+        transition: transform 0.35s cubic-bezier(0.22,1,.36,1);
+      }
+      .rg-benefits-item:hover { padding-left: 16px; }
+      .rg-benefits-item:hover::before { transform: scaleY(1); }
+      .rg-benefits-num {
+        font-size: 28px; font-weight: 800; line-height: 1; flex-shrink: 0; width: 44px;
+        color: rgba(45,45,45,0.14); transition: color 0.35s;
+      }
+      .rg-benefits-item:hover .rg-benefits-num { color: rgba(45,45,45,0.32); }
+      .rg-benefits-title { font-size: 18px; font-weight: 700; color: #2D2D2D; margin-bottom: 6px; transition: color 0.35s; }
+      .rg-benefits-item:hover .rg-benefits-title { color: var(--rg-accent); }
+      .rg-benefits-desc { font-size: 14px; line-height: 1.65; color: var(--rg-muted); }
+    </style>
+    <div id="section-description" style="background: linear-gradient(to left, #e9e9e9ff 0%, #fafafaff 100%); width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding: 120px 24px 550px; scroll-margin-top: 100px; position: relative;">
+    <div style="max-width: 700px; margin: 0 0 0 160px; text-align: left;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rg-accent); margin-bottom: 14px;">Functional Benefits</p>
+      <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; margin-bottom: 40px; color: #2D2D2D;">FEEL THE DIFFERENCE WITH RAW COFFEE</h2>
+      <div>
+        <div class="rg-benefits-item">
+          <span class="rg-benefits-num">01</span>
+          <div>
+            <div class="rg-benefits-title">Sharp Lasting Focus</div>
+            <div class="rg-benefits-desc">Nootropics keep your mind clear and dialed in, hours after your first sip.</div>
+          </div>
+        </div>
+        <div class="rg-benefits-item">
+          <span class="rg-benefits-num">02</span>
+          <div>
+            <div class="rg-benefits-title">Clean Energy</div>
+            <div class="rg-benefits-desc">Steady, jitter-free energy from low-caffeine beans and adaptogens — no spike, no crash.</div>
+          </div>
+        </div>
+        <div class="rg-benefits-item">
+          <span class="rg-benefits-num">03</span>
+          <div>
+            <div class="rg-benefits-title">Balanced Stress &amp; Mood</div>
+            <div class="rg-benefits-desc">Adaptogenic mushrooms help regulate cortisol, so you feel calm instead of wired.</div>
+          </div>
+        </div>
+        <div class="rg-benefits-item">
+          <span class="rg-benefits-num">04</span>
+          <div>
+            <div class="rg-benefits-title">Gut Support, No Bloating</div>
+            <div class="rg-benefits-desc">Gentle on digestion, so you feel good from the first cup to the last.</div>
+          </div>
+        </div>
+      </div>
+      <form action="/cart/add" method="post" enctype="multipart/form-data" style="margin-top: 32px; display: flex; justify-content: flex-end; display: flex; justify-content: center;">
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <button type="submit" class="rg-btn rg-btn--primary rg-btn--glow" style="width: 480px;">TRY RAW COFFEE</button>
+      </form>
+    </div>
+
+    <style>
+      .rg-trust-badge {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  padding: 24px 14px; background: #f1f1f1; border: 1px solid var(--rg-border); border-radius: 10px;
+}
+      .rg-trust-badge-icon {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: #393939; border: 1px solid var(--rg-border);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px; color: var(--rg-accent); flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+      }
+      .rg-trust-badge:hover .rg-trust-badge-icon { transform: scale(1.15); }
+      .rg-trust-badge-title { font-size: 14px; font-weight: 700; color: #2D2D2D; margin-bottom: 4px; line-height: 1.3; }
+      .rg-trust-badge-desc { font-size: 11px; line-height: 1.5; color: var(--rg-muted); }
+    </style>
+    <div id="section-why-need" style="position: absolute; top: 540px; right: 200px; max-width: 680px; text-align: left; scroll-margin-top: 100px;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rg-accent); margin-bottom: 14px; text-align: right; margin-right: 25px;">Quality &amp; Trust</p>
+      <h2 style="font-size: clamp(2rem, 3.2vw, 2.8rem); font-weight: 800; margin-bottom: 24px; color: #2D2D2D; white-space: nowrap; margin-left: 20px;">WHY TRUST RAW GRAVITY?</h2>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+
+        <div class="rg-trust-badge">
+          <div class="rg-trust-badge-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 2v7.31l-3.88 6.76A2 2 0 008 19h8a2 2 0 001.88-2.93L14 9.31V2"/><line x1="8.5" y1="2" x2="15.5" y2="2"/>
+            </svg>
+          </div>
+          <div class="rg-trust-badge-title">Adaptogen-Powered</div>
+          <div class="rg-trust-badge-desc">Mushroom adaptogens support focus and calm</div>
+        </div>
+
+        <div class="rg-trust-badge">
+          <div class="rg-trust-badge-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9,12 11,14 15,10"/>
+            </svg>
+          </div>
+          <div class="rg-trust-badge-title">3rd Party Lab Tested</div>
+          <div class="rg-trust-badge-desc">Every batch independently verified</div>
+        </div>
+
+        <div class="rg-trust-badge">
+          <div class="rg-trust-badge-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+            </svg>
+          </div>
+          <div class="rg-trust-badge-title">100% Non-GMO</div>
+          <div class="rg-trust-badge-desc">Clean ingredients, nothing synthetic</div>
+        </div>
+
+        <div class="rg-trust-badge">
+          <div class="rg-trust-badge-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="3" width="15" height="13"/><polygon points="16,8 20,8 23,11 23,16 16,16"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+            </svg>
+          </div>
+          <div class="rg-trust-badge-title">Made In The US</div>
+          <div class="rg-trust-badge-desc">Manufactured to the highest standards</div>
+        </div>
+
+        <div class="rg-trust-badge">
+          <div class="rg-trust-badge-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+            </svg>
+          </div>
+          <div class="rg-trust-badge-title">Vegan &amp; Cruelty-Free</div>
+          <div class="rg-trust-badge-desc">Plant-based, no animal testing</div>
+        </div>
+
+        <div class="rg-trust-badge">
+          <div class="rg-trust-badge-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+            </svg>
+          </div>
+          <div class="rg-trust-badge-title">No Added Sugar</div>
+          <div class="rg-trust-badge-desc">Naturally sweet, nothing extra</div>
+        </div>
+
+        <div class="rg-trust-badge">
+          <div class="rg-trust-badge-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 2v6.5L4 20a1 1 0 001 1h14a1 1 0 001-1l-5-11.5V2"/><line x1="8" y1="2" x2="16" y2="2"/>
+            </svg>
+          </div>
+          <div class="rg-trust-badge-title">No Artificial Additives</div>
+          <div class="rg-trust-badge-desc">Nothing synthetic in the formula</div>
+        </div>
+
+        <div class="rg-trust-badge">
+          <div class="rg-trust-badge-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="4.93" y1="19.07" x2="19.07" y2="4.93"/>
+            </svg>
+          </div>
+          <div class="rg-trust-badge-title">Gluten Free</div>
+          <div class="rg-trust-badge-desc">Safe for gluten-sensitive diets</div>
+        </div>
+
+        <div class="rg-trust-badge">
+          <div class="rg-trust-badge-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 3L4 14h6l-1 7 9-11h-6l1-7z"/>
+            </svg>
+          </div>
+          <div class="rg-trust-badge-title">Functional Ingredients</div>
+          <div class="rg-trust-badge-desc">Every ingredient chosen for a real benefit</div>
+        </div>
+
+      </div>
+      <form action="/cart/add" method="post" enctype="multipart/form-data" style="margin-top: 32px; display: flex; justify-content: center;">
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <button type="submit" class="rg-btn rg-btn--primary rg-btn--glow" style="width: 480px;"> GET STARTED</button>
+      </form>
+    </div>
+
+    </div>
+
+    <!-- Transform Your Life timeline -->
+    <div id="section-benefits" style="background: linear-gradient(to top, #2e2e2e 0%, #393939 100%); width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding: 50px 24px 80px; scroll-margin-top: 100px;">
+    <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rg-accent); margin-bottom: 14px;">The Timeline</p>
+      <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; margin-bottom: 110px; color: #fff;">TRANSFORM YOUR LIFE WITH RAW COFFEE</h2>
+      <div class="rg-tf-timeline" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; position: relative;">
+
+        <style>
+          .rg-tf-charge {
+            position: absolute; top: 30px; left: 12%; width: 6px; height: 6px;
+            border-radius: 50%; background: var(--rg-accent);
+            box-shadow: 0 0 4px 1px var(--rg-accent);
+            opacity: 0; pointer-events: none; transform: translate(-50%, -50%);
+          }
+          .rg-tf-timeline.play .rg-tf-charge {
+            animation: rgChargeMove 1.8s cubic-bezier(0.4,0,0.2,1) forwards;
+          }
+          @keyframes rgChargeMove {
+            0%   { left: 12%; width: 6px; height: 6px; opacity: 0.6; box-shadow: 0 0 4px 1px var(--rg-accent); }
+            70%  { left: 82%; width: 16px; height: 16px; opacity: 1; box-shadow: 0 0 22px 6px var(--rg-accent); }
+            100% { left: 88%; width: 20px; height: 20px; opacity: 0; box-shadow: 0 0 44px 16px var(--rg-accent); }
+          }
+          .rg-tf-burst { position: absolute; top: 30px; left: 88%; width: 0; height: 0; pointer-events: none; }
+          .rg-tf-ray {
+            position: absolute; top: 0; left: 0; width: 2px; height: 0;
+            background: var(--rg-accent); border-radius: 2px;
+            transform-origin: bottom center; opacity: 0;
+          }
+          .rg-tf-timeline.play .rg-tf-ray {
+            animation: rgBurstRay 0.7s ease-out forwards;
+            animation-delay: 1.65s;
+          }
+          @keyframes rgBurstRay {
+            0%   { height: 0; opacity: 1; }
+            55%  { height: 36px; opacity: 1; }
+            100% { height: 48px; opacity: 0; }
+          }
+        </style>
+        <div style="content: ''; position: absolute; top: 30px; left: 12%; right: 12%; height: 1px; background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.2) 0, rgba(255,255,255,0.2) 6px, transparent 6px, transparent 14px); pointer-events: none;"></div>
+        <span class="rg-tf-charge"></span>
+        <div class="rg-tf-burst">
+          <span class="rg-tf-ray" style="transform: rotate(-70deg);"></span>
+          <span class="rg-tf-ray" style="transform: rotate(-45deg);"></span>
+          <span class="rg-tf-ray" style="transform: rotate(-20deg);"></span>
+          <span class="rg-tf-ray" style="transform: rotate(5deg);"></span>
+          <span class="rg-tf-ray" style="transform: rotate(30deg);"></span>
+          <span class="rg-tf-ray" style="transform: rotate(55deg);"></span>
+          <span class="rg-tf-ray" style="transform: rotate(80deg);"></span>
+          <span class="rg-tf-ray" style="transform: rotate(105deg);"></span>
+        </div>
+
+        <div class="rg-tf-step" style="display: flex; flex-direction: column; align-items: center;">
+          <div class="rg-tf-circle" style="width: 60px; height: 60px; border-radius: 50%; background: #393939; border: 1px solid rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--rg-accent);"></span>
+            <div class="rg-tf-tooltip" style="position: absolute; bottom: calc(100% + 14px); left: 50%; transform: translateX(-50%) translateY(6px); width: 230px; background: #2d2d2d; border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 16px 18px; font-size: 14px; font-weight: 400; line-height: 1.5; color: rgba(255,255,255,0.85); opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 5;">
+              Smooth, jitter-free energy kicks in — no spike, no crash.
+            </div>
+          </div>
+          <div style="margin-top: 14px; font-size: 15px; font-weight: 800; color: var(--rg-accent); letter-spacing: 0.02em;">DAY 1</div>
+        </div>
+
+        <div class="rg-tf-step" style="display: flex; flex-direction: column; align-items: center;">
+          <div class="rg-tf-circle" style="width: 60px; height: 60px; border-radius: 50%; background: #393939; border: 1px solid rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--rg-accent);"></span>
+            <div class="rg-tf-tooltip" style="position: absolute; bottom: calc(100% + 14px); left: 50%; transform: translateX(-50%) translateY(6px); width: 230px; background: #2d2d2d; border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 16px 18px; font-size: 14px; font-weight: 400; line-height: 1.5; color: rgba(255,255,255,0.85); opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 5;">
+              Mental clarity sharpens and afternoon slumps start to fade.
+            </div>
+          </div>
+          <div style="margin-top: 14px; font-size: 15px; font-weight: 800; color: var(--rg-accent); letter-spacing: 0.02em;">DAY 7</div>
+        </div>
+
+        <div class="rg-tf-step" style="display: flex; flex-direction: column; align-items: center;">
+          <div class="rg-tf-circle" style="width: 60px; height: 60px; border-radius: 50%; background: #393939; border: 1px solid rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--rg-accent);"></span>
+            <div class="rg-tf-tooltip" style="position: absolute; bottom: calc(100% + 14px); left: 50%; transform: translateX(-50%) translateY(6px); width: 230px; background: #2d2d2d; border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 16px 18px; font-size: 14px; font-weight: 400; line-height: 1.5; color: rgba(255,255,255,0.85); opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 5;">
+              Gut health improves — less bloating, more consistent digestion.
+            </div>
+          </div>
+          <div style="margin-top: 14px; font-size: 15px; font-weight: 800; color: var(--rg-accent); letter-spacing: 0.02em;">DAY 28</div>
+        </div>
+
+        <div class="rg-tf-step" style="display: flex; flex-direction: column; align-items: center;">
+          <div class="rg-tf-circle" style="width: 60px; height: 60px; border-radius: 50%; background: #393939; border: 1px solid rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--rg-accent);"></span>
+            <div class="rg-tf-tooltip" style="position: absolute; bottom: calc(100% + 14px); left: 50%; transform: translateX(-50%) translateY(6px); width: 230px; background: #2d2d2d; border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 16px 18px; font-size: 14px; font-weight: 400; line-height: 1.5; color: rgba(255,255,255,0.85); opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 5;">
+              Full stress-resilience and steady energy become your new normal.
+            </div>
+          </div>
+          <div style="margin-top: 14px; font-size: 15px; font-weight: 800; color: var(--rg-accent); letter-spacing: 0.02em;">DAY 90</div>
+        </div>
+
+      </div>
+    </div>
+    </div>
+
+<!-- Comparison table -->
+    <style>
+      .rg-cmp-wrap {
+  border: 1px solid var(--rg-border); border-radius: 24px; overflow: visible;
+  background: #fff; padding: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.43);
+}
+.rg-cmp-table { width: 100%; border-collapse: separate; border-spacing: 0; position: relative; }
+.rg-cmp-table th, .rg-cmp-table td { padding: 24px 26px; font-size: 15px; }
+.rg-cmp-table thead th { border-bottom: 1px solid var(--rg-border); }
+.rg-cmp-table tbody td { border-bottom: 1px solid var(--rg-border); }
+.rg-cmp-table tbody tr:last-child td { border-bottom: none; }
+.rg-cmp-table .rg-cmp-label { font-weight: 600; color: #2D2D2D; text-align: left; font-size: 15px; }
+.rg-cmp-table .rg-cmp-highlight {
+  background: linear-gradient(180deg, #4fdcfc 0%, var(--rg-accent) 100%);
+  color: #fff; text-align: center; vertical-align: middle;
+  box-shadow: 0 12px 30px rgba(30,207,251,0.35);
+  transition: transform 0.25s ease;
+}
+.rg-cmp-table .rg-cmp-highlight.rg-cmp-hover {
+  transform: scale(1.05);
+  position: relative;
+  z-index: 2;
+}
+.rg-cmp-table thead .rg-cmp-highlight {
+  font-size: 18px; font-weight: 800; letter-spacing: 0.02em; padding: 30px 22px;
+  border-top-left-radius: 22px; border-top-right-radius: 22px;
+}
+.rg-cmp-table tbody tr:last-child .rg-cmp-highlight {
+  border-bottom-left-radius: 22px; border-bottom-right-radius: 22px;
+}
+.rg-cmp-table .rg-cmp-other { text-align: center; color: var(--rg-muted); vertical-align: middle; }
+.rg-cmp-table thead .rg-cmp-other { font-size: 15px; font-weight: 700; color: var(--rg-muted); }
+    </style>
+    <div style="background: #fafafaff; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding: 80px 24px;">
+    <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+      <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; margin-bottom: 32px;">FEEL THE DIFFERENCE</h2>
+      <div class="rg-cmp-wrap">
+      <table class="rg-cmp-table">
+        <thead>
+          <tr>
+            <th style="width: 34%;"></th>
+            <th class="rg-cmp-highlight" style="width: 22%;">RAW COFFEE +</th>
+            <th class="rg-cmp-other" style="width: 22%;">Regular Coffee</th>
+            <th class="rg-cmp-other" style="width: 22%;">Other Blends</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rg-cmp-label">No energy crash</td>
+            <td class="rg-cmp-highlight">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><polyline points="20 6 9 17 4 12"/></svg>
+            </td>
+            <td class="rg-cmp-other">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            </td>
+            <td class="rg-cmp-other">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            </td>
+          </tr>
+          <tr>
+            <td class="rg-cmp-label">Nootropic focus support</td>
+            <td class="rg-cmp-highlight">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><polyline points="20 6 9 17 4 12"/></svg>
+            </td>
+            <td class="rg-cmp-other">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            </td>
+            <td class="rg-cmp-other" style="font-size: 12px; font-weight: 600;">Some</td>
+          </tr>
+          <tr>
+            <td class="rg-cmp-label">Gut health support</td>
+            <td class="rg-cmp-highlight">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><polyline points="20 6 9 17 4 12"/></svg>
+            </td>
+            <td class="rg-cmp-other">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            </td>
+            <td class="rg-cmp-other">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            </td>
+          </tr>
+          <tr>
+            <td class="rg-cmp-label">Clean, non-GMO label</td>
+            <td class="rg-cmp-highlight">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><polyline points="20 6 9 17 4 12"/></svg>
+            </td>
+            <td class="rg-cmp-other" style="font-size: 12px; font-weight: 600;">Some</td>
+            <td class="rg-cmp-other" style="font-size: 12px; font-weight: 600;">Some</td>
+          </tr>
+          <tr>
+            <td class="rg-cmp-label">3rd party lab tested</td>
+            <td class="rg-cmp-highlight">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><polyline points="20 6 9 17 4 12"/></svg>
+            </td>
+            <td class="rg-cmp-other">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            </td>
+            <td class="rg-cmp-other">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    </div>
+
+    <!-- How to Make -->
+    <div id="section-how-to-use" style="background: #2d2d2d; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding: 80px 24px; scroll-margin-top: 100px;">
+    <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+      <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; margin-bottom: 32px; color: #fff;">HOW TO MAKE</h2>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+        <div>
+          <img src="{{ 'product-mushrooms.jpg' | asset_url }}" alt="Step 1" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; margin-bottom: 10px;">
+          <p style="font-size: 13px; font-weight: 600; color: #fff;">1. Add one scoop</p>
+        </div>
+        <div>
+          <img src="{{ 'product-mushrooms.jpg' | asset_url }}" alt="Step 2" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; margin-bottom: 10px;">
+          <p style="font-size: 13px; font-weight: 600; color: #fff;">2. Pour hot or cold water</p>
+        </div>
+        <div>
+          <img src="{{ 'product-mushrooms.jpg' | asset_url }}" alt="Step 3" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; margin-bottom: 10px;">
+          <p style="font-size: 13px; font-weight: 600; color: #fff;">3. Stir well</p>
+        </div>
+        <div>
+          <img src="{{ 'product-mushrooms.jpg' | asset_url }}" alt="Step 4" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; margin-bottom: 10px;">
+          <p style="font-size: 13px; font-weight: 600; color: #fff;">4. Enjoy!</p>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- What's Inside -->
+    <style>
+      .rg-ing-card { background: #fff; border: 1px solid var(--rg-border); border-radius: 16px; overflow: hidden; position: relative; z-index: 1; }
+      .rg-ing-row { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--rg-border); gap: 16px; }
+      .rg-ing-row:last-child { border-bottom: none; }
+      .rg-ing-icon { width: 56px; height: 56px; border-radius: 50%; background: none; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--rg-accent); }
+      .rg-ing-text { display: flex; align-items: center; gap: 14px; }
+    </style>
+    <div id="section-ingredients" style="background: #fafafaff; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding: 80px 24px; scroll-margin-top: 100px; position: relative; overflow: hidden;">
+
+    <div style="max-width: 900px; margin: 0 auto; text-align: center; position: relative; z-index: 1;">
+      <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; margin-bottom: 32px;">WHAT'S INSIDE</h2>
+      <div class="rg-ing-card" style="text-align: left;">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'ingredient_row' -%}
+            <div class="rg-ing-row">
+              <div class="rg-ing-text">
+                <div class="rg-ing-icon">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3c-1 3-4 4-4 8a4 4 0 0 0 8 0c0-4-3-5-4-8z"></path>
+                    <path d="M9 19h6"></path>
+                    <path d="M12 17v2"></path>
+                  </svg>
+                </div>
+                <div>
+                  <div style="font-size: 15px; font-weight: 700;">{{ block.settings.name }}</div>
+                  <div style="font-size: 13px; color: var(--rg-muted); margin-top: 2px;">{{ block.settings.benefit }}</div>
+                </div>
+              </div>
+              <div style="font-size: 18px; font-weight: 800; color: #121212; white-space: nowrap;">{{ block.settings.amount }}</div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- FAQ -->
+    <style>
+      .rg-faq-list { display: flex; flex-direction: column; gap: 10px; }
+      .rg-faq-item {
+        background: #f1f1f1; border: 1px solid var(--rg-border); border-radius: 10px;
+        padding: 0 22px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      }
+      .rg-faq-q {
+        display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%;
+        padding: 20px 0; background: none; border: none; cursor: pointer; text-align: left;
+        font-size: 16px; font-weight: 600; line-height: 1.4; color: #2D2D2D;
+      }
+      .rg-faq-icon { flex-shrink: 0; width: 20px; height: 20px; color: var(--rg-muted); transition: transform 0.35s ease; }
+      .rg-faq-item.open .rg-faq-icon { transform: rotate(180deg); color: var(--rg-accent); }
+      .rg-faq-a { overflow: hidden; max-height: 0; transition: max-height 0.45s cubic-bezier(0.22,1,0.36,1); }
+      .rg-faq-a-inner { padding-bottom: 20px; font-size: 14px; line-height: 1.75; color: var(--rg-muted); }
+    </style>
+    <div style="background: linear-gradient(to bottom, #fafafaff 0%, #e6e6e6ff 100%); width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding: 80px 24px;">
+    <div id="section-shipping" style="max-width: 700px; margin: 0 auto; scroll-margin-top: 100px;">
+      <p style="font-size: 18px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rg-accent); margin-bottom: -2px; text-align: center;">FAQ</p>
+<h2 style="font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; margin-bottom: 32px; text-align: center;">QUESTIONS &amp; ANSWERS</h2>
+      <div class="rg-faq-list">
+
+        <div class="rg-faq-item">
+          <button class="rg-faq-q" type="button">
+            <span>How does mushroom coffee taste?</span>
+            <svg class="rg-faq-icon" viewBox="0 0 24 24" fill="none"><polyline points="6,9 12,15 18,9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="rg-faq-a">
+            <div class="rg-faq-a-inner">RAW GRAVITY tastes like premium, smooth coffee. You won't taste mushrooms at all. We use high-quality low-caffeine arabica beans blended with dual-extracted mushroom powders that dissolve completely. Most customers say it's the best tasting functional coffee they've tried.</div>
+          </div>
+        </div>
+
+        <div class="rg-faq-item">
+          <button class="rg-faq-q" type="button">
+            <span>How much caffeine is in each serving?</span>
+            <svg class="rg-faq-icon" viewBox="0 0 24 24" fill="none"><polyline points="6,9 12,15 18,9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="rg-faq-a">
+            <div class="rg-faq-a-inner">Each serving contains approximately 50mg of caffeine from our low-caffeine arabica beans — about half the amount of a regular cup of coffee. Combined with our adaptogenic blend, you get sustained energy without the jitters or crash typical of high-caffeine drinks.</div>
+          </div>
+        </div>
+
+        <div class="rg-faq-item">
+          <button class="rg-faq-q" type="button">
+            <span>What's the difference between Brew Extreme and Raw Coffee+?</span>
+            <svg class="rg-faq-icon" viewBox="0 0 24 24" fill="none"><polyline points="6,9 12,15 18,9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="rg-faq-a">
+            <div class="rg-faq-a-inner">Brew Extreme is our flagship formula with the full nootropic stack: Lion's Mane (1,000mg), Creatine Monohydrate (3,000mg), Amino Acids (400mg), and Adaptogens (300mg). Raw Coffee+ focuses on a cleaner, simpler blend with Lion's Mane and a lighter adaptogenic profile — perfect for those who want cognitive benefits without creatine.</div>
+          </div>
+        </div>
+
+        <div class="rg-faq-item">
+          <button class="rg-faq-q" type="button">
+            <span>How do I prepare it?</span>
+            <svg class="rg-faq-icon" viewBox="0 0 24 24" fill="none"><polyline points="6,9 12,15 18,9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="rg-faq-a">
+            <div class="rg-faq-a-inner">Simply add one scoop (included) to 8–12oz of hot or cold water and stir. It dissolves easily with no clumps. You can also add it to your favorite milk, smoothie, or blend it into a latte. Many customers love it as an iced coffee with oat milk.</div>
+          </div>
+        </div>
+
+        <div class="rg-faq-item">
+          <button class="rg-faq-q" type="button">
+            <span>Is it safe to take every day?</span>
+            <svg class="rg-faq-icon" viewBox="0 0 24 24" fill="none"><polyline points="6,9 12,15 18,9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="rg-faq-a">
+            <div class="rg-faq-a-inner">Yes! All our ingredients are GRAS (Generally Recognized as Safe) and clinically dosed within recommended daily limits. Our formula is third-party tested for purity and potency. However, if you're pregnant, nursing, or taking medications, we recommend consulting your healthcare provider.</div>
+          </div>
+        </div>
+
+        <div class="rg-faq-item">
+          <button class="rg-faq-q" type="button">
+            <span>How does the subscription work?</span>
+            <svg class="rg-faq-icon" viewBox="0 0 24 24" fill="none"><polyline points="6,9 12,15 18,9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="rg-faq-a">
+            <div class="rg-faq-a-inner">Subscribe and save 20% on every order. You choose your delivery frequency (every 30, 45, or 60 days) and can pause, skip, or cancel anytime from your account dashboard. No commitments, no hidden fees. Your first order ships free.</div>
+          </div>
+        </div>
+
+        <div class="rg-faq-item">
+          <button class="rg-faq-q" type="button">
+            <span>Do you offer a money-back guarantee?</span>
+            <svg class="rg-faq-icon" viewBox="0 0 24 24" fill="none"><polyline points="6,9 12,15 18,9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="rg-faq-a">
+            <div class="rg-faq-a-inner">Absolutely. We offer a 30-day, no-questions-asked money-back guarantee. If you're not completely satisfied with your purchase, simply reach out to our support team and we'll process a full refund. We stand behind our product 100%.</div>
+          </div>
+        </div>
+
+        <div class="rg-faq-item">
+          <button class="rg-faq-q" type="button">
+            <span>Where are your mushrooms sourced?</span>
+            <svg class="rg-faq-icon" viewBox="0 0 24 24" fill="none"><polyline points="6,9 12,15 18,9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="rg-faq-a">
+            <div class="rg-faq-a-inner">Our mushrooms are organically grown and dual-extracted (hot water + alcohol extraction) for maximum bioavailability. Our Lion's Mane is a 10:1 extract, meaning it takes 10 pounds of raw mushroom to produce 1 pound of our extract. All sourcing is transparent and third-party verified.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Carousel logic
+  const mainSlides = document.querySelectorAll('.rg-carousel-slide');
+  const thumbs = document.querySelectorAll('.rg-carousel-thumb');
+  const dots = document.querySelectorAll('.rg-carousel__dot');
+  const prevBtn = document.querySelector('.rg-carousel-prev');
+  const nextBtn = document.querySelector('.rg-carousel-next');
+  let currentIndex = 0;
+
+  function updateCarousel(index) {
+    mainSlides.forEach(s => s.classList.remove('active'));
+    thumbs.forEach(t => t.classList.remove('active'));
+    dots.forEach(d => d.classList.remove('active'));
+
+    mainSlides[index].classList.add('active');
+    thumbs[index].classList.add('active');
+    if (dots[index]) dots[index].classList.add('active');
+    currentIndex = index;
+  }
+
+  thumbs.forEach((thumb, idx) => {
+    thumb.addEventListener('click', () => updateCarousel(idx));
+  });
+
+  if(prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      let next = currentIndex - 1;
+      if(next < 0) next = mainSlides.length - 1;
+      updateCarousel(next);
+    });
+  }
+
+  if(nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      let next = currentIndex + 1;
+      if(next >= mainSlides.length) next = 0;
+      updateCarousel(next);
+    });
+  }
+
+  // Reviews carousel — sliding track with cloned buffer cards (infinite loop)
+  (function () {
+    const track = document.getElementById('rg-rev-track');
+    if (!track) return;
+
+    const origCards = Array.from(track.querySelectorAll('.rg-rev-card'));
+    const N = origCards.length;
+    const BUFFER = 2;
+
+    const clonesBefore = origCards.slice(-BUFFER).map(c => c.cloneNode(true));
+    const clonesAfter = origCards.slice(0, BUFFER).map(c => c.cloneNode(true));
+    track.innerHTML = '';
+    [...clonesBefore, ...origCards, ...clonesAfter].forEach(c => track.appendChild(c));
+
+    let centerIdx = BUFFER;
+    let isAnimating = false;
+
+    function getLayout() {
+      const vp = track.parentElement;
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 16;
+      const cardW = Math.max(300, (vp.offsetWidth - 2 * gap) / 3);
+      Array.from(track.children).forEach(c => { c.style.width = cardW + 'px'; });
+      return { cardW, gap, step: cardW + gap, viewW: vp.offsetWidth };
+    }
+
+    function trackOffset() {
+      const { cardW, step, viewW } = getLayout();
+      return -(centerIdx * step) + (viewW - cardW) / 2;
+    }
+
+    function applyDepth(animate) {
+      const tr = animate ? 'transform 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.6s cubic-bezier(0.4,0,0.2,1)' : 'none';
+      Array.from(track.children).forEach((card, i) => {
+        const d = Math.abs(i - centerIdx);
+        card.style.transition = tr;
+        const scale = d === 0 ? 1 : d === 1 ? 0.9 : 0.8;
+        card.style.transform = `scale(${scale})`;
+        card.style.opacity = d === 0 ? '1' : d === 1 ? '0.75' : '0';
+        card.style.borderColor = d === 0 ? 'var(--rg-accent)' : 'transparent';
+      });
+    }
+
+    function snapTo() {
+      track.style.transition = 'none';
+      Array.from(track.children).forEach(c => { c.style.transition = 'none'; });
+      void track.offsetWidth;
+      track.style.transform = `translateX(${trackOffset()}px)`;
+      applyDepth(false);
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        track.style.transition = '';
+      }));
+    }
+
+    function slideTo() {
+      track.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+      track.style.transform = `translateX(${trackOffset()}px)`;
+      applyDepth(true);
+    }
+
+    track.addEventListener('transitionend', e => {
+      if (e.target !== track || e.propertyName !== 'transform') return;
+      let jumped = false;
+      if (centerIdx >= BUFFER + N) { centerIdx -= N; jumped = true; }
+      else if (centerIdx < BUFFER) { centerIdx += N; jumped = true; }
+      if (jumped) snapTo();
+      isAnimating = false;
+    });
+
+    function goNext() {
+      if (isAnimating) return;
+      isAnimating = true;
+      centerIdx++;
+      slideTo();
+    }
+    function goPrev() {
+      if (isAnimating) return;
+      isAnimating = true;
+      centerIdx--;
+      slideTo();
+    }
+
+    const prevBtnEl = document.getElementById('rg-rev-prev');
+    const nextBtnEl = document.getElementById('rg-rev-next');
+    if (prevBtnEl) prevBtnEl.addEventListener('click', goPrev);
+    if (nextBtnEl) nextBtnEl.addEventListener('click', goNext);
+
+    window.addEventListener('resize', snapTo);
+    snapTo();
+  })();
+
+  // FAQ accordion logic
+  const faqItems = document.querySelectorAll('.rg-faq-item');
+  faqItems.forEach(item => {
+    const header = item.querySelector('.rg-faq-q');
+    const answer = item.querySelector('.rg-faq-a');
+    header.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+
+      faqItems.forEach(other => {
+        if (other !== item && other.classList.contains('open')) {
+          other.classList.remove('open');
+          other.querySelector('.rg-faq-a').style.maxHeight = '';
+        }
+      });
+
+      if (isOpen) {
+        item.classList.remove('open');
+        answer.style.maxHeight = '';
+      } else {
+        item.classList.add('open');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // Comparison table — hover the whole RAW COFFEE + column together
+  const cmpHighlightCells = document.querySelectorAll('.rg-cmp-highlight');
+  cmpHighlightCells.forEach(cell => {
+    cell.addEventListener('mouseenter', () => {
+      cmpHighlightCells.forEach(c => c.classList.add('rg-cmp-hover'));
+    });
+    cell.addEventListener('mouseleave', () => {
+      cmpHighlightCells.forEach(c => c.classList.remove('rg-cmp-hover'));
+    });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Product Hero V2",
+  "settings": [
+    { "type": "image_picker", "id": "ingredients_image", "label": "What's Inside — Side Image" },
+    { "type": "text", "id": "review_count", "label": "Review Count", "default": "2,847" },
+    { "type": "text", "id": "clinician_count", "label": "Clinician Count", "default": "689" },
+    { "type": "text", "id": "clinician_badge_text", "label": "Clinician Badge Text", "default": "Clinicians' Choice" },
+    { "type": "text", "id": "subscribe_price", "label": "Subscribe Price", "default": "$27" },
+    { "type": "text", "id": "subscribe_was", "label": "Subscribe Was Price", "default": "$45" },
+    { "type": "text", "id": "per_serving", "label": "Per Serving Text", "default": "$0.90" },
+    { "type": "richtext", "id": "how_to_use", "label": "How to Use Content", "default": "<p>Add one scoop (10g) to 8–12oz of hot or cold water. Stir well and enjoy.</p>" },
+    { "type": "richtext", "id": "shipping_info", "label": "Shipping Info Content", "default": "<p>Free U.S. shipping on all orders. Average 3-day delivery.</p>" },
+    { "type": "richtext", "id": "product_description", "label": "Product Description Content", "default": "<p>RAW COFFEE + is a functional coffee-blend that helps boost energy, improve mental clarity, and supports gut health without the crash.</p>" },
+    { "type": "richtext", "id": "why_you_need", "label": "Why You Need Raw Coffee Content", "default": "<p>Regular coffee gives you a spike and a crash. RAW COFFEE + is formulated with nootropics and adaptogens to give you sustained energy and focus, without the jitters or afternoon slump.</p>" },
+    { "type": "richtext", "id": "benefits", "label": "Benefits Content", "default": "<p>Active & clean energy, sharper focus, better gut health, and no bloating or crash — all in one daily blend.</p>" }
+  ],
+  "blocks": [
+    {
+      "type": "benefit_pill",
+      "name": "Benefit Tag",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Energy" }
+      ]
+    },
+    {
+      "type": "ingredient_row",
+      "name": "Ingredient Row",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Ingredient Name", "default": "Lion's Mane 10:1" },
+        { "type": "text", "id": "amount", "label": "Amount", "default": "1,000 mg" },
+        { "type": "text", "id": "benefit", "label": "Benefit", "default": "Focus & cognitive clarity" }
+      ]
+    }
+  ]
+}
+{% endschema %}

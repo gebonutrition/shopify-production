@@ -1,0 +1,192 @@
+<section class="rg-section rg-nootropics" style="background: #eef1f0;">
+  <div class="rg-container">
+
+    <div class="rg-text-center rg-nootropics__head" style="margin-top: -60px;">
+      <h2 class="rg-nootropics__heading" style="text-transform: none; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 800; letter-spacing: normal; font-size: clamp(2.4rem, 4.2vw, 3.4rem); margin-bottom: -8px;">{{ section.settings.heading }}</h2>
+      <p class="rg-nootropics__sub">
+        Nootropics are known as &ldquo;<strong>cognitive enhancers</strong>&rdquo;. They boost <strong>brain function</strong> including <strong>memory</strong>, <strong>alertness</strong>, <strong>focus</strong> and <strong>mood</strong>.
+      </p>
+      <p class="rg-nootropics__fact">Fun Fact: <strong>Caffeine</strong> is also considered a nootropic.</p>
+    </div>
+
+    <div id="rg-noot-imgwrap" style="max-width: 1300px; margin: 0 auto; position: relative;">
+      {%- if section.settings.grid_image != blank -%}
+        <img
+          src="{{ section.settings.grid_image | image_url: width: 1600 }}"
+          alt="{{ section.settings.heading }}"
+          width="1600"
+          height="900"
+          loading="lazy"
+          style="width: 100%; height: auto; display: block; border-radius: 16px;"
+        >
+
+        <button type="button" class="rg-noot-hotspot" style="top: 8.6%; left: 3.2%; width: 16.4%; height: 8.6%;" data-title="100% Arabica Coffee" data-desc="Low caffeine for clear energy."></button>
+        <button type="button" class="rg-noot-hotspot" style="top: 24%; left: 3.2%; width: 26.2%; height: 17.4%;" data-title="Lion's Mane 10:1 Extract 1,000 mg" data-desc="100% Fruiting Body. Supports NGF & BDNF for peak cognitive performance."></button>
+        <button type="button" class="rg-noot-hotspot" style="top: 49.8%; left: 3.2%; width: 26%; height: 8.5%;" data-title="Creatine Monohydrate 3000 mg" data-desc="Supports ATP and cellular energy levels."></button>
+        <button type="button" class="rg-noot-hotspot" style="top: 65.8%; left: 3.2%; width: 21.2%; height: 8.5%;" data-title="L-Theanine 100 mg" data-desc="Promotes calm focus and mental clarity."></button>
+        <button type="button" class="rg-noot-hotspot" style="top: 81.8%; left: 3.2%; width: 19.2%; height: 12.8%;" data-title="L-Tyrosine 100 mg" data-desc="Supports dopamine-related neurotransmitters and mental focus."></button>
+
+        <button type="button" class="rg-noot-hotspot" style="top: 8.4%; left: 75.8%; width: 20.2%; height: 12.1%;" data-title="Taurine 200 mg" data-desc="Supports neuroprotection and physical endurance levels."></button>
+        <button type="button" class="rg-noot-hotspot" style="top: 31.8%; left: 75.8%; width: 20.2%; height: 11%;" data-title="Bacopa Extract 100 mg" data-desc="Supports information recall and mental clarity."></button>
+        <button type="button" class="rg-noot-hotspot" style="top: 54.2%; left: 73.8%; width: 22.2%; height: 12.6%;" data-title="Holy Basil Leaf Extract 100 mg" data-desc="Promotes cortisol balance for mental calm."></button>
+        <button type="button" class="rg-noot-hotspot" style="top: 76.9%; left: 75.8%; width: 20.2%; height: 17.0%;" data-title="Ginkgo Biloba Leaf Extract 10:1 100 mg" data-desc="Supports brain circulation and cognitive sharpness."></button>
+      {%- endif -%}
+    </div>
+
+    <!-- Ingredient popover: fixed to viewport so it can spill outside the image, to whichever side the question is on -->
+    <div id="rg-noot-popover" style="display: none; position: fixed; z-index: 9999; background: #fff; border-radius: 12px; padding: 18px 22px; max-width: 280px; box-shadow: 0 12px 32px rgba(0,0,0,0.22); border: 1px solid rgba(0,0,0,0.06);">
+      <button type="button" id="rg-noot-popover-close" aria-label="Close" style="position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; border-radius: 50%; border: none; background: #F4F4F5; color: #18181B; font-size: 12px; line-height: 1; cursor: pointer;">✕</button>
+      <div id="rg-noot-popover-title" style="font-weight: 800; font-size: 15px; color: #18181B; margin-bottom: 6px; padding-right: 18px;"></div>
+      <div id="rg-noot-popover-desc" style="font-size: 13px; line-height: 1.55; color: #52525B;"></div>
+    </div>
+
+    <style>
+      .rg-noot-hotspot {
+        position: absolute;
+        background: transparent;
+        border: none;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background 0.2s ease, box-shadow 0.2s ease;
+      }
+      .rg-noot-hotspot:hover,
+      .rg-noot-hotspot:focus-visible {
+        background: rgba(30, 207, 251, 0.12);
+        box-shadow: 0 0 0 2px rgba(30, 207, 251, 0.35);
+      }
+    </style>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var popover = document.getElementById('rg-noot-popover');
+        if (!popover) return;
+
+        var titleEl = document.getElementById('rg-noot-popover-title');
+        var descEl = document.getElementById('rg-noot-popover-desc');
+        var closeBtn = document.getElementById('rg-noot-popover-close');
+
+        function openPopover(btn) {
+          titleEl.textContent = btn.dataset.title;
+          descEl.textContent = btn.dataset.desc;
+
+          popover.style.display = 'block';
+
+          var rect = btn.getBoundingClientRect();
+          var pw = popover.offsetWidth;
+          var ph = popover.offsetHeight;
+          var gap = 14;
+          var vw = window.innerWidth;
+          var vh = window.innerHeight;
+
+          var isLeftSide = (rect.left + rect.width / 2) < (vw / 2);
+
+          var left;
+          if (isLeftSide) {
+            left = rect.left - pw - gap;
+            if (left < 8) left = rect.right + gap;
+          } else {
+            left = rect.right + gap;
+            if (left + pw > vw - 8) left = rect.left - pw - gap;
+          }
+          if (left < 8) left = 8;
+          if (left + pw > vw - 8) left = vw - pw - 8;
+
+          var top = rect.top + (rect.height / 2) - (ph / 2);
+          if (top < 8) top = 8;
+          if (top + ph > vh - 8) top = vh - ph - 8;
+
+          popover.style.top = top + 'px';
+          popover.style.left = left + 'px';
+        }
+
+        function closePopover() {
+          popover.style.display = 'none';
+          currentBtn = null;
+        }
+
+        var currentBtn = null;
+
+        document.querySelectorAll('.rg-noot-hotspot').forEach(function (btn) {
+          btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (currentBtn === btn && popover.style.display === 'block') {
+              closePopover();
+              currentBtn = null;
+            } else {
+              openPopover(btn);
+              currentBtn = btn;
+            }
+          });
+        });
+
+        closeBtn.addEventListener('click', closePopover);
+        document.addEventListener('click', function (e) {
+          if (popover.style.display === 'block' && !popover.contains(e.target) && !e.target.classList.contains('rg-noot-hotspot')) {
+            closePopover();
+          }
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') closePopover();
+        });
+        window.addEventListener('scroll', closePopover, true);
+        window.addEventListener('resize', closePopover);
+      });
+    </script>
+
+    <div class="rg-text-center rg-nootropics__cta">
+      <a href="{{ section.settings.cta_link | default: '/pages/science' }}" class="rg-btn rg-btn--primary">{{ section.settings.cta_text }}</a>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Nootropics",
+  "settings": [
+  { "type": "text", "id": "heading", "label": "Heading", "default": "Nootropics For Your Mind" },
+  { "type": "image_picker", "id": "grid_image", "label": "Replace all ingredient cards with one image" },
+  { "type": "text", "id": "cta_text", "label": "CTA Text", "default": "Learn More About Nootropics" },
+  { "type": "url", "id": "cta_link", "label": "CTA Link" }
+],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingredient",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon Style",
+          "options": [
+            { "value": "molecule", "label": "Molecule cluster" },
+            { "value": "head-calm", "label": "Head / calm" },
+            { "value": "molecule-grid", "label": "Molecule grid" },
+            { "value": "person", "label": "Person" },
+            { "value": "leaf-head", "label": "Head / leaf" },
+            { "value": "face-waves", "label": "Face / waves" }
+          ],
+          "default": "molecule"
+        },
+        { "type": "text", "id": "name", "label": "Name", "default": "Alpha-GPC" },
+        { "type": "text", "id": "description", "label": "Benefit", "default": "For Laser Focus" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nootropics",
+      "blocks": [
+        { "type": "ingredient", "settings": { "icon": "molecule", "name": "Alpha-GPC", "description": "For Laser Focus" } },
+        { "type": "ingredient", "settings": { "icon": "head-calm", "name": "L-Theanine", "description": "Energy Stabilization" } },
+        { "type": "ingredient", "settings": { "icon": "molecule-grid", "name": "Creatine", "description": "Brain Fuel" } },
+        { "type": "ingredient", "settings": { "icon": "person", "name": "L-Tyrosine", "description": "For Mood" } },
+        { "type": "ingredient", "settings": { "icon": "leaf-head", "name": "Ginkgo Biloba", "description": "For Circulation" } },
+        { "type": "ingredient", "settings": { "icon": "face-waves", "name": "Lion's Mane", "description": "Memory & Focus" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

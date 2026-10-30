@@ -1,0 +1,623 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "blocks": {
+        "trust-1": {
+          "type": "trust_item",
+          "settings": {
+            "label": "Vegan"
+          }
+        },
+        "trust-2": {
+          "type": "trust_item",
+          "settings": {
+            "label": "Low-Caffeine"
+          }
+        },
+        "trust-3": {
+          "type": "trust_item",
+          "settings": {
+            "label": "Nootropics"
+          }
+        }
+      },
+      "block_order": [
+        "trust-1",
+        "trust-2",
+        "trust-3"
+      ],
+      "settings": {
+        "product_png": "shopify://shop_images/ChatGPT_Image_5_._2026_._16_27_20.png",
+        "eyebrow": "4,800+ Five-Star Reviews",
+        "title_line1": "Brew Extreme:",
+        "title_line2": "Your Daily",
+        "title_line3": "Upgrade",
+        "subtitle": "Premium mushroom coffee with Lion's Mane, Cordyceps & Adaptogens. Sustained energy. Zero crash. Pure performance.",
+        "cta_text": "Try Raw Coffee+ & save 25%",
+        "cta_link": "shopify://products/brew-extreme",
+        "ticker_items": "Vegan Friendly, Low Caffeine, Laser Focus, Smooth Energy, No Crashes, Glowing Skin, Healthy Gut, Boosted Immunity, Mental Clarity, Zero Jitters"
+      }
+    },
+    "differentiators": {
+      "type": "differentiators",
+      "blocks": {
+        "pillar-1": {
+          "type": "pillar",
+          "settings": {
+            "title": "Taste & Flavor",
+            "description": "Balanced, full-bodied coffee you know and love. Notes of smooth chocolate."
+          }
+        },
+        "pillar-2": {
+          "type": "pillar",
+          "settings": {
+            "title": "High Dosage",
+            "description": "Clinical strength formula with 10,000mg Lion's Mane – real doses that work."
+          }
+        },
+        "pillar-3": {
+          "type": "pillar",
+          "settings": {
+            "title": "Purity Tested",
+            "description": "Every batch third-party tested for heavy metals and pesticides."
+          }
+        },
+        "pillar-4": {
+          "type": "pillar",
+          "settings": {
+            "title": "Read The Label",
+            "description": "No proprietary blends. Every ingredient and dose clearly listed."
+          }
+        },
+        "feat-1": {
+          "type": "feature_card",
+          "settings": {
+            "icon": "no-fillers",
+            "title": "No Fillers",
+            "description": "No mycelial biomass, starch, myceliated oats or cheaply made."
+          }
+        },
+        "feat-2": {
+          "type": "feature_card",
+          "settings": {
+            "icon": "high-dosage",
+            "title": "High Dosage",
+            "description": "No mycelial biomass, starch, myceliated oats or cheaply made."
+          }
+        },
+        "feat-3": {
+          "type": "feature_card",
+          "settings": {
+            "icon": "purity",
+            "title": "Purity Tested",
+            "description": "No mycelial biomass, starch, myceliated oats or cheaply made."
+          }
+        },
+        "ben-1": {
+          "type": "benefit_icon",
+          "settings": {
+            "icon": "skin",
+            "label": "Glowing Skin"
+          }
+        },
+        "ben-2": {
+          "type": "benefit_icon",
+          "settings": {
+            "icon": "gut",
+            "label": "Healthy Gut"
+          }
+        },
+        "ben-3": {
+          "type": "benefit_icon",
+          "settings": {
+            "icon": "focus",
+            "label": "Laser Focus"
+          }
+        },
+        "ben-4": {
+          "type": "benefit_icon",
+          "settings": {
+            "icon": "energy",
+            "label": "Smooth Energy"
+          }
+        }
+      },
+      "block_order": [
+        "pillar-1",
+        "pillar-2",
+        "pillar-3",
+        "pillar-4",
+        "feat-1",
+        "feat-2",
+        "feat-3",
+        "ben-1",
+        "ben-2",
+        "ben-3",
+        "ben-4"
+      ],
+      "settings": {
+        "eyebrow": "Functional Benefits",
+        "heading": "What Makes It",
+        "heading_accent": "Different"
+      }
+    },
+    "reviews": {
+      "type": "reviews",
+      "blocks": {
+        "reviewer_AN9eCg": {
+          "type": "reviewer",
+          "settings": {
+            "name": "Marcus J.",
+            "quote": "Replaced my pre-workout with this."
+          }
+        },
+        "reviewer_FfadyJ": {
+          "type": "reviewer",
+          "settings": {
+            "name": "Marcus J.",
+            "quote": "Replaced my pre-workout with this."
+          }
+        },
+        "vid-1": {
+          "type": "reviewer",
+          "settings": {
+            "name": "Marcus J.",
+            "quote": "Replaced my pre-workout with this."
+          }
+        },
+        "vid-2": {
+          "type": "reviewer",
+          "settings": {
+            "name": "Sarah K.",
+            "quote": "No more 2pm crash. I'm hooked."
+          }
+        },
+        "vid-3": {
+          "type": "reviewer",
+          "settings": {
+            "name": "Dr. Lisa M.",
+            "quote": "The nootropic stack is legit."
+          }
+        },
+        "vid-4": {
+          "type": "reviewer",
+          "settings": {
+            "name": "Jake P.",
+            "quote": "Tastes amazing as an iced latte."
+          }
+        },
+        "test-1": {
+          "type": "testimonial",
+          "settings": {
+            "category": "TASTE",
+            "headline": "Flavor upon Flavor!",
+            "text": "This drink is something I didn't know I was missing. I really enjoy a pick me up anytime of the week day!",
+            "name": "Margaret"
+          }
+        },
+        "test-2": {
+          "type": "testimonial",
+          "settings": {
+            "category": "TASTE",
+            "headline": "I'm hooked",
+            "text": "The flavor is delicious and it gives me the energy I need to power through my day. Add a little flavored creamer to take it to another level. I'm hooked!",
+            "name": "Bonnie"
+          }
+        },
+        "test-3": {
+          "type": "testimonial",
+          "settings": {
+            "category": "TASTE",
+            "headline": "The flavor is amazing",
+            "text": "and love that I can have it on subscription so I don't run out.",
+            "name": "Cassey"
+          }
+        }
+      },
+      "block_order": [
+        "reviewer_AN9eCg",
+        "reviewer_FfadyJ",
+        "vid-1",
+        "vid-2",
+        "vid-3",
+        "vid-4",
+        "test-1",
+        "test-2",
+        "test-3"
+      ],
+      "settings": {
+        "heading": "Read Our Reviews",
+        "tabs": "Taste, Benefits, Caffeine, Focus",
+        "cta_link": ""
+      }
+    },
+    "nootropics": {
+      "type": "nootropics",
+      "blocks": {
+        "ing-1": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "molecule",
+            "name": "Alpha-GPC",
+            "description": "For Laser Focus"
+          }
+        },
+        "ing-2": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "head-calm",
+            "name": "L-Theanine",
+            "description": "Energy Stabilization"
+          }
+        },
+        "ing-3": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "molecule-grid",
+            "name": "Creatine",
+            "description": "Brain Fuel"
+          }
+        },
+        "ing-4": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "person",
+            "name": "L-Tyrosine",
+            "description": "For Mood"
+          }
+        },
+        "ing-5": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "leaf-head",
+            "name": "Ginkgo Biloba",
+            "description": "For Circulation"
+          }
+        },
+        "ing-6": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "face-waves",
+            "name": "Lion's Mane",
+            "description": "Memory & Focus"
+          }
+        }
+      },
+      "block_order": [
+        "ing-1",
+        "ing-2",
+        "ing-3",
+        "ing-4",
+        "ing-5",
+        "ing-6"
+      ],
+      "settings": {
+        "heading": "Nootropics For Your Mind",
+        "grid_image": "shopify://shop_images/image_2026-08-09_12-54-28.png",
+        "cta_text": "Learn More About Nootropics",
+        "cta_link": ""
+      }
+    },
+    "product-grid": {
+      "type": "product-grid",
+      "blocks": {
+        "prod-1": {
+          "type": "product_card",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_5_._2026_._16_24_06.png",
+            "tag": "Best Seller",
+            "title": "Brew Extreme",
+            "subtitle": "Low-Caffeine Arabica & Nootropics",
+            "rating": "4.9",
+            "review_count": "2,847",
+            "tag_pills": "1,000mg Lion's Mane, 3,000mg Creatine, Adaptogenic Blend",
+            "price": "$49.99",
+            "price_was": "$59.99",
+            "product_url": ""
+          }
+        },
+        "prod-2": {
+          "type": "product_card",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_5_._2026_._16_24_06.png",
+            "tag": "Fan Favorite",
+            "title": "Raw Coffee+",
+            "subtitle": "Low-Caffeine Arabica & Nootropics",
+            "rating": "4.8",
+            "review_count": "1,953",
+            "tag_pills": "1,000mg Lion's Mane, Amino Acids, Pure & Functional",
+            "price": "$44.99",
+            "price_was": "",
+            "product_url": ""
+          }
+        },
+        "prod-3": {
+          "type": "product_card",
+          "settings": {
+            "tag": "Save 27%",
+            "title": "The Starter Bundle",
+            "subtitle": "Both blends + shaker bottle",
+            "rating": "4.9",
+            "review_count": "892",
+            "tag_pills": "Brew Extreme, Raw Coffee+, Free Shaker",
+            "price": "$79.99",
+            "price_was": "$109.97",
+            "product_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "prod-1",
+        "prod-2",
+        "prod-3"
+      ],
+      "settings": {
+        "eyebrow": "Shop",
+        "heading": "Find Your Blend"
+      }
+    },
+    "ambassador": {
+      "type": "ambassador",
+      "blocks": {
+        "perk1": {
+          "type": "perk",
+          "settings": {
+            "icon": "💰",
+            "title": "Earn Commission",
+            "description": "Up to 25% on every sale"
+          }
+        },
+        "perk2": {
+          "type": "perk",
+          "settings": {
+            "icon": "🎁",
+            "title": "Free Products",
+            "description": "Monthly product drops"
+          }
+        },
+        "perk3": {
+          "type": "perk",
+          "settings": {
+            "icon": "🚀",
+            "title": "Early Access",
+            "description": "New launches before anyone else"
+          }
+        }
+      },
+      "block_order": [
+        "perk1",
+        "perk2",
+        "perk3"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/ambassador.jpg",
+        "title": "Become a Raw Gravity Ambassador",
+        "description": "Join our community of health-obsessed creators, athletes, and wellness professionals. Share what you love, earn for every customer you refer.",
+        "cta_text": "Apply Now",
+        "cta_link": ""
+      }
+    },
+    "sticky_bar_Giq4LL": {
+      "type": "sticky-bar",
+      "name": "USA Map",
+      "settings": {
+        "eyebrow": "Your Reach",
+        "heading": "Raw Gravity Across the USA",
+        "subtext": "Every bag, subscription, and referral helps grow our community nationwide.",
+        "stat1_number": "50",
+        "stat1_label": "States Delivered",
+        "stat2_number": "5,000+",
+        "stat2_label": "Happy Customers",
+        "stat3_number": "4.9",
+        "stat3_label": "Average Rating"
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "faq-1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How does mushroom coffee taste?",
+            "answer": "<p>Like a rich, smooth cup of coffee. Brew Extreme is made with premium Arabica beans, and the mushroom extracts are odorless and flavorless at the doses we use — no earthy or bitter aftertaste.</p>"
+          }
+        },
+        "faq-2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How much caffeine is in each serving?",
+            "answer": "<p>About 50mg per serving — roughly half a standard cup of coffee. Paired with L-Theanine, it delivers smooth, sustained energy without jitters or the afternoon crash.</p>"
+          }
+        },
+        "faq-3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What's the difference between Brew Extreme and Raw Coffee+?",
+            "answer": "<p>Brew Extreme is our premium flagship with the full nootropic stack: Alpha-GPC, Creatine, L-Tyrosine, Ginkgo, Lion's Mane, and L-Theanine. Raw Coffee+ is our everyday blend with functional mushrooms for immune and energy support.</p>"
+          }
+        },
+        "faq-4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I prepare it?",
+            "answer": "<p>Add one scoop (10g) to 8–12oz of hot or cold water and stir. For best results, use water between 175–195°F. It also works great in a French press, pour-over, or blended into a latte.</p>"
+          }
+        },
+        "faq-5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is it safe to drink every day?",
+            "answer": "<p>Yes. Every ingredient is included at safe, clinically studied doses for daily consumption. If you're sensitive to caffeine, start with half a scoop for the first few days.</p>"
+          }
+        },
+        "faq-6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How does the subscription work?",
+            "answer": "<p>Subscribers save 20% on every order and get free shipping automatically. Skip, pause, or cancel anytime — no hoops, no fees. We send a reminder email 3 days before each renewal.</p>"
+          }
+        },
+        "faq-7": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you offer a money-back guarantee?",
+            "answer": "<p>Yes. We offer a 30-day, no-questions-asked money-back guarantee. If you're not satisfied for any reason, contact us and we'll issue a full refund.</p>"
+          }
+        },
+        "faq-8": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Where are your mushrooms sourced?",
+            "answer": "<p>All mushroom extracts come from certified organic farms and are fruiting-body only — not mycelium on grain. Every batch is third-party tested for heavy metals, pesticides, and potency.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "faq-4",
+        "faq-5",
+        "faq-6",
+        "faq-7",
+        "faq-8"
+      ],
+      "settings": {
+        "eyebrow": "FAQ",
+        "heading": "Questions & Answers",
+        "footer_text": "Still have questions?",
+        "contact_text": "Contact Us",
+        "contact_url": ""
+      }
+    },
+    "trust_badges_WEDXXF": {
+      "type": "trust-badges",
+      "blocks": {
+        "badge_9rhYfc": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/30-day-guarantee.webp",
+            "icon": "flask",
+            "label": "Third-Party Tested",
+            "description": "Every batch independently verified"
+          }
+        },
+        "badge_h9NXXR": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/Untitled_design_78.png",
+            "icon": "leaf",
+            "label": "100% Vegan",
+            "description": "Plant-based & cruelty-free"
+          }
+        },
+        "badge_jiQf39": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/photo_2026-08-14_14-40-55.jpg",
+            "icon": "shield",
+            "label": "GMP Certified",
+            "description": "Manufactured to the highest standards"
+          }
+        },
+        "badge_Qfdgja": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/quasaar-post-gmp-2025.jpg",
+            "icon": "ribbon",
+            "label": "Clinically Dosed",
+            "description": "Research-backed ingredient amounts"
+          }
+        },
+        "badge_AE7zk9": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/photo_2026-08-14_14-40-40.jpg",
+            "icon": "truck",
+            "label": "Free Shipping",
+            "description": "On all orders over $75"
+          }
+        },
+        "badge_FWbXey": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/images.jpg",
+            "icon": "refresh",
+            "label": "30-Day Guarantee",
+            "description": "Full refund, no questions asked"
+          }
+        },
+        "media_logo_fhXdTT": {
+          "type": "media_logo",
+          "settings": {
+            "name": "Forbes"
+          }
+        },
+        "media_logo_7XaCdR": {
+          "type": "media_logo",
+          "settings": {
+            "name": "Men's Health"
+          }
+        },
+        "media_logo_iFpWDH": {
+          "type": "media_logo",
+          "settings": {
+            "name": "Well+Good"
+          }
+        },
+        "media_logo_8ndUHp": {
+          "type": "media_logo",
+          "settings": {
+            "name": "Shape"
+          }
+        },
+        "media_logo_eebMFq": {
+          "type": "media_logo",
+          "settings": {
+            "name": "GQ"
+          }
+        }
+      },
+      "block_order": [
+        "badge_9rhYfc",
+        "badge_h9NXXR",
+        "badge_jiQf39",
+        "badge_Qfdgja",
+        "badge_AE7zk9",
+        "badge_FWbXey",
+        "media_logo_fhXdTT",
+        "media_logo_7XaCdR",
+        "media_logo_iFpWDH",
+        "media_logo_8ndUHp",
+        "media_logo_eebMFq"
+      ],
+      "name": "Trust Badges",
+      "settings": {
+        "eyebrow": "Quality & Trust",
+        "heading": "Uncompromising Standards",
+        "featured_label": "As Featured In"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "differentiators",
+    "reviews",
+    "nootropics",
+    "product-grid",
+    "ambassador",
+    "sticky_bar_Giq4LL",
+    "faq",
+    "trust_badges_WEDXXF"
+  ]
+}

@@ -1,0 +1,95 @@
+<section class="rg-section" style="background:var(--rg-surface);border-top:1px solid var(--rg-border);">
+  <div class="rg-container">
+
+    <div class="rg-text-center" style="margin-bottom:48px;">
+      <span class="rg-label" style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--rg-accent); display: block; margin-bottom: 12px;">REAL CUSTOMER REVIEWS</span>
+      <h2 class="rg-heading--md" style="font-size: 48px; font-weight: 800; color: #18181B; margin-bottom: 16px;">See What People Are Saying</h2>
+      <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <span class="rg-stars" style="color: #FACC15; font-size: 18px;">★★★★★</span>
+        <p class="rg-subheading" style="font-size: 14px; color: #71717A; margin-top: 0;">Based on {{ section.settings.total_reviews }}+ reviews</p>
+      </div>
+    </div>
+
+    <!-- Trust stats footer -->
+    <div style="text-align: center; margin-top: 64px; padding-top: 40px; border-top: 1px solid #E4E4E7;">
+      <p style="font-size: 14px; color: #71717A; margin-bottom: 16px;">Join 300,000+ happy customers who switched to RAW GRAVITY</p>
+      <div style="display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #18181B;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--rg-accent);"></span>
+          4.8 Average Rating
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #18181B;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--rg-accent);"></span>
+          45-Day Guarantee
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #18181B;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--rg-accent);"></span>
+          Free Shipping
+        </div>
+      </div>
+    </div>
+
+    <!-- Video review grid -->
+    <div class="rg-video-reviews" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 48px;">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'video_review' -%}
+          <div class="rg-video-card" {{ block.shopify_attributes }} style="position: relative; border-radius: 16px; overflow: hidden; background: #000; aspect-ratio: 3/4;">
+            <div class="rg-video-card__thumb" style="width: 100%; height: 100%;">
+              {%- if block.settings.thumbnail != blank -%}
+                <img src="{{ block.settings.thumbnail | image_url: width: 480 }}" alt="{{ block.settings.reviewer_name }}" width="480" height="640" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;">
+              {%- else -%}
+                <div style="width:100%;height:100%;background: #27272A;"></div>
+              {%- endif -%}
+              
+              <div class="rg-video-card__play" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 48px; height: 48px; background: var(--rg-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; box-shadow: 0 4px 12px rgba(33, 188, 255, 0.4);">▶</div>
+              
+              <div class="rg-video-card__views" style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); color: white; padding: 4px 10px; border-radius: 99px; font-size: 10px; font-weight: 700;">{{ block.settings.view_count }} views</div>
+              
+              <div class="rg-video-card__overlay" style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%); color: white;">
+                <div class="rg-video-card__name" style="font-weight: 700; font-size: 14px; margin-bottom: 2px;">{{ block.settings.reviewer_name }}</div>
+                <div class="rg-video-card__handle" style="font-size: 11px; opacity: 0.7; margin-bottom: 8px;">{{ block.settings.handle }}</div>
+                <p class="rg-video-card__quote" style="font-size: 12px; line-height: 1.4; font-style: italic; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">"{{ block.settings.quote }}"</p>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Reviews",
+  "settings": [
+    { "type": "text", "id": "total_reviews", "label": "Total Reviews Count", "default": "4,800" }
+  ],
+  "blocks": [
+    {
+      "type": "video_review",
+      "name": "Video Review",
+      "settings": [
+        { "type": "image_picker", "id": "thumbnail", "label": "Thumbnail" },
+        { "type": "text", "id": "reviewer_name", "label": "Reviewer Name", "default": "Marcus T." },
+        { "type": "text", "id": "handle", "label": "Social Handle", "default": "@marcust_fit" },
+        { "type": "text", "id": "view_count", "label": "View Count", "default": "24.1K" },
+        { "type": "text", "id": "quote", "label": "Short Quote", "default": "I've never felt this focused without anxiety." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Reviews",
+      "blocks": [
+        { "type": "video_review", "settings": { "reviewer_name": "Marcus T.", "handle": "@marcust_fit", "view_count": "24.1K", "quote": "I've never felt this focused without anxiety. RAW GRAVITY is the real deal." } },
+        { "type": "video_review", "settings": { "reviewer_name": "Sarah K.", "handle": "@sarahkwellness", "view_count": "18.3K", "quote": "I replaced my $7 latte habit and I'm saving money AND feeling better." } },
+        { "type": "video_review", "settings": { "reviewer_name": "Dr. Lisa M.", "handle": "@drlisamd", "view_count": "15.7K", "quote": "The nootropic stack is legit. As a clinician I'm genuinely impressed by the dosing." } },
+        { "type": "video_review", "settings": { "reviewer_name": "Jake R.", "handle": "@jakerunning", "view_count": "12.4K", "quote": "Before meetings, after workouts — Brew Extreme is the only thing I need." } },
+        { "type": "video_review", "settings": { "reviewer_name": "Priya D.", "handle": "@priyadfit", "view_count": "9.8K", "quote": "My skin literally glowed within 2 weeks. I get asked what I'm doing differently." } },
+        { "type": "video_review", "settings": { "reviewer_name": "Tom H.", "handle": "@tomh_athlete", "view_count": "6.2K", "quote": "Best pre-workout alternative I've found. No crash, just clean energy all day." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

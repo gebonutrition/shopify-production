@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>
+    {%- if page_title -%}
+      {{ page_title }} | {{ shop.name }}
+    {%- else -%}
+      {{ shop.name }} — Premium Mushroom Coffee
+    {%- endif -%}
+  </title>
+  <meta name="description" content="{{ page_description | escape }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32 }}">
+  {%- endif -%}
+
+  {{ content_for_header }}
+
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300..900&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+
+<body class="rg-body">
+
+  <div class="rg-bg-blobs" aria-hidden="true">
+    <span class="rg-bg-blob rg-bg-blob--1"></span>
+    <span class="rg-bg-blob rg-bg-blob--2"></span>
+    <span class="rg-bg-blob rg-bg-blob--3"></span>
+  </div>
+
+  {%- sections 'header-group' -%}
+
+  <main id="main-content" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  {%- sections 'footer-group' -%}
+
+  <script>
+    // Cart drawer / mini-cart count updater
+    document.addEventListener('DOMContentLoaded', function () {
+      // Accordion logic
+      document.querySelectorAll('.rg-accordion-trigger').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var panel = document.getElementById(btn.getAttribute('aria-controls'));
+          var expanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', String(!expanded));
+          panel.hidden = expanded;
+          btn.querySelector('.rg-accordion-icon').textContent = expanded ? '+' : '−';
+        });
+      });
+
+      // Ticker duplicate for seamless loop
+      document.querySelectorAll('.rg-ticker-track').forEach(function (track) {
+        track.innerHTML += track.innerHTML;
+      });
+
+      // Product image carousel
+      var carousels = document.querySelectorAll('.rg-carousel');
+      carousels.forEach(function (carousel) {
+        var slides = carousel.querySelectorAll('.rg-carousel-slide');
+        var thumbs = carousel.querySelectorAll('.rg-carousel-thumb');
+        var current = 0;
+        function goTo(idx) {
+          slides[current].classList.remove('active');
+          if (thumbs[current]) thumbs[current].classList.remove('active');
+          current = idx;
+          slides[current].classList.add('active');
+          if (thumbs[current]) thumbs[current].classList.add('active');
+        }
+        thumbs.forEach(function (t, i) { t.addEventListener('click', function () { goTo(i); }); });
+        var prev = carousel.querySelector('.rg-carousel-prev');
+        var next = carousel.querySelector('.rg-carousel-next');
+        if (prev) prev.addEventListener('click', function () { goTo((current - 1 + slides.length) % slides.length); });
+        if (next) next.addEventListener('click', function () { goTo((current + 1) % slides.length); });
+      });
+
+      // Purchase option tabs (one-time vs subscribe)
+      document.querySelectorAll('.rg-purchase-option').forEach(function (opt) {
+        opt.addEventListener('click', function () {
+          document.querySelectorAll('.rg-purchase-option').forEach(function (o) { o.classList.remove('active'); });
+          opt.classList.add('active');
+        });
+      });
+
+      // Review tabs
+      document.querySelectorAll('.rg-review-tab').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          document.querySelectorAll('.rg-review-tab').forEach(function (t) { t.classList.remove('active'); });
+          tab.classList.add('active');
+        });
+      });
+
+      // Header + announcement bar, both fixed.
+      // Announcement is visible ONLY while scrollY is within its own height (i.e. at the
+      // very top of the page) — this is based on absolute scroll position, not direction,
+      // so it never flickers and never reappears mid-page.
+      // Header separately hides on scroll down / shows on scroll up, and its "top" offset
+      // shifts down to make room for the announcement bar only while that bar is visible.
+      var rgHeader = document.querySelector('.rg-header');
+      var rgAnnouncement = document.querySelector('.rg-announcement');
+      if (rgHeader) {
+        var rgSpacer = document.createElement('div');
+        rgSpacer.id = 'rg-header-spacer';
+        rgHeader.parentNode.insertBefore(rgSpacer, rgHeader.nextSibling);
+
+        var lastScrollY = window.scrollY;
+        var scrollTicking = false;
+
+        function updateScrollState() {
+          var currentScrollY = window.scrollY;
+          var headerHeight = rgHeader.offsetHeight;
+          var announcementHeight = rgAnnouncement ? rgAnnouncement.offsetHeight : 0;
+
+          // Header always sits at the very top, announcement directly below it.
+          rgHeader.style.top = '0px';
+          if (rgAnnouncement) rgAnnouncement.style.top = headerHeight + 'px';
+
+          // Both are visible ONLY at the very top of the page (hero block).
+          // Based on absolute scroll position, not direction — once scrolled
+          // down they stay hidden, and come back only at the top again.
+          var atTop = currentScrollY < 40;
+          rgHeader.classList.toggle('rg-header--hidden', !atTop);
+          if (rgAnnouncement) rgAnnouncement.classList.toggle('rg-announcement--hidden', !atTop);
+
+          document.documentElement.style.setProperty('--rg-header-h', headerHeight + 'px');
+          // Constant spacer height so page content never jumps when they hide.
+          rgSpacer.style.height = (headerHeight + announcementHeight) + 'px';
+
+          scrollTicking = false;
+        }
+
+        updateScrollState();
+        window.addEventListener('resize', updateScrollState);
+        window.addEventListener('scroll', function () {
+          if (!scrollTicking) {
+            window.requestAnimationFrame(updateScrollState);
+            scrollTicking = true;
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

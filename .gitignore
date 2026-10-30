@@ -1,0 +1,8 @@
+node_modules/
+.shopify/
+.env
+.DS_Store
+Thumbs.db
+_temp/
+*.mov
+*.mp4

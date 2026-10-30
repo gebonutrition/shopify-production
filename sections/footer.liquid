@@ -1,0 +1,121 @@
+<footer class="rg-footer" role="contentinfo">
+  <div class="rg-container">
+    <div class="rg-footer__grid" style="margin-right: auto; max-width: 1100px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 40px;">
+
+      <!-- Brand -->
+      <div>
+        <div class="rg-footer__brand-name">RAW GRAVITY</div>
+        <p class="rg-footer__tagline">{{ section.settings.tagline }}</p>
+        <div class="rg-footer__social">
+          {%- if section.settings.instagram != blank -%}
+            <a href="{{ section.settings.instagram }}" class="rg-footer__social-link" aria-label="Instagram" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.tiktok != blank -%}
+            <a href="{{ section.settings.tiktok }}" class="rg-footer__social-link" aria-label="TikTok" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.83a8.17 8.17 0 004.78 1.53V6.9a4.85 4.85 0 01-1.01-.21z"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.youtube != blank -%}
+            <a href="{{ section.settings.youtube }}" class="rg-footer__social-link" aria-label="YouTube" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.45a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="currentColor" stroke="none" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Shop -->
+      <div>
+        <div class="rg-footer__col-title">Shop</div>
+        <ul class="rg-footer__links">
+          {%- for link in section.settings.shop_menu.links -%}
+            <li><a href="{{ link.url }}" class="rg-footer__link">{{ link.title }}</a></li>
+          {%- else -%}
+            <li><a href="/products/brew-extreme" class="rg-footer__link">Brew Extreme</a></li>
+            <li><a href="/products/raw-coffee-plus" class="rg-footer__link">Raw Coffee+</a></li>
+            <li><a href="/collections/bundles" class="rg-footer__link">Bundles</a></li>
+            <li><a href="/pages/subscribe" class="rg-footer__link">Subscribe & Save</a></li>
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div>
+        <div class="rg-footer__col-title">Company</div>
+        <ul class="rg-footer__links">
+          {%- for link in section.settings.company_menu.links -%}
+            <li><a href="{{ link.url }}" class="rg-footer__link">{{ link.title }}</a></li>
+          {%- else -%}
+            <li><a href="/pages/about" class="rg-footer__link">Our Story</a></li>
+            <li><a href="/pages/science" class="rg-footer__link">The Science</a></li>
+            <li><a href="/pages/ingredients" class="rg-footer__link">Ingredients</a></li>
+            <li><a href="/blogs/news" class="rg-footer__link">Blog</a></li>
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      <!-- Support -->
+      <div>
+        <div class="rg-footer__col-title">Support</div>
+        <ul class="rg-footer__links">
+          {%- for link in section.settings.support_menu.links -%}
+            <li><a href="{{ link.url }}" class="rg-footer__link">{{ link.title }}</a></li>
+          {%- else -%}
+            <li><a href="/pages/faq" class="rg-footer__link">FAQ</a></li>
+            <li><a href="/pages/shipping" class="rg-footer__link">Shipping & Returns</a></li>
+            <li><a href="/pages/contact" class="rg-footer__link">Contact Us</a></li>
+            <li><a href="/pages/track-order" class="rg-footer__link">Track Your Order</a></li>
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      <!-- Payments (as a column) -->
+      <div>
+        <div class="rg-footer__col-title">We Accept</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 160px;">
+          <span class="rg-pay-card"><img src="{{ 'payment-amex.svg' | asset_url }}" alt="American Express" class="rg-footer__payment-icon"></span>
+          <span class="rg-pay-card"><img src="{{ 'payment-apple-pay.svg' | asset_url }}" alt="Apple Pay" class="rg-footer__payment-icon"></span>
+          <span class="rg-pay-card"><img src="{{ 'payment-bancontact.svg' | asset_url }}" alt="Bancontact" class="rg-footer__payment-icon"></span>
+          <span class="rg-pay-card"><img src="{{ 'payment-diners.svg' | asset_url }}" alt="Diners Club" class="rg-footer__payment-icon"></span>
+          <span class="rg-pay-card"><img src="{{ 'payment-discover.svg' | asset_url }}" alt="Discover" class="rg-footer__payment-icon"></span>
+          <span class="rg-pay-card"><img src="{{ 'payment-google-pay.svg' | asset_url }}" alt="Google Pay" class="rg-footer__payment-icon"></span>
+          <span class="rg-pay-card"><img src="{{ 'payment-wechat.svg' | asset_url }}" alt="WeChat Pay" class="rg-footer__payment-icon"></span>
+          <span class="rg-pay-card"><img src="{{ 'payment-klarna.svg' | asset_url }}" alt="Klarna" class="rg-footer__payment-icon"></span>
+          <span class="rg-pay-card"><img src="{{ 'payment-maestro.svg' | asset_url }}" alt="Maestro" class="rg-footer__payment-icon"></span>
+          <span class="rg-pay-card"><img src="{{ 'payment-mastercard.svg' | asset_url }}" alt="Mastercard" class="rg-footer__payment-icon"></span>
+          <span class="rg-pay-card"><img src="{{ 'payment-paypal.svg' | asset_url }}" alt="PayPal" class="rg-footer__payment-icon"></span>
+          <span class="rg-pay-card rg-pay-card--shop"><span class="rg-pay-card__label">Shop</span></span>
+          <span class="rg-pay-card"><img src="{{ 'payment-unionpay.svg' | asset_url }}" alt="UnionPay" class="rg-footer__payment-icon"></span>
+          <span class="rg-pay-card"><img src="{{ 'payment-visa.svg' | asset_url }}" alt="Visa" class="rg-footer__payment-icon"></span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rg-footer__bottom">
+      <p class="rg-footer__copyright">© {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
+      <div class="rg-footer__legal">
+        <a href="/policies/privacy-policy" class="rg-footer__legal-link">Privacy Policy</a>
+        <a href="/policies/terms-of-service" class="rg-footer__legal-link">Terms of Service</a>
+        <a href="/policies/refund-policy" class="rg-footer__legal-link">Refund Policy</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "textarea", "id": "tagline", "label": "Brand Tagline", "default": "Premium mushroom coffee for the modern human. Clinically dosed. Third-party tested." },
+    { "type": "text", "id": "instagram", "label": "Instagram URL" },
+    { "type": "text", "id": "tiktok", "label": "TikTok URL" },
+    { "type": "text", "id": "youtube", "label": "YouTube URL" },
+    { "type": "link_list", "id": "shop_menu", "label": "Shop Menu" },
+    { "type": "link_list", "id": "company_menu", "label": "Company Menu" },
+    { "type": "link_list", "id": "support_menu", "label": "Support Menu" }
+  ]
+}
+{% endschema %}

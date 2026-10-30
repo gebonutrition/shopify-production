@@ -1,0 +1,110 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "product-hero": {
+      "type": "product-hero",
+      "blocks": {
+        "bp1": {
+          "type": "benefit_pill",
+          "settings": {
+            "label": "Energy"
+          }
+        },
+        "bp2": {
+          "type": "benefit_pill",
+          "settings": {
+            "label": "Focus"
+          }
+        },
+        "bp3": {
+          "type": "benefit_pill",
+          "settings": {
+            "label": "No Bloating"
+          }
+        },
+        "bp4": {
+          "type": "benefit_pill",
+          "settings": {
+            "label": "No Crash"
+          }
+        },
+        "ing1": {
+          "type": "ingredient_row",
+          "settings": {
+            "name": "Lion's Mane 10:1",
+            "amount": "1,000 mg",
+            "benefit": "Focus & cognitive clarity"
+          }
+        },
+        "ing2": {
+          "type": "ingredient_row",
+          "settings": {
+            "name": "Creatine Monohydrate",
+            "amount": "3,000 mg",
+            "benefit": "Performance & recovery"
+          }
+        },
+        "ing3": {
+          "type": "ingredient_row",
+          "settings": {
+            "name": "Amino Acids",
+            "amount": "400 mg",
+            "benefit": "Muscle support & endurance"
+          }
+        },
+        "ing4": {
+          "type": "ingredient_row",
+          "settings": {
+            "name": "Adaptogens",
+            "amount": "300 mg",
+            "benefit": "Stress regulation & balance"
+          }
+        },
+        "ing5": {
+          "type": "ingredient_row",
+          "settings": {
+            "name": "Low-Caffeine Arabica",
+            "amount": "~50 mg",
+            "benefit": "Smooth, sustained energy"
+          }
+        }
+      },
+      "block_order": [
+        "bp1",
+        "bp2",
+        "bp3",
+        "bp4",
+        "ing1",
+        "ing2",
+        "ing3",
+        "ing4",
+        "ing5"
+      ],
+      "settings": {
+        "ingredients_image": "shopify://shop_images/5f618ec25af0b9351fc3d352da97ce4d.png",
+        "review_count": "2,847",
+        "clinician_count": "689",
+        "clinician_badge_text": "Clinicians' Choice",
+        "subscribe_price": "$27",
+        "subscribe_was": "$45",
+        "per_serving": "$0.90",
+        "how_to_use": "<p>Add one scoop (10g) to 8–12oz of hot or cold water. Stir well and enjoy. Works great in a French press, pour-over, or blended into a latte. Start with half a scoop for the first 2–3 days if sensitive to caffeine.</p>",
+        "shipping_info": "<p>Free U.S. shipping on all orders. Average 3-day delivery. 45-day money-back guarantee — contact us for a full refund if not satisfied.</p>",
+        "product_description": "<p>RAW COFFEE + is a functional coffee-blend that helps boost energy, improve mental clarity, and supports gut health without the crash.</p>",
+        "why_you_need": "<p>Regular coffee gives you a spike and a crash. RAW COFFEE + is formulated with nootropics and adaptogens to give you sustained energy and focus, without the jitters or afternoon slump.</p>",
+        "benefits": "<p>Active & clean energy, sharper focus, better gut health, and no bloating or crash — all in one daily blend.</p>"
+      }
+    }
+  },
+  "order": [
+    "product-hero"
+  ]
+}

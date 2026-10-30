@@ -1,0 +1,41 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "newsletter_tgYqFH": {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "settings": {
+        "title": "Join the Ritual",
+        "subtitle": "Get 15% off your first order + exclusive access to new blends.",
+        "placeholder": "Enter your email",
+        "button_text": "Subscribe"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "tagline": "Premium mushroom coffee for the modern human. Clinically dosed. Third-party tested.",
+        "instagram": "",
+        "tiktok": "",
+        "youtube": "",
+        "shop_menu": "",
+        "company_menu": "",
+        "support_menu": ""
+      }
+    }
+  },
+  "order": [
+    "newsletter_tgYqFH",
+    "footer"
+  ]
+}
