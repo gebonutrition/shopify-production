@@ -15,7 +15,12 @@
   endfor
 -%}
 
-<section class="rg rg-diff" id="rg-diff-{{ section.id }}">
+<section
+  class="rg rg-diff"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
   <div class="rg-container rg-diff__wrap">
     <div class="rg-diff__top">
       <div class="rg-diff__media" aria-hidden="true">
@@ -580,6 +585,13 @@
   "class": "rg-diff-section",
   "settings": [
     {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "default": "benefits",
+      "info": "Used by links such as /#benefits."
+    },
+    {
       "type": "image_picker",
       "id": "image",
       "label": "Photo",
@@ -681,11 +693,27 @@
     {
       "name": "RG · Differentiators",
       "blocks": [
-        { "type": "item", "settings": { "title": "STEADY ENERGY" } },
-        { "type": "item", "settings": { "title": "GUT HEALTH" } },
-        { "type": "facts" },
-        { "type": "card" },
-        { "type": "card" }
+        {
+          "type": "item",
+          "settings": {
+            "title": "STEADY ENERGY"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "GUT HEALTH"
+          }
+        },
+        {
+          "type": "facts"
+        },
+        {
+          "type": "card"
+        },
+        {
+          "type": "card"
+        }
       ]
     }
   ]

@@ -1,0 +1,717 @@
+{%- comment -%}
+  RAW GRAVITY · Footer (newsletter card, brand + socials, link columns,
+  payment icons, legal row, FDA disclaimer). Lives in the footer group.
+  Newsletter uses the native Shopify customer form (tag: newsletter);
+  Klaviyo can sync these subscribers once its app is installed.
+  Reference: Raw Gravity Landing(.dc.html) + Mobile, footer#footer.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign column_count = 0
+  for block in section.blocks
+    if block.type == 'links'
+      assign column_count = column_count | plus: 1
+    endif
+  endfor
+-%}
+
+<div class="rg rg-footer">
+  {%- if s.show_newsletter -%}
+    <div class="rg-container rg-footer__top">
+      <div class="rg-footer__club">
+        <div class="rg-footer__club-copy">
+          <h2 class="rg-footer__club-title">
+            {{- s.newsletter_start | escape }}
+            {% if s.newsletter_accent != blank -%}
+              <span class="rg-footer__accent">{{ s.newsletter_accent | escape }}</span>
+            {%- endif %}
+            {{ s.newsletter_end | escape -}}
+          </h2>
+          {%- if s.newsletter_text != blank -%}
+            <p class="rg-footer__club-text">{{ s.newsletter_text | escape }}</p>
+          {%- endif -%}
+        </div>
+
+        {%- form 'customer', id: 'rg-footer-newsletter', class: 'rg-footer__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="rg-footer__form-row">
+            <label class="rg-visually-hidden" for="rg-footer-email-{{ section.id }}">Email</label>
+            <input
+              id="rg-footer-email-{{ section.id }}"
+              class="rg-footer__input{% if form.errors %} is-invalid{% endif %}"
+              type="email"
+              name="contact[email]"
+              autocomplete="email"
+              autocorrect="off"
+              autocapitalize="off"
+              placeholder="{{ s.newsletter_placeholder | escape }}"
+              required
+              {% if form.errors %}
+                aria-invalid="true"
+                aria-describedby="rg-footer-msg-{{ section.id }}"
+              {% endif %}
+            >
+            <button type="submit" class="rg-btn rg-footer__submit">
+              {{- s.newsletter_button | escape }} <span aria-hidden="true">→</span>
+            </button>
+          </div>
+          <p class="rg-footer__msg" id="rg-footer-msg-{{ section.id }}" role="status">
+            {%- if form.posted_successfully? -%}
+              <span class="is-success">{{ s.newsletter_success | escape }}</span>
+            {%- elsif form.errors -%}
+              <span class="is-error">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</span>
+            {%- endif -%}
+          </p>
+        {%- endform -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div
+    class="rg-container rg-footer__main"
+    {% if s.anchor != blank %}
+      id="{{ s.anchor | handle }}"
+    {% endif %}
+  >
+    <div class="rg-footer__grid" style="--rg-footer-cols: {{ column_count }};">
+      <div class="rg-footer__brand">
+        <a class="rg-footer__logo" href="{{ routes.root_url }}">
+          {%- if settings.logo_inverse != blank -%}
+            {{
+              settings.logo_inverse
+              | image_url: width: 600
+              | image_tag: height: 19, loading: 'lazy', alt: shop.name, class: 'rg-footer__logo-img'
+            }}
+          {%- else -%}
+            {{ shop.name | escape }}
+          {%- endif -%}
+        </a>
+
+        {%- if s.instagram_url != blank or s.tiktok_url != blank or s.youtube_url != blank or s.facebook_url != blank -%}
+          <ul class="rg-footer__socials" role="list">
+            {%- if s.instagram_url != blank -%}
+              <li>
+                <a class="rg-footer__social" href="{{ s.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor"/></svg>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if s.tiktok_url != blank -%}
+              <li>
+                <a class="rg-footer__social" href="{{ s.tiktok_url }}" target="_blank" rel="noopener" aria-label="TikTok">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.7a5.7 5.7 0 1 0 4.9 5.7V9a7.4 7.4 0 0 0 4.3 1.4V7.3a4.3 4.3 0 0 1-3.2-1.5z"/></svg>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if s.youtube_url != blank -%}
+              <li>
+                <a class="rg-footer__social" href="{{ s.youtube_url }}" target="_blank" rel="noopener" aria-label="YouTube">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5.2 3z"/></svg>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if s.facebook_url != blank -%}
+              <li>
+                <a class="rg-footer__social" href="{{ s.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.4H8v3h2.6V21z"/></svg>
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'links' -%}
+          <nav class="rg-footer__col" aria-label="{{ block.settings.heading | escape }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}
+              <p class="rg-footer__col-title">{{ block.settings.heading | escape }}</p>
+            {%- endif -%}
+            <ul class="rg-footer__links" role="list">
+              {%- assign rows = block.settings.links | newline_to_br | split: '<br />' -%}
+              {%- for row in rows -%}
+                {%- assign parts = row | split: '|' -%}
+                {%- assign link_label = parts[0] | strip -%}
+                {%- assign link_url = parts[1] | strip -%}
+                {%- if link_label != blank and link_url != blank -%}
+                  <li><a class="rg-footer__link" href="{{ link_url }}">{{ link_label | escape }}</a></li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </nav>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="rg-footer__pay-row">
+      {%- if s.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+        <ul class="rg-footer__pay" role="list" aria-label="Payment methods">
+          {%- for type in shop.enabled_payment_types -%}
+            <li>{{ type | payment_type_svg_tag: class: 'rg-footer__pay-icon' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      {%- if s.secure_text != blank -%}
+        <p class="rg-footer__secure">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          {{- s.secure_text | escape -}}
+        </p>
+      {%- endif -%}
+    </div>
+
+    <div class="rg-footer__legal">
+      <p>© {{ 'now' | date: '%Y' }} {{ shop.name | escape }}. All rights reserved.</p>
+      <ul class="rg-footer__policies" role="list">
+        {%- if shop.privacy_policy -%}
+          <li><a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title | escape }}</a></li>
+        {%- endif -%}
+        {%- if shop.terms_of_service -%}
+          <li><a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title | escape }}</a></li>
+        {%- endif -%}
+        {%- if shop.refund_policy -%}
+          <li><a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title | escape }}</a></li>
+        {%- endif -%}
+        {%- if shop.shipping_policy -%}
+          <li><a href="{{ shop.shipping_policy.url }}">{{ shop.shipping_policy.title | escape }}</a></li>
+        {%- endif -%}
+      </ul>
+    </div>
+
+    {%- if s.disclaimer != blank -%}
+      <p class="rg-footer__disclaimer">{{ s.disclaimer | escape }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  /* ---------- Mobile ---------- */
+  .rg-footer {
+    background: var(--rg-dark-bg);
+    color: var(--rg-on-dark);
+  }
+
+  .rg-footer p,
+  .rg-footer h2 {
+    margin: 0;
+  }
+
+  .rg-footer ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rg-footer a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .rg-footer__top {
+    padding-top: 44px;
+  }
+
+  .rg-footer__club {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 28px 20px;
+    border: 1px solid rgba(28, 203, 245, 0.35);
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(28, 203, 245, 0.16) 0%, rgba(28, 203, 245, 0.05) 100%);
+  }
+
+  .rg-footer__club-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .rg-footer__club-title {
+    font-family: var(--rg-font-display);
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--rg-on-dark);
+  }
+
+  .rg-footer__accent {
+    color: var(--rg-accent);
+  }
+
+  .rg-footer__club-text {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--rg-on-dark-2);
+    text-wrap: pretty;
+  }
+
+  .rg-footer__form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .rg-footer__form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .rg-footer__input {
+    width: 100%;
+    min-width: 0;
+    height: 52px;
+    padding: 0 22px;
+    border: 1px solid rgba(28, 203, 245, 0.35);
+    border-radius: 999px;
+    background: rgba(26, 26, 26, 0.35);
+    color: var(--rg-on-dark);
+    font: 400 16px/1 var(--rg-font-body);
+    outline: none;
+  }
+
+  .rg-footer__input::placeholder {
+    color: #8a8a8a;
+  }
+
+  .rg-footer__input:focus-visible {
+    border-color: var(--rg-accent);
+    box-shadow: 0 0 0 3px rgba(28, 203, 245, 0.25);
+  }
+
+  .rg-footer__input.is-invalid {
+    border-color: #ff6b6b;
+  }
+
+  .rg-footer .rg-footer__submit {
+    width: 100%;
+    min-height: 52px;
+    padding: 0 24px;
+    font-size: 15px;
+    box-shadow: var(--rg-glow-btn);
+  }
+
+  .rg-footer__msg {
+    min-height: 18px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .rg-footer__msg .is-success {
+    color: var(--rg-accent);
+  }
+
+  .rg-footer__msg .is-error {
+    color: #ff8a8a;
+  }
+
+  .rg-footer__main {
+    padding-top: 56px;
+    scroll-margin-top: 80px;
+  }
+
+  .rg-footer__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 20px;
+    padding-bottom: 48px;
+  }
+
+  .rg-footer__brand {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .rg-footer__logo {
+    display: inline-flex;
+    align-self: flex-start;
+    font: 900 26px/1 var(--rg-font-body);
+    letter-spacing: 0.01em;
+    color: var(--rg-on-dark);
+  }
+
+  .rg-footer__logo-img {
+    display: block;
+    width: auto;
+    height: 19px;
+  }
+
+  .rg-footer__socials {
+    display: flex;
+    gap: 12px;
+  }
+
+  .rg-footer__social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(28, 203, 245, 0.35);
+    border-radius: 50%;
+    background: rgba(28, 203, 245, 0.08);
+    color: var(--rg-on-dark);
+    transition: background 0.25s, color 0.25s;
+  }
+
+  .rg-footer__social:hover {
+    background: var(--rg-accent);
+    color: var(--rg-ink);
+  }
+
+  .rg-footer__col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .rg-footer__col-title {
+    margin-bottom: 2px;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.3em;
+    color: var(--rg-accent);
+  }
+
+  .rg-footer__links {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .rg-footer__link {
+    font-size: 16px;
+    line-height: 1.3;
+    color: var(--rg-on-dark-3);
+    transition: color 0.2s;
+  }
+
+  .rg-footer__link:hover,
+  .rg-footer__policies a:hover {
+    color: var(--rg-accent);
+  }
+
+  .rg-footer__pay-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 28px 0;
+    border-top: 1px solid rgba(28, 203, 245, 0.18);
+  }
+
+  .rg-footer__pay {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .rg-footer__pay-icon {
+    display: block;
+    width: auto;
+    height: 31px;
+    border-radius: 6px;
+  }
+
+  .rg-footer__secure {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--rg-on-dark-3);
+  }
+
+  .rg-footer__secure svg {
+    color: var(--rg-accent);
+  }
+
+  .rg-footer__legal {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 14px;
+    padding: 24px 0 16px;
+    border-top: 1px solid rgba(28, 203, 245, 0.18);
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--rg-on-dark-2);
+  }
+
+  .rg-footer__policies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+  }
+
+  .rg-footer__disclaimer {
+    padding-bottom: 32px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--rg-text-3);
+  }
+
+  /* ---------- Desktop ---------- */
+  @media screen and (min-width: 990px) {
+    .rg-footer__top {
+      padding-top: 64px;
+    }
+
+    .rg-footer__club {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      align-items: center;
+      gap: 40px;
+      padding: 36px 38px;
+      border-radius: 24px;
+    }
+
+    .rg-footer__club-copy {
+      gap: 12px;
+    }
+
+    .rg-footer__club-title {
+      font-size: 30px;
+    }
+
+    .rg-footer__form-row {
+      flex-direction: row;
+    }
+
+    .rg-footer__input {
+      flex: 1;
+      font-size: 15px;
+    }
+
+    .rg-footer .rg-footer__submit {
+      width: auto;
+      height: 52px;
+      padding: 0 32px;
+    }
+
+    .rg-footer__msg {
+      padding-left: 22px;
+    }
+
+    .rg-footer__main {
+      padding-top: 40px;
+    }
+
+    .rg-footer__grid {
+      grid-template-columns: 1.6fr repeat(var(--rg-footer-cols, 3), minmax(0, 1fr));
+      gap: 40px;
+    }
+
+    .rg-footer__brand {
+      grid-column: auto;
+    }
+
+    .rg-footer__socials {
+      gap: 10px;
+    }
+
+    .rg-footer__social {
+      width: 38px;
+      height: 38px;
+    }
+
+    .rg-footer__col {
+      gap: 14px;
+    }
+
+    .rg-footer__col-title {
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .rg-footer__links {
+      gap: 14px;
+    }
+
+    .rg-footer__link {
+      font-size: 15px;
+    }
+
+    .rg-footer__pay-row {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 24px 0;
+    }
+
+    .rg-footer__pay {
+      gap: 12px;
+    }
+
+    .rg-footer__legal {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 22px 0 14px;
+      font-size: 13px;
+    }
+
+    .rg-footer__policies {
+      gap: 24px;
+    }
+
+    .rg-footer__disclaimer {
+      padding-bottom: 36px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RG · Footer",
+  "class": "rg-footer-section",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show newsletter card",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_start",
+      "label": "Heading — start",
+      "default": "Join the"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_accent",
+      "label": "Heading — accent (blue)",
+      "default": "Raw Gravity"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_end",
+      "label": "Heading — end",
+      "default": "Club"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_text",
+      "label": "Text",
+      "default": "For exclusive offers, giveaways, new recipes and science-backed wellness tips."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Email placeholder",
+      "default": "Your email"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button",
+      "label": "Button label",
+      "default": "SIGN UP"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_success",
+      "label": "Success message",
+      "default": "You're in! Check your inbox for your welcome offer."
+    },
+    {
+      "type": "header",
+      "content": "Brand"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "default": "contact",
+      "info": "Used by links such as /#contact."
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "YouTube"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook"
+    },
+    {
+      "type": "header",
+      "content": "Bottom"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "secure_text",
+      "label": "Secure checkout text",
+      "default": "100% Secure Checkout"
+    },
+    {
+      "type": "textarea",
+      "id": "disclaimer",
+      "label": "Disclaimer",
+      "default": "*These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "links",
+      "name": "Link column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "SHOP"
+        },
+        {
+          "type": "textarea",
+          "id": "links",
+          "label": "Links",
+          "info": "One per line: Label | URL (for example: FAQ | /#faq)"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "RG · Footer",
+      "blocks": [
+        { "type": "links", "settings": { "heading": "SHOP", "links": "Home | /" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

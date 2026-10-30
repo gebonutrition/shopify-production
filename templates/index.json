@@ -52,7 +52,8 @@
         "button_link": "",
         "guarantee_image": "shopify://shop_images/rg-guarantee-seal.png",
         "guarantee_title": "60-Day Money-Back Guarantee",
-        "guarantee_text": "Results or a full refund. No return required. No questions asked."
+        "guarantee_text": "Results or a full refund. No return required. No questions asked.",
+        "anchor": "top"
       }
     },
     "rg_benefits_band": {
@@ -261,7 +262,8 @@
         "eyebrow": "FUNCTIONAL BENEFITS",
         "heading_start": "What Makes It",
         "heading_accent": "Different",
-        "open_first": true
+        "open_first": true,
+        "anchor": "benefits"
       }
     },
     "rg_reviews": {
@@ -371,6 +373,49 @@
         "show_stars": true,
         "heading": "Read Our Reviews",
         "button_label": "TRY IT NOW",
+        "button_link": "",
+        "anchor": "reviews-list"
+      }
+    },
+    "rg_video_reviews": {
+      "type": "rg-video-reviews",
+      "blocks": {
+        "rg_video_1": {
+          "type": "video",
+          "settings": {
+            "caption": "My morning starts with this cup"
+          }
+        },
+        "rg_video_2": {
+          "type": "video",
+          "settings": {
+            "caption": "My new pre-workout ritual"
+          }
+        },
+        "rg_video_3": {
+          "type": "video",
+          "settings": {
+            "caption": "Always in my bag, wherever I go"
+          }
+        },
+        "rg_video_4": {
+          "type": "video",
+          "settings": {
+            "caption": "Ready in 30 seconds"
+          }
+        }
+      },
+      "block_order": [
+        "rg_video_1",
+        "rg_video_2",
+        "rg_video_3",
+        "rg_video_4"
+      ],
+      "settings": {
+        "anchor": "reviews",
+        "eyebrow": "REAL PEOPLE. REAL MORNINGS.",
+        "heading": "Join the Community",
+        "button_label": "GET STARTED NOW",
         "button_link": ""
       }
     }
@@ -379,6 +424,7 @@
     "rg_hero",
     "rg_benefits_band",
     "rg_differentiators",
+    "rg_video_reviews",
     "rg_reviews"
   ]
 }

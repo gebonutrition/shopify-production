@@ -25,7 +25,12 @@
   assign button_link = s.button_link | default: routes.all_products_collection_url
 -%}
 
-<section class="rg rg-reviews" id="rg-reviews-{{ section.id }}">
+<section
+  class="rg rg-reviews"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
   <div class="rg-container">
     <div class="rg-reviews__head">
       {%- if s.eyebrow != blank -%}
@@ -653,6 +658,13 @@
   "settings": [
     {
       "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "default": "reviews-list",
+      "info": "Used by links such as /#reviews-list."
+    },
+    {
+      "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow",
       "default": "RATED 4.8 ON AMAZON",
@@ -730,8 +742,18 @@
     {
       "name": "RG · Reviews",
       "blocks": [
-        { "type": "review", "settings": { "group": "ENERGY" } },
-        { "type": "review", "settings": { "group": "ENERGY" } }
+        {
+          "type": "review",
+          "settings": {
+            "group": "ENERGY"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "group": "ENERGY"
+          }
+        }
       ]
     }
   ]

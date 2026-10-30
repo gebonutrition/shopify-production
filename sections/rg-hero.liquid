@@ -12,7 +12,9 @@
 
 <section
   class="rg rg-hero"
-  id="rg-hero-{{ section.id }}"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
   style="--rg-hero-mobile-bg: {{ s.mobile_background }};"
 >
   <div class="rg-hero__inner rg-container">
@@ -508,6 +510,13 @@
   "class": "rg-hero-section",
   "settings": [
     {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "default": "top",
+      "info": "Used by links such as /#top."
+    },
+    {
       "type": "header",
       "content": "Image"
     },
@@ -648,9 +657,24 @@
     {
       "name": "RG · Hero",
       "blocks": [
-        { "type": "badge", "settings": { "text": "LOW CAFFEINE" } },
-        { "type": "badge", "settings": { "text": "+ CREATINE" } },
-        { "type": "badge", "settings": { "text": "LION'S MANE" } }
+        {
+          "type": "badge",
+          "settings": {
+            "text": "LOW CAFFEINE"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "text": "+ CREATINE"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "text": "LION'S MANE"
+          }
+        }
       ]
     }
   ]

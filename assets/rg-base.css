@@ -100,6 +100,7 @@ body {
 .rg {
   font-family: var(--rg-font-body);
   color: var(--rg-ink);
+  scroll-margin-top: 76px;
 }
 
 .rg *,
