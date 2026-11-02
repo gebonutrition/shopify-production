@@ -50,7 +50,7 @@
         "offer_end": "Your First Order",
         "offer_text": "Low-caffeine coffee with Lion's Mane & Creatine",
         "button_label": "TRY RAW COFFEE",
-        "button_link": "",
+        "button_link": "shopify://products/raw-coffee-signature-jar",
         "guarantee_image": "shopify://shop_images/rg-guarantee-seal.png",
         "guarantee_title": "60-Day Money-Back Guarantee",
         "guarantee_text": "Results or a full refund. No return required. No questions asked."
@@ -309,7 +309,7 @@
         "eyebrow": "REAL PEOPLE. REAL MORNINGS.",
         "heading": "Join the Community",
         "button_label": "GET STARTED NOW",
-        "button_link": ""
+        "button_link": "shopify://products/raw-coffee-signature-jar"
       }
     },
     "rg_reviews": {
@@ -420,7 +420,7 @@
         "show_stars": true,
         "heading": "Read Our Reviews",
         "button_label": "TRY IT NOW",
-        "button_link": ""
+        "button_link": "shopify://products/raw-coffee-signature-jar"
       }
     },
     "rg_ingredients": {
@@ -537,7 +537,7 @@
         "fun_fact": "Fun Fact: <strong>Caffeine</strong> is also considered a nootropic.",
         "left_count": 5,
         "button_label": "TRY RAW COFFEE",
-        "button_link": ""
+        "button_link": "shopify://products/raw-coffee-signature-jar"
       }
     },
     "rg_shop": {
@@ -546,6 +546,7 @@
         "rg_shop_jar": {
           "type": "card",
           "settings": {
+            "product": "raw-coffee-signature-jar",
             "image": "shopify://shop_images/rg-jar.jpg",
             "link": "",
             "badge": "BEST SELLER",
@@ -559,6 +560,7 @@
         "rg_shop_refill": {
           "type": "card",
           "settings": {
+            "product": "raw-coffee-refill-pouch",
             "image": "shopify://shop_images/rg-refill.jpg",
             "link": "",
             "badge": "BEST VALUE",
@@ -572,6 +574,7 @@
         "rg_shop_tmm": {
           "type": "card",
           "settings": {
+            "product": "raw-gravity-take-my-muffin-exclusive-edition",
             "image": "shopify://shop_images/rg-tmm.jpg",
             "link": "",
             "badge": "LIMITED EDITION",
