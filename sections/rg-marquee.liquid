@@ -224,7 +224,7 @@
 {% endstylesheet %}
 
 {% javascript %}
-  /* RAW GRAVITY · countdown used inside rg-marquee.
+  /* RAW GRAVITY · countdown used inside rg-marquee and rg-pdp-main (same timer, same storage key).
      Per-session timer: restarts when it reaches zero (matches the Claude Design behaviour). */
   if (!customElements.get('rg-countdown')) {
     customElements.define(
@@ -266,7 +266,15 @@
           if (this.end <= Date.now()) this.end = this.restart();
           const left = Math.max(0, Math.floor((this.end - Date.now()) / 1000));
           const pad = (value) => String(value).padStart(2, '0');
-          this.textContent = pad(Math.floor(left / 3600)) + ':' + pad(Math.floor(left / 60) % 60) + ':' + pad(left % 60);
+          const time = { h: pad(Math.floor(left / 3600)), m: pad(Math.floor(left / 60) % 60), s: pad(left % 60) };
+          /* data-mode="boxes" (product page): fill [data-part] boxes instead of replacing the text */
+          if (this.dataset.mode === 'boxes') {
+            this.querySelectorAll('[data-part]').forEach((part) => {
+              part.textContent = time[part.dataset.part] || '00';
+            });
+            return;
+          }
+          this.textContent = time.h + ':' + time.m + ':' + time.s;
         }
       }
     );

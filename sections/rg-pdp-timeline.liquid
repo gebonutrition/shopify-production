@@ -1,0 +1,442 @@
+{%- comment -%}
+  RAW GRAVITY · Product page "Your first 90 days" timeline (dark).
+  Desktop: sticky intro left, glowing timeline right. Mobile: stacked.
+  The leading number in each stat counts up once when it scrolls into view.
+  Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "06.2 Timeline".
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+
+<section class="rg rg-tl rg-pdp-dark">
+  <div class="rg-pdp-wrap rg-tl__grid">
+    <div class="rg-tl__intro">
+      {%- if s.eyebrow != blank -%}
+        <p class="rg-pdp-eyebrow rg-tl__eyebrow">{{ s.eyebrow | escape | newline_to_br }}</p>
+      {%- endif -%}
+      <h2 class="rg-pdp-h2">{{ s.heading | escape }}</h2>
+      {%- if s.text != blank -%}
+        <p class="rg-tl__text">{{ s.text | escape }}</p>
+      {%- endif -%}
+      {%- if s.button_label != blank -%}
+        <div class="rg-tl__cta rg-tl__cta--desktop">
+          <a class="rg-pdp-cta" href="{{ s.button_link | default: '#buy' }}">{{ s.button_label | escape }}</a>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <rg-count-up class="rg-tl__track">
+      <span class="rg-tl__line" aria-hidden="true"></span>
+      <ol class="rg-tl__list" role="list">
+        {%- for block in section.blocks -%}
+          <li class="rg-tl__item" {{ block.shopify_attributes }}>
+            <span class="rg-tl__star" aria-hidden="true">
+              <span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z" fill="currentColor"/></svg></span>
+            </span>
+            <span class="rg-tl__pill">
+              <svg class="rg-tl__pill-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9 15l6-6M10 9h5v5"/></svg>
+              <span class="rg-tl__when">{{ block.settings.when | escape }}</span>
+              <span class="rg-tl__title">{{ block.settings.title | escape }}</span>
+            </span>
+            <p class="rg-tl__body">{{ block.settings.text | escape }}</p>
+            {%- if block.settings.stat_strong != blank or block.settings.stat_text != blank -%}
+              <p class="rg-tl__stat">
+                <strong data-count>{{ block.settings.stat_strong | escape }}</strong>
+                {{ block.settings.stat_text | escape }}
+              </p>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ol>
+    </rg-count-up>
+
+    {%- if s.button_label != blank -%}
+      <div class="rg-pdp-cta-row rg-tl__cta--mobile">
+        <a class="rg-pdp-cta" href="{{ s.button_link | default: '#buy' }}">{{ s.button_label | escape }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .rg-tl {
+    background: radial-gradient(ellipse at 10% 0%, #26464f 0%, #323232 50%, #2e2e2e 100%);
+  }
+
+  .rg-tl__text {
+    margin: 10px 0 22px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--rg-on-dark-2);
+    text-wrap: pretty;
+  }
+
+  .rg-tl__cta--desktop {
+    display: none;
+  }
+
+  .rg-tl__track {
+    position: relative;
+    display: block;
+    padding-left: 48px;
+  }
+
+  .rg-tl__line {
+    position: absolute;
+    top: 30px;
+    bottom: 30px;
+    left: 17px;
+    width: 2px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #1ccbf5 0%, rgba(28, 203, 245, 0.5) 60%, rgba(28, 203, 245, 0.15) 100%);
+    box-shadow: 0 0 10px rgba(28, 203, 245, 0.5);
+  }
+
+  .rg-tl__list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rg-tl__item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .rg-tl__star {
+    position: absolute;
+    top: 4px;
+    left: -48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(28, 203, 245, 0.18);
+    box-shadow: 0 0 16px rgba(28, 203, 245, 0.55);
+    color: var(--rg-accent);
+  }
+
+  .rg-tl__star > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--rg-white);
+  }
+
+  .rg-tl__star svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .rg-tl__pill {
+    display: flex;
+    flex-wrap: wrap;
+    align-self: flex-start;
+    align-items: center;
+    gap: 4px 8px;
+    min-height: 44px;
+    padding: 8px 18px 8px 12px;
+    border-radius: 24px;
+    background: var(--rg-white);
+  }
+
+  .rg-tl__pill-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--rg-accent-dark);
+  }
+
+  .rg-tl__when,
+  .rg-tl__title {
+    font-family: var(--rg-font-display);
+    font-size: 15px;
+  }
+
+  .rg-tl__when {
+    font-weight: 900;
+    color: var(--rg-accent-dark);
+    white-space: nowrap;
+  }
+
+  .rg-tl__title {
+    font-weight: 800;
+    color: var(--rg-ink);
+  }
+
+  .rg-tl__body {
+    margin: 0;
+    padding: 0 4px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--rg-on-dark-3);
+    text-wrap: pretty;
+  }
+
+  .rg-tl__stat {
+    margin: 0;
+    padding: 14px 16px;
+    border: 1px solid rgba(28, 203, 245, 0.35);
+    border-radius: 14px;
+    background: rgba(28, 203, 245, 0.1);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--rg-on-dark);
+  }
+
+  .rg-tl__stat strong {
+    font-weight: 900;
+    color: var(--rg-accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media screen and (min-width: 990px) {
+    .rg-tl {
+      background: radial-gradient(ellipse at 15% 0%, #26464f 0%, #323232 45%, #2e2e2e 100%);
+    }
+
+    .rg-tl__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: 64px;
+      align-items: center;
+    }
+
+    .rg-tl__intro {
+      position: sticky;
+      top: 160px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .rg-tl__eyebrow {
+      margin: 0;
+    }
+
+    .rg-tl__text {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .rg-tl__cta--desktop {
+      display: flex;
+      margin-top: 12px;
+    }
+
+    .rg-tl__cta--mobile {
+      display: none;
+    }
+
+    .rg-tl__track {
+      padding-left: 72px;
+    }
+
+    .rg-tl__line {
+      top: 40px;
+      bottom: 40px;
+      left: 25px;
+      width: 3px;
+      background: linear-gradient(180deg, #1ccbf5 0%, rgba(28, 203, 245, 0.55) 60%, rgba(28, 203, 245, 0.15) 100%);
+      box-shadow: 0 0 14px rgba(28, 203, 245, 0.5);
+    }
+
+    .rg-tl__list {
+      gap: 14px;
+    }
+
+    .rg-tl__item {
+      gap: 8px;
+    }
+
+    .rg-tl__star {
+      top: -5px;
+      left: -72px;
+      width: 54px;
+      height: 54px;
+      box-shadow: 0 0 24px rgba(28, 203, 245, 0.55);
+    }
+
+    .rg-tl__star > span {
+      width: 38px;
+      height: 38px;
+    }
+
+    .rg-tl__star svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .rg-tl__pill {
+      flex-wrap: nowrap;
+      gap: 10px;
+      padding: 6px 22px 6px 16px;
+      border-radius: 22px;
+      line-height: 1.2;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .rg-tl__pill-icon {
+      width: 28px;
+      height: 28px;
+    }
+
+    .rg-tl__when,
+    .rg-tl__title {
+      font-size: 18px;
+    }
+
+    .rg-tl__body {
+      padding: 0 6px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .rg-tl__stat {
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 15px;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  /* RAW GRAVITY · counts the first number inside [data-count] up from 0 when visible. */
+  if (!customElements.get('rg-count-up')) {
+    customElements.define(
+      'rg-count-up',
+      class RgCountUp extends HTMLElement {
+        connectedCallback() {
+          const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (reduce || !('IntersectionObserver' in window)) return;
+          this.items = Array.from(this.querySelectorAll('[data-count]')).map((el) => ({
+            el,
+            text: el.textContent,
+            target: Number((el.textContent.match(/\d+/) || [])[0]),
+          }));
+          this.items = this.items.filter((item) => item.target > 0);
+          this.items.forEach((item) => {
+            item.el.textContent = item.text.replace(/\d+/, '0');
+          });
+          this.observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                const item = this.items.find((candidate) => candidate.el === entry.target);
+                this.observer.unobserve(entry.target);
+                if (item) this.run(item);
+              });
+            },
+            { threshold: 0.6 }
+          );
+          this.items.forEach((item) => this.observer.observe(item.el));
+        }
+
+        disconnectedCallback() {
+          this.observer?.disconnect();
+        }
+
+        run(item) {
+          const start = performance.now();
+          const step = (now) => {
+            const progress = Math.min(1, (now - start) / 1300);
+            const value = Math.round(item.target * (1 - Math.pow(1 - progress, 3)));
+            item.el.textContent = item.text.replace(/\d+/, String(value));
+            if (progress < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        }
+      }
+    );
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "RG · 90-day timeline",
+  "class": "rg-tl-section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "info": "A line break shows on desktop only.",
+      "default": "YOUR FIRST 90 DAYS\nWITH RAW COFFEE+"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "THE LONGER YOU DRINK, THE MORE IT WORKS"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "GET STARTED NOW →"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "Empty = back to the buy box (#buy)."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stage",
+      "name": "Stage",
+      "settings": [
+        {
+          "type": "text",
+          "id": "when",
+          "label": "When",
+          "default": "DAY 1:"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Clean Energy, Zero Jitters"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "stat_strong",
+          "label": "Stat (highlighted)",
+          "default": "87% of customers",
+          "info": "The first number counts up. Must be backed by survey data."
+        },
+        {
+          "type": "text",
+          "id": "stat_text",
+          "label": "Stat text"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "RG · 90-day timeline",
+      "blocks": [{ "type": "stage" }, { "type": "stage" }, { "type": "stage" }, { "type": "stage" }]
+    }
+  ]
+}
+{% endschema %}

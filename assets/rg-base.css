@@ -291,3 +291,142 @@ body {
     transition: none;
   }
 }
+
+/* 4. Product page (rg-pdp-*) shared pieces --------------------------------
+   Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2. */
+.rg-pdp-wrap {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding: 44px 16px;
+}
+
+.rg-pdp-eyebrow {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.3em;
+  color: var(--rg-accent-dark);
+}
+
+.rg-pdp-eyebrow br {
+  display: none;
+}
+
+.rg-pdp-h2 {
+  margin: 0;
+  font-family: var(--rg-font-display);
+  font-size: 27px;
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--rg-ink);
+}
+
+.rg-pdp-lead {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--rg-text-2);
+  text-wrap: pretty;
+}
+
+.rg-pdp-cta-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.rg-pdp-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  padding: 0 24px;
+  border-radius: var(--rg-radius-btn);
+  background: var(--rg-accent);
+  box-shadow: var(--rg-shadow-btn);
+  color: var(--rg-ink);
+  font: 800 15px/1 var(--rg-font-body);
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: filter 0.2s var(--rg-ease);
+}
+
+.rg-pdp-cta:hover {
+  filter: brightness(1.05);
+  color: var(--rg-ink);
+}
+
+.rg-pdp-cta:focus-visible {
+  outline: 2px solid var(--rg-ink);
+  outline-offset: 3px;
+}
+
+.rg-pdp-dark {
+  background: radial-gradient(ellipse at 15% 0%, #26464f 0%, #323232 45%, #2e2e2e 100%);
+  color: var(--rg-on-dark);
+}
+
+.rg-pdp-dark .rg-pdp-eyebrow {
+  color: var(--rg-accent);
+}
+
+.rg-pdp-dark .rg-pdp-h2 {
+  color: var(--rg-on-dark);
+}
+
+.rg-pdp-dark .rg-pdp-cta {
+  height: 56px;
+  font-size: 16px;
+  box-shadow: var(--rg-glow-btn);
+}
+
+.rg-pdp-dark .rg-pdp-cta:focus-visible {
+  outline-color: var(--rg-on-dark);
+}
+
+@media screen and (min-width: 990px) {
+  .rg-pdp-wrap {
+    padding: clamp(28px, 4.5vh, 44px) 40px;
+  }
+
+  .rg-pdp-eyebrow {
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+
+  .rg-pdp-eyebrow br {
+    display: inline;
+  }
+
+  .rg-pdp-h2 {
+    font-size: clamp(32px, 3.2vw, 46px);
+  }
+
+  .rg-pdp-lead {
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .rg-pdp-cta-row {
+    margin-top: 22px;
+  }
+
+  .rg-pdp-cta,
+  .rg-pdp-dark .rg-pdp-cta {
+    width: auto;
+    height: 58px;
+    padding: 0 56px;
+    font-size: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rg-pdp-cta {
+    transition: none;
+  }
+}

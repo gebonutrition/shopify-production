@@ -1,0 +1,143 @@
+{%- comment -%}
+  RAW GRAVITY · "As seen in" strip (dark band with a white pill).
+  Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "04 As Seen In".
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+
+<section class="rg rg-seen">
+  <div class="rg-seen__inner">
+    {%- if s.label != blank -%}
+      <span class="rg-seen__label">{{ s.label | escape }}</span>
+    {%- endif -%}
+    {%- capture pill -%}
+      {%- if s.logo != blank -%}
+        {{ s.logo | image_url: height: 60 | image_tag: height: 22, loading: 'lazy', alt: s.text, class: 'rg-seen__logo' }}
+      {%- else -%}
+        {{- s.text | escape -}}
+        {%- if s.text_accent != blank -%}
+          &nbsp;<span class="rg-seen__accent">{{ s.text_accent | escape }}</span>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endcapture -%}
+    {%- if s.link != blank -%}
+      <a class="rg-seen__pill" href="{{ s.link }}">{{ pill }}</a>
+    {%- else -%}
+      <span class="rg-seen__pill">{{ pill }}</span>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .rg-seen {
+    border-top: 1px solid var(--rg-accent-line);
+    border-bottom: 1px solid var(--rg-accent-line);
+    background: radial-gradient(ellipse at 85% 0%, #26464f 0%, #323232 45%, #2e2e2e 100%);
+  }
+
+  .rg-seen__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 14px 16px;
+  }
+
+  .rg-seen__label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: var(--rg-accent);
+  }
+
+  .rg-seen__pill {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    padding: 0 12px;
+    border-radius: 15px;
+    background: var(--rg-white);
+    box-shadow: 0 0 18px rgba(28, 203, 245, 0.3);
+    color: var(--rg-ink);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  .rg-seen__accent {
+    color: var(--rg-accent-dark);
+  }
+
+  .rg-seen__logo {
+    display: block;
+    width: auto;
+    height: 18px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .rg-seen__inner {
+      gap: 18px;
+      padding: 20px 40px;
+    }
+
+    .rg-seen__label {
+      font-size: 13px;
+    }
+
+    .rg-seen__pill {
+      height: 38px;
+      padding: 0 18px;
+      border-radius: 19px;
+      font-size: 18px;
+    }
+
+    .rg-seen__logo {
+      height: 22px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RG · As seen in",
+  "class": "rg-seen-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "AS SEEN IN"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Pill text",
+      "default": "amazon"
+    },
+    {
+      "type": "text",
+      "id": "text_accent",
+      "label": "Pill accent text",
+      "default": "prime"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo instead of text",
+      "info": "Use only marks you are licensed to use."
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "RG · As seen in"
+    }
+  ]
+}
+{% endschema %}

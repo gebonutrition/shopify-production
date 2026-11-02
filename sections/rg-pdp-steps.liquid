@@ -1,0 +1,228 @@
+{%- comment -%}
+  RAW GRAVITY · Product page "How to prepare" (4 photo steps).
+  Desktop: heading left / text right, 4 columns. Mobile: stacked heading, 2 x 2 grid.
+  Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "05 How to prepare".
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+
+<section
+  class="rg rg-steps"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="rg-pdp-wrap">
+    <div class="rg-steps__head">
+      <h2 class="rg-pdp-h2 rg-steps__title">{{ s.heading | escape }}</h2>
+      {%- if s.text != blank -%}
+        <p class="rg-pdp-lead rg-steps__text">{{ s.text | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <ol class="rg-steps__grid" role="list">
+      {%- for block in section.blocks -%}
+        <li class="rg-steps__item" {{ block.shopify_attributes }}>
+          <div class="rg-steps__media">
+            {%- if block.settings.image != blank -%}
+              {{
+                block.settings.image
+                | image_url: width: 1200
+                | image_tag:
+                  widths: '300, 450, 600, 900, 1200',
+                  sizes: '(min-width: 990px) 310px, 45vw',
+                  loading: 'lazy',
+                  alt: block.settings.image.alt
+              }}
+            {%- endif -%}
+          </div>
+          <div class="rg-steps__copy">
+            <span class="rg-steps__step">{{ block.settings.title | escape }}</span>
+            <span class="rg-steps__desc">{{ block.settings.text | escape }}</span>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ol>
+
+    {%- if s.button_label != blank -%}
+      <div class="rg-pdp-cta-row">
+        <a class="rg-pdp-cta" href="{{ s.button_link | default: '#buy' }}">{{ s.button_label | escape }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .rg-steps {
+    background: var(--rg-white);
+  }
+
+  .rg-steps__head {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .rg-steps__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rg-steps__item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .rg-steps__media {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #eceef2;
+  }
+
+  .rg-steps__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .rg-steps__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .rg-steps__step {
+    font-size: 12.5px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+  }
+
+  .rg-steps__desc {
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--rg-text-2);
+    text-wrap: pretty;
+    white-space: pre-line;
+  }
+
+  @media screen and (min-width: 990px) {
+    .rg-steps__head {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 48px;
+      margin-bottom: 28px;
+    }
+
+    .rg-steps__title,
+    .rg-steps__text {
+      max-width: 520px;
+    }
+
+    .rg-steps__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .rg-steps__item {
+      gap: 12px;
+    }
+
+    .rg-steps__media {
+      aspect-ratio: 3 / 2;
+      border-radius: 20px;
+    }
+
+    .rg-steps__copy {
+      gap: 4px;
+    }
+
+    .rg-steps__step {
+      font-size: 18px;
+    }
+
+    .rg-steps__desc {
+      font-size: 15px;
+      line-height: 1.5;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RG · How to prepare",
+  "class": "rg-steps-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "default": "how-to"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "YOUR PERFECT CUP IN 30 SECONDS"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "TRY RAW COFFEE →"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "Empty = back to the buy box (#buy)."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "STEP ONE · SCOOP"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "info": "Line breaks are kept."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "RG · How to prepare",
+      "blocks": [{ "type": "step" }, { "type": "step" }, { "type": "step" }, { "type": "step" }]
+    }
+  ]
+}
+{% endschema %}

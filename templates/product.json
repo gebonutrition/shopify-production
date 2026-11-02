@@ -10,406 +10,375 @@
 {
   "sections": {
     "main": {
-      "type": "product-information",
+      "type": "rg-pdp-main",
       "blocks": {
-        "media-gallery": {
-          "type": "_product-media-gallery",
-          "static": true,
+        "pack_1": {
+          "type": "pack",
           "settings": {
-            "media_presentation": "grid",
-            "media_columns": "two",
-            "image_gap": 4,
-            "large_first_image": false,
-            "icons_style": "arrow",
-            "slideshow_controls_style": "counter",
-            "slideshow_mobile_controls_style": "dots",
-            "thumbnail_position": "right",
-            "thumbnail_width": 44,
-            "aspect_ratio": "adapt",
-            "constrain_to_viewport": true,
-            "media_fit": "contain",
-            "media_radius": 0,
-            "extend_media": false,
-            "zoom": true,
-            "video_loop": false,
-            "hide_variants": true,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "quantity": 1,
+            "discount_percent": "0",
+            "title": "Starter — 1 Jar",
+            "supply": "30-Day Supply",
+            "tag": "",
+            "tag_style": "dark",
+            "default": false
+          }
         },
-        "product-details": {
-          "type": "_product-details",
-          "static": true,
+        "pack_3": {
+          "type": "pack",
           "settings": {
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "details_position": "flex-start",
-            "gap": 28,
-            "sticky_details_desktop": true,
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 24,
-            "padding-block-end": 24,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "group_icgrde": {
-              "type": "group",
-              "name": "t:names.header",
-              "settings": {
-                "content_direction": "column",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "flex-start",
-                "vertical_alignment": "center",
-                "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "flex-start",
-                "vertical_alignment_flex_direction_column": "center",
-                "gap": 12,
-                "width": "fill",
-                "custom_width": 100,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "custom_height": 100,
-                "background_media": "none",
-                "video_position": "cover",
-                "background_image_position": "cover",
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "link": "",
-                "open_in_new_tab": false,
-                "placeholder": "",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {
-                "text_xpVMaM": {
-                  "type": "text",
-                  "name": "t:names.title",
-                  "settings": {
-                    "text": "<h1>{{ closest.product.title }}</h1>",
-                    "width": "fit-content",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "h3",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
-                "price_tVjtKg": {
-                  "type": "price",
-                  "settings": {
-                    "show_sale_price_first": true,
-                    "show_installments": true,
-                    "show_tax_info": true,
-                    "type_preset": "paragraph",
-                    "width": "100%",
-                    "alignment": "left",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "padding-block-start": 4,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "text_xpVMaM",
-                "price_tVjtKg"
-              ]
-            },
-            "divider_VJhene": {
-              "type": "_divider",
-              "name": "t:names.divider",
-              "settings": {
-                "thickness": 1,
-                "corner_radius": "square",
-                "divider_color": "{{ settings.color_palette.color3 }}",
-                "width_percent": 100,
-                "padding-block-start": 0,
-                "padding-block-end": 0
-              },
-              "blocks": {}
-            },
-            "variant_picker_R3rGDr": {
-              "type": "variant-picker",
-              "settings": {
-                "variant_style": "buttons",
-                "show_swatches": false,
-                "alignment": "left",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "buy_buttons_eYQEYi": {
-              "type": "buy-buttons",
-              "settings": {
-                "stacking": true,
-                "show_pickup_availability": false,
-                "gift_card_form": true,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {
-                "quantity": {
-                  "type": "quantity",
-                  "static": true,
-                  "settings": {},
-                  "blocks": {}
-                },
-                "add-to-cart": {
-                  "type": "add-to-cart",
-                  "static": true,
-                  "settings": {
-                    "style_class": "button"
-                  },
-                  "blocks": {}
-                },
-                "accelerated-checkout": {
-                  "type": "accelerated-checkout",
-                  "static": true,
-                  "settings": {},
-                  "blocks": {}
-                }
-              },
-              "block_order": []
-            },
-            "text_aEtTtq": {
-              "type": "text",
-              "name": "t:names.product_description",
-              "settings": {
-                "text": "{{ closest.product.description }}",
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "group_icgrde",
-            "divider_VJhene",
-            "variant_picker_R3rGDr",
-            "buy_buttons_eYQEYi",
-            "text_aEtTtq"
-          ]
+            "quantity": 3,
+            "discount_percent": "13.23",
+            "title": "Full Reset — 3 Jars",
+            "supply": "90-Day Supply",
+            "tag": "MOST CHOSEN",
+            "tag_style": "dark",
+            "default": true
+          }
         },
-        "disclosures": {
-          "type": "disclosures",
+        "pack_5": {
+          "type": "pack",
           "settings": {
-            "padding-block-start": 0,
-            "padding-block-end": 0
-          },
-          "blocks": {}
+            "quantity": 5,
+            "discount_percent": "19.88",
+            "title": "Stock Up — 5 Jars",
+            "supply": "150-Day Supply",
+            "tag": "BEST VALUE",
+            "tag_style": "accent",
+            "default": false
+          }
+        },
+        "tab_1": {
+          "type": "tab",
+          "settings": {
+            "title": "PRODUCT DESCRIPTION",
+            "use_description": false,
+            "content": "<p>Raw Coffee+ is low-caffeine 100% Arabica blended with Lion's Mane and creatine, plus L-Theanine and Taurine for calm, steady energy, L-Tyrosine for motivation, Bacopa and Ginkgo for memory and alertness, and Holy Basil to help you handle stress. You keep the taste and ritual of real coffee, and the energy builds gently and stays. 30 servings per bag.</p>"
+          }
+        },
+        "tab_2": {
+          "type": "tab",
+          "settings": {
+            "title": "WHY RAW COFFEE+",
+            "use_description": false,
+            "content": "<p>Regular coffee lifts you fast and drops you just as fast. Raw Coffee+ has about 23 mg of caffeine per serving — roughly a quarter of a regular coffee — plus L-Theanine and adaptogens, so your energy stays smooth from morning to evening.</p>"
+          }
+        },
+        "tab_3": {
+          "type": "tab",
+          "settings": {
+            "title": "INGREDIENTS",
+            "use_description": false,
+            "content": "<p>Creatine Monohydrate 3,000 mg · 100% Arabica Coffee, decaffeinated 2,300 mg · Lion's Mane Extract 10:1 1,000 mg · Taurine 200 mg · L-Theanine 100 mg · L-Tyrosine 100 mg · Holy Basil Extract 100 mg · Bacopa Monnieri 100 mg · Ginkgo Biloba Extract 100 mg. No added sugar, no fillers, no proprietary blends.</p>"
+          }
+        },
+        "tab_4": {
+          "type": "tab",
+          "settings": {
+            "title": "BENEFITS",
+            "use_description": false,
+            "content": "<p>Steady energy: low caffeine plus 3,000 mg of creatine, L-Theanine and Taurine give you smooth energy that lasts all day, with no jitters and no 3 p.m. crash. Sharper focus: 1,000 mg of Lion's Mane, L-Tyrosine, Bacopa and Ginkgo support concentration, motivation and memory. Less stress: Holy Basil and L-Theanine help you stay calm and clear-headed when the day gets busy. A happier gut: low-caffeine Arabica with no added sugar or fillers is gentler on your stomach than regular coffee.</p>"
+          }
+        },
+        "tab_5": {
+          "type": "tab",
+          "settings": {
+            "title": "SHIPPING, RETURNS & GUARANTEE",
+            "use_description": false,
+            "content": "<p>✓  Free US shipping</p><p>✓  60-day money-back guarantee</p><p>✓  Secure checkout</p>"
+          }
+        },
+        "tab_6": {
+          "type": "tab",
+          "settings": {
+            "title": "HOW TO USE",
+            "use_description": false,
+            "content": "<p>Add one scoop (7 g) to 8–12 oz of hot water or milk and stir for 15 seconds. Prefer it iced? Dissolve it in a splash of hot water, then add ice and oat milk. One cup a day, best in the morning.</p>"
+          }
         }
       },
       "block_order": [
-        "disclosures"
+        "pack_1",
+        "pack_3",
+        "pack_5",
+        "tab_1",
+        "tab_2",
+        "tab_3",
+        "tab_4",
+        "tab_5",
+        "tab_6"
       ],
       "settings": {
-        "content_width": "content-center-aligned",
-        "desktop_media_position": "left",
-        "equal_columns": false,
-        "limit_details_width": false,
-        "gap": 48,
-        "padding-block-start": 0,
-        "padding-block-end": 0
+        "anchor": "buy",
+        "rating_text": "Rated 4.8 on Amazon",
+        "subtitle": "Our low-caffeine mushroom coffee\nin a limited-run collab pack.",
+        "badge_text": "[percent]% OFF TODAY",
+        "show_countdown": true,
+        "countdown_label": "Sale Ends in",
+        "countdown_minutes": 15,
+        "cta_label": "GET STARTED TODAY →",
+        "show_top_cta": true,
+        "bullets": "Calm, steady energy  no jitters, no 3 p.m. crash\nClear, sharp focus that lasts for hours\nGentle on your gut  low caffeine, no bloating",
+        "bundle_heading": "CHOOSE YOUR BUNDLE · SAVE UP TO 35%",
+        "unit_singular": "Jar",
+        "unit_plural": "Jars",
+        "servings_per_unit": 30,
+        "per_serving_label": "per serving",
+        "show_subscription": true,
+        "subscription_default": true,
+        "subscription_title": "Subscribe & never run out",
+        "subscription_text": "Keep your [percent]% off on every refill. Skip, pause or cancel anytime.",
+        "show_shipping": true,
+        "shipping_title": "Free US Shipping",
+        "shipping_text": "Fast, tracked delivery straight to your door.",
+        "show_guarantee": true,
+        "guarantee_days": 60,
+        "guarantee_title": "60-Day Money-Back Guarantee",
+        "guarantee_text": "Results or a full refund. No return required. No questions asked.",
+        "show_payment_icons": true,
+        "open_first_tab": true
       }
     },
-    "product_recommendations_qggXJq": {
-      "type": "product-recommendations",
+    "rg_as_seen": {
+      "type": "rg-pdp-as-seen",
+      "settings": {
+        "label": "AS SEEN IN",
+        "text": "amazon",
+        "text_accent": "prime",
+        "link": ""
+      }
+    },
+    "rg_steps": {
+      "type": "rg-pdp-steps",
       "blocks": {
-        "text_cbcgyb": {
-          "type": "text",
-          "name": "t:names.header",
+        "step_1": {
+          "type": "step",
           "settings": {
-            "text": "<h2>You may also like </h2>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h4",
-            "font": "var(--font-body--family)",
-            "font_size": "",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "image": "shopify://shop_images/rg-pdp-step-1.jpg",
+            "title": "STEP ONE · SCOOP",
+            "text": "Add one scoop (7 g) \nto your favorite mug."
+          }
         },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
+        "step_2": {
+          "type": "step",
           "settings": {
-            "product_card_gap": 8,
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 8,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_DNizbJ": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_M7MJkb": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "paragraph",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_gLWgA6": {
-              "type": "price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_gallery_DNizbJ",
-            "product_title_M7MJkb",
-            "price_gLWgA6"
-          ]
+            "image": "shopify://shop_images/rg-pdp-step-2.jpg",
+            "title": "STEP TWO · POUR",
+            "text": "Add 8–12 oz of hot water \n(185–195°F) or warm milk."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/rg-pdp-step-3.jpg",
+            "title": "STEP THREE · STIR",
+            "text": "Stir or froth for 15 seconds. \nNo clumps, no coffee machine."
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/rg-pdp-step-4.jpg",
+            "title": "STEP FOUR · ENJOY",
+            "text": "Sip it as is, or try it iced \nwith oat milk."
+          }
         }
       },
       "block_order": [
-        "text_cbcgyb"
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
       ],
-      "name": "t:names.product_recommendations",
       "settings": {
-        "product": "{{ closest.product }}",
-        "recommendation_type": "related",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 4,
-        "columns": 4,
-        "mobile_columns": "2",
-        "columns_gap": 12,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "gap": 28,
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "anchor": "how-to",
+        "heading": "YOUR PERFECT CUP IN 30 SECONDS",
+        "text": "One scoop, a splash of water and a quick stir - that's it. Raw Coffee+ dissolves instantly with no clumps, so you can make it at home, at the office or on the road. Drink it hot, pour it over ice or blend it into a creamy latte.",
+        "button_label": "TRY RAW COFFEE →",
+        "button_link": ""
+      }
+    },
+    "rg_benefits": {
+      "type": "rg-pdp-benefits",
+      "blocks": {
+        "benefit_1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shopify://shop_images/rg-benefit-1.png",
+            "title": "SHARP MENTAL FOCUS",
+            "text": "Clear head and better focus on anything you do."
+          }
+        },
+        "benefit_2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shopify://shop_images/rg-benefit-2.png",
+            "title": "HEALTHY STRESS SUPPORT",
+            "text": "Less stress, more calm, even when life gets busy."
+          }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shopify://shop_images/rg-benefit-3.png",
+            "title": "ADAPTIVE RESILIENCE",
+            "text": "Faster recovery and more energy after tough days."
+          }
+        },
+        "benefit_4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shopify://shop_images/rg-benefit-4.png",
+            "title": "IMMUNE SUPPORT",
+            "text": "Stronger body defenses all year round."
+          }
+        }
+      },
+      "block_order": [
+        "benefit_1",
+        "benefit_2",
+        "benefit_3",
+        "benefit_4"
+      ],
+      "settings": {
+        "anchor": "benefits",
+        "eyebrow": "FUNCTIONAL BENEFITS",
+        "heading": "CLINICALLY STUDIED PROVEN RESULTS",
+        "text": "Adaptogenic mushrooms and nootropics work with your body so the energy feels steady, not borrowed.",
+        "image": "shopify://shop_images/rg-pdp-benefits.jpg",
+        "button_label": "GET STARTED NOW →",
+        "button_link": ""
+      }
+    },
+    "rg_timeline": {
+      "type": "rg-pdp-timeline",
+      "blocks": {
+        "stage_1": {
+          "type": "stage",
+          "settings": {
+            "when": "DAY 1:",
+            "title": "Clean Energy, Zero Jitters",
+            "text": "Your first cup gives a calm, clear lift. L-Theanine smooths out the caffeine, Taurine keeps energy even, so you stay sharp — without the racing heart or the 3 p.m. crash.",
+            "stat_strong": "87% of customers",
+            "stat_text": "felt steadier energy from their very first cup."
+          }
+        },
+        "stage_2": {
+          "type": "stage",
+          "settings": {
+            "when": "DAY 30:",
+            "title": "Focus Becomes Your Default",
+            "text": "Lion's Mane, L-Tyrosine and Bacopa build up with daily use. Deep-work blocks stretch longer, your to-do list shrinks faster, and afternoon brain fog starts to disappear.",
+            "stat_strong": "82% of customers",
+            "stat_text": "reported sharper, longer-lasting focus by week 4."
+          }
+        },
+        "stage_3": {
+          "type": "stage",
+          "settings": {
+            "when": "DAY 60:",
+            "title": "Calm Under Pressure",
+            "text": "Holy Basil helps your body handle stress, while low-caffeine Arabica is gentle on your gut. Busy days feel lighter, and the bloating you got from regular coffee is gone.",
+            "stat_strong": "78% of customers",
+            "stat_text": "felt less stressed and less bloated by day 60."
+          }
+        },
+        "stage_4": {
+          "type": "stage",
+          "settings": {
+            "when": "DAY 90:",
+            "title": "A Ritual That Pays You Back",
+            "text": "3,000 mg of daily creatine and 9 active ingredients have become part of your routine. Mornings feel clearer, days feel steadier — and regular coffee feels like a step back.",
+            "stat_strong": "91% of customers",
+            "stat_text": "say they would never go back to regular coffee."
+          }
+        }
+      },
+      "block_order": [
+        "stage_1",
+        "stage_2",
+        "stage_3",
+        "stage_4"
+      ],
+      "settings": {
+        "eyebrow": "YOUR FIRST 90 DAYS\nWITH RAW COFFEE+",
+        "heading": "THE LONGER YOU DRINK, THE MORE IT WORKS",
+        "text": "Coffee gives you a spike. Raw Coffee+ gives you results that build. Here's what our customers notice, cup after cup.",
+        "button_label": "GET STARTED NOW →",
+        "button_link": ""
+      }
+    },
+    "rg_compare": {
+      "type": "rg-pdp-compare",
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "label": "No energy crash",
+            "regular": "x",
+            "other": "x"
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "label": "Nootropic focus support",
+            "regular": "x",
+            "other": "Some"
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "label": "Gut health support",
+            "regular": "x",
+            "other": "x"
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "label": "Clean, non-GMO label",
+            "regular": "Some",
+            "other": "Some"
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "label": "3rd party lab tested",
+            "regular": "x",
+            "other": "x"
+          }
+        }
+      },
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4",
+        "row_5"
+      ],
+      "settings": {
+        "anchor": "compare",
+        "heading": "FEEL THE DIFFERENCE\nWITH RAW COFFEE+",
+        "image_ours": "shopify://shop_images/rg-pdp-cmp-raw.jpg",
+        "label_ours": "RAW COFFEE +",
+        "image_regular": "shopify://shop_images/rg-pdp-cmp-regular.jpg",
+        "label_regular": "Regular Coffee",
+        "image_other": "shopify://shop_images/rg-pdp-cmp-other.jpg",
+        "label_other": "Other Blends",
+        "button_label": "TRY RAW COFFEE →",
+        "button_link": ""
       }
     }
   },
   "order": [
     "main",
-    "product_recommendations_qggXJq"
+    "rg_as_seen",
+    "rg_steps",
+    "rg_benefits",
+    "rg_timeline",
+    "rg_compare"
   ]
 }
