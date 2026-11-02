@@ -1,0 +1,6 @@
+# Temporary files from atomic writes (e.g. tooling that writes .name.tmp then renames).
+# shopify theme dev must not try to upload them.
+*.tmp
+**/*.tmp
+**/.*.tmp
+/\.tmp$/

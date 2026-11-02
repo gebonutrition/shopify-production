@@ -1,0 +1,216 @@
+{%- comment -%}
+  RAW GRAVITY · Trust badges ("Uncompromising Standards")
+  Desktop: 6 in a row; mobile: 3 per row.
+  Reference: Raw Gravity Landing(.dc.html) + Mobile, section[data-screen-label=Trust].
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+
+<section
+  class="rg rg-trust"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="rg-container">
+    <div class="rg-trust__head">
+      {%- if s.eyebrow != blank -%}
+        <p class="rg-trust__eyebrow">{{ s.eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if s.heading != blank -%}
+        <h2 class="rg-trust__title">{{ s.heading | escape }}</h2>
+      {%- endif -%}
+    </div>
+
+    <ul class="rg-trust__grid" role="list">
+      {%- for block in section.blocks -%}
+        <li class="rg-trust__item" {{ block.shopify_attributes }}>
+          <span class="rg-trust__badge">
+            {%- if block.settings.image != blank -%}
+              {{
+                block.settings.image
+                | image_url: width: 360
+                | image_tag: widths: '144, 240, 360', sizes: '(min-width: 990px) 120px, 72px', loading: 'lazy', alt: ''
+              }}
+            {%- endif -%}
+          </span>
+          <span class="rg-trust__label">{{ block.settings.label | escape }}</span>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% stylesheet %}
+  .rg-trust {
+    padding-block: 44px;
+    background: var(--rg-dark-bg);
+    color: var(--rg-on-dark);
+  }
+
+  .rg-trust p,
+  .rg-trust h2 {
+    margin: 0;
+  }
+
+  .rg-trust__head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .rg-trust__eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.32em;
+    color: var(--rg-accent);
+  }
+
+  .rg-trust__title {
+    font-family: var(--rg-font-display);
+    font-size: 29px;
+    font-weight: 900;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--rg-on-dark);
+  }
+
+  .rg-trust__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px 12px;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rg-trust__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .rg-trust__badge {
+    position: relative;
+    width: min(100%, 72px);
+    aspect-ratio: 1 / 1;
+  }
+
+  .rg-trust__badge img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.35));
+  }
+
+  .rg-trust__label {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+
+  @media screen and (min-width: 990px) {
+    .rg-trust {
+      padding-block: 56px;
+    }
+
+    .rg-trust__head {
+      gap: 24px;
+    }
+
+    .rg-trust__eyebrow {
+      font-size: 13px;
+      letter-spacing: 0.38em;
+    }
+
+    .rg-trust__title {
+      font-size: 46px;
+    }
+
+    .rg-trust__grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .rg-trust__item {
+      gap: 14px;
+    }
+
+    .rg-trust__badge {
+      width: min(100%, 120px);
+    }
+
+    .rg-trust__label {
+      font-size: 16px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RG · Trust badges",
+  "class": "rg-trust-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "default": "quality"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "QUALITY & TRUST"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Uncompromising Standards"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Badge image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Third-Party Lab Tested",
+          "info": "Each claim must be substantiated."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "RG · Trust badges",
+      "blocks": [
+        { "type": "badge" },
+        { "type": "badge", "settings": { "label": "100% Vegan" } },
+        { "type": "badge", "settings": { "label": "Non-GMO" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

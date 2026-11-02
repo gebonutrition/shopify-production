@@ -801,11 +801,12 @@
           });
           if (!this.dialog.open) {
             this.dialog.showModal();
-            document.documentElement.style.overflow = 'hidden';
+            /* Horizon's own scroll lock: on desktop .page-wrapper is the scroll container */
+            document.documentElement.setAttribute('scroll-lock', '');
             this.dialog.addEventListener(
               'close',
               () => {
-                document.documentElement.style.overflow = '';
+                document.documentElement.removeAttribute('scroll-lock');
                 this.opener?.focus();
               },
               { once: true }

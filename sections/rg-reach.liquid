@@ -1,0 +1,359 @@
+{%- comment -%}
+  RAW GRAVITY · Reach ("Raw Gravity Across the USA")
+  US map: states from assets/rg-us-states.svg (cached file) + inline animated
+  overlay (snippets/rg-us-map.liquid). Stats come from blocks.
+  Reference: Raw Gravity Landing(.dc.html) + Mobile, section[data-screen-label=Reach].
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+
+<section
+  class="rg rg-reach"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="rg-container">
+    <div class="rg-reach__head">
+      {%- if s.eyebrow != blank -%}
+        <p class="rg-reach__eyebrow">{{ s.eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if s.heading != blank -%}
+        <h2 class="rg-reach__title">{{ s.heading | escape }}</h2>
+      {%- endif -%}
+    </div>
+
+    {%- if s.show_map -%}
+      <div class="rg-reach__map">
+        <div class="rg-map">
+          <img
+            class="rg-map__states"
+            src="{{ 'rg-us-states.svg' | asset_url }}"
+            width="975"
+            height="610"
+            loading="lazy"
+            alt="{{ s.map_alt | escape }}"
+          >
+          {%- render 'rg-us-map' -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="rg-reach__stats" role="list">
+        {%- for block in section.blocks -%}
+          <li class="rg-reach__stat" {{ block.shopify_attributes }}>
+            <span class="rg-reach__number">{{ block.settings.number | escape }}</span>
+            <span class="rg-reach__label">{{ block.settings.label | escape }}</span>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .rg-reach {
+    padding-block: 44px;
+    background: var(--rg-dark-bg);
+    color: var(--rg-on-dark);
+  }
+
+  .rg-reach p,
+  .rg-reach h2 {
+    margin: 0;
+  }
+
+  .rg-reach__head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .rg-reach__eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.32em;
+    color: var(--rg-accent);
+  }
+
+  .rg-reach__title {
+    font-family: var(--rg-font-display);
+    font-size: 29px;
+    font-weight: 900;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--rg-on-dark);
+  }
+
+  .rg-reach__map {
+    margin: 20px -6px 0;
+  }
+
+  .rg-map {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 975 / 610;
+  }
+
+  .rg-map__states,
+  .rg-map__overlay {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .rg-map__overlay {
+    overflow: visible;
+  }
+
+  .rg-map__ring {
+    fill: none;
+    stroke: var(--rg-accent);
+    stroke-opacity: 0.35;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: rg-map-pulse 3s ease-out infinite;
+  }
+
+  .rg-map__glow {
+    animation: rg-map-glow 2.2s ease-in-out infinite;
+  }
+
+  .rg-map__dot {
+    fill: #7fe6ff;
+    filter: url(#rgGlowF);
+  }
+
+  .rg-map__pulse {
+    fill: none;
+    stroke: var(--rg-accent);
+    stroke-opacity: 0.45;
+    stroke-width: 1.5;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: rg-map-pulse 2.6s ease-out infinite;
+  }
+
+  .rg-map__pulse--hub {
+    stroke: #ffffff;
+  }
+
+  .rg-map__hub-ring {
+    fill: none;
+    stroke: var(--rg-on-dark-2);
+    stroke-width: 2;
+  }
+
+  .rg-map__city {
+    fill: #9beeff;
+    filter: url(#rgGlowF);
+  }
+
+  .rg-map__city--hub {
+    fill: #ffffff;
+  }
+
+  .rg-map__leader {
+    stroke: var(--rg-accent);
+    stroke-opacity: 0.5;
+    stroke-width: 1;
+  }
+
+  .rg-map__label {
+    fill: var(--rg-accent);
+    stroke: #323232;
+    stroke-width: 4;
+    stroke-linejoin: round;
+    paint-order: stroke;
+    font-family: var(--rg-font-body);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+
+  @keyframes rg-map-pulse {
+    0% {
+      transform: scale(0.6);
+      opacity: 0.9;
+    }
+
+    100% {
+      transform: scale(2.2);
+      opacity: 0;
+    }
+  }
+
+  @keyframes rg-map-glow {
+    0%,
+    100% {
+      opacity: 0.55;
+    }
+
+    50% {
+      opacity: 1;
+    }
+  }
+
+  .rg-reach__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+  }
+
+  .rg-reach__stat {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .rg-reach__number {
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--rg-on-dark);
+  }
+
+  .rg-reach__label {
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.18em;
+    color: var(--rg-on-dark-2);
+  }
+
+  @media screen and (min-width: 990px) {
+    .rg-reach {
+      padding-block: 56px;
+    }
+
+    .rg-reach__head {
+      gap: 24px;
+    }
+
+    .rg-reach__eyebrow {
+      font-size: 13px;
+      letter-spacing: 0.38em;
+    }
+
+    .rg-reach__title {
+      font-size: 46px;
+    }
+
+    .rg-reach__map {
+      max-width: min(1280px, calc((100vh - 230px) * 1.6), 100%);
+      margin: 16px auto 0;
+    }
+
+    .rg-reach__stats {
+      gap: 40px;
+      max-width: 960px;
+      margin: 32px auto 0;
+    }
+
+    .rg-reach__stat {
+      gap: 16px;
+    }
+
+    .rg-reach__number {
+      font-size: 52px;
+      letter-spacing: -0.05em;
+    }
+
+    .rg-reach__label {
+      font-size: 14px;
+      line-height: 1;
+      letter-spacing: 0.2em;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rg-map__ring,
+    .rg-map__glow,
+    .rg-map__pulse {
+      animation: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RG · Reach (US map)",
+  "class": "rg-reach-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "default": "reach"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "YOUR REACH"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Raw Gravity Across the USA"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_map",
+      "label": "Show US map",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "map_alt",
+      "label": "Map description (accessibility)",
+      "default": "Map of the United States showing Raw Gravity deliveries across the country"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "50"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "STATES DELIVERED",
+          "info": "Must be accurate."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "RG · Reach (US map)",
+      "blocks": [
+        { "type": "stat" },
+        { "type": "stat", "settings": { "number": "4.8", "label": "AVERAGE RATING" } },
+        { "type": "stat", "settings": { "number": "5000+", "label": "HAPPY CUSTOMERS" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

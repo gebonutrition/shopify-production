@@ -639,6 +639,176 @@
         "button_label": "APPLY NOW",
         "button_link": ""
       }
+    },
+    "rg_reach": {
+      "type": "rg-reach",
+      "blocks": {
+        "rg_stat_1": {
+          "type": "stat",
+          "settings": {
+            "number": "50",
+            "label": "STATES DELIVERED"
+          }
+        },
+        "rg_stat_2": {
+          "type": "stat",
+          "settings": {
+            "number": "4.8",
+            "label": "AVERAGE RATING"
+          }
+        },
+        "rg_stat_3": {
+          "type": "stat",
+          "settings": {
+            "number": "5000+",
+            "label": "HAPPY CUSTOMERS"
+          }
+        }
+      },
+      "block_order": [
+        "rg_stat_1",
+        "rg_stat_2",
+        "rg_stat_3"
+      ],
+      "settings": {
+        "anchor": "reach",
+        "eyebrow": "YOUR REACH",
+        "heading": "Raw Gravity Across the USA",
+        "show_map": true,
+        "map_alt": "Map of the United States showing Raw Gravity deliveries across the country"
+      }
+    },
+    "rg_faq": {
+      "type": "rg-faq",
+      "blocks": {
+        "rg_faq_1": {
+          "type": "question",
+          "settings": {
+            "question": "What does mushroom coffee taste like?",
+            "answer": "<p>Like a smooth cup of classic Arabica coffee with a light, earthy note. Enjoy it black, or add milk or a little sweetener for a rich, creamy cup.</p>"
+          }
+        },
+        "rg_faq_2": {
+          "type": "question",
+          "settings": {
+            "question": "How much caffeine is in each serving?",
+            "answer": "<p>About 23mg, roughly a quarter of a regular cup of coffee (~90mg). Paired with L-Theanine, it gives you smooth, steady energy without the jitters or the afternoon crash.</p>"
+          }
+        },
+        "rg_faq_3": {
+          "type": "question",
+          "settings": {
+            "question": "How do I prepare it?",
+            "answer": "<p>There are many ways to enjoy it, but our customers love the classic: add one scoop (7g) to 8–12 oz of hot water (around 185–195°F) and stir for 15 seconds. Prefer it iced? Mix with a splash of hot water, then add ice and your favorite oat or almond milk. It also makes a great latte. Try it with your favorite syrup, and banana is a fan favorite!</p>"
+          }
+        },
+        "rg_faq_4": {
+          "type": "question",
+          "settings": {
+            "question": "Is it safe to drink every day?",
+            "answer": "<p>Yes, it's made for daily use. With only ~23mg of caffeine per serving, it's much gentler than regular coffee. If you're pregnant, nursing, taking medication or have a medical condition, check with your doctor first.</p>"
+          }
+        },
+        "rg_faq_5": {
+          "type": "question",
+          "settings": {
+            "question": "How does the subscription work?",
+            "answer": "<p>Subscribers save 20% on every order and get their coffee delivered automatically, so you never run out. Skip, pause or cancel anytime, with no hoops and no fees.</p>"
+          }
+        },
+        "rg_faq_6": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer a money-back guarantee?",
+            "answer": "<p>Yes. If you're not happy for any reason, contact us within 60 days and we'll give you a full refund, no questions asked.</p>"
+          }
+        },
+        "rg_faq_7": {
+          "type": "question",
+          "settings": {
+            "question": "Where are your mushrooms sourced?",
+            "answer": "<p>Our Lion's Mane is 100% fruiting body, not mycelium grown on grain. All mushroom extracts come from certified organic farms, and every batch is third-party tested for heavy metals, pesticides and potency.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "rg_faq_1",
+        "rg_faq_2",
+        "rg_faq_3",
+        "rg_faq_4",
+        "rg_faq_5",
+        "rg_faq_6",
+        "rg_faq_7"
+      ],
+      "settings": {
+        "anchor": "faq",
+        "eyebrow": "FAQ",
+        "heading": "Questions & Answers",
+        "open_first": true,
+        "more_text": "Still have questions?",
+        "button_label": "CONTACT US",
+        "button_link": ""
+      }
+    },
+    "rg_trust": {
+      "type": "rg-trust",
+      "blocks": {
+        "rg_trust_1": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/rg-trust-1.png",
+            "label": "Third-Party Lab Tested"
+          }
+        },
+        "rg_trust_2": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/rg-trust-2.png",
+            "label": "100% Vegan"
+          }
+        },
+        "rg_trust_3": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/rg-trust-3.png",
+            "label": "Non-GMO"
+          }
+        },
+        "rg_trust_4": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/rg-trust-4.png",
+            "label": "Made in USA"
+          }
+        },
+        "rg_trust_5": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/rg-trust-5.png",
+            "label": "No Proprietary Blends"
+          }
+        },
+        "rg_trust_6": {
+          "type": "badge",
+          "settings": {
+            "image": "shopify://shop_images/rg-trust-6.png",
+            "label": "60-Day Money-Back Guarantee"
+          }
+        }
+      },
+      "block_order": [
+        "rg_trust_1",
+        "rg_trust_2",
+        "rg_trust_3",
+        "rg_trust_4",
+        "rg_trust_5",
+        "rg_trust_6"
+      ],
+      "settings": {
+        "anchor": "quality",
+        "eyebrow": "QUALITY & TRUST",
+        "heading": "Uncompromising Standards"
+      }
     }
   },
   "order": [
@@ -649,6 +819,9 @@
     "rg_reviews",
     "rg_ingredients",
     "rg_shop",
-    "rg_ambassador"
+    "rg_ambassador",
+    "rg_reach",
+    "rg_faq",
+    "rg_trust"
   ]
 }
