@@ -177,7 +177,8 @@
           {%- render 'rg-pay-badges', modifier: 'rg-pay--wrap' -%}
         {%- else -%}
           <ul class="rg-footer__pay" role="list" aria-label="Payment methods">
-            {%- for name in 'visa,mastercard,paypal,shoppay,applepay,googlepay' | split: ',' -%}
+            {%- assign pay_names = 'visa,mastercard,paypal,shoppay,applepay,googlepay' | split: ',' -%}
+            {%- for name in pay_names -%}
               {%- assign icon_file = 'rg-pay-' | append: name | append: '.svg' -%}
               <li><img class="rg-footer__pay-icon" src="{{ icon_file | asset_url }}" alt="{{ name }}" width="47" height="31" loading="lazy"></li>
             {%- endfor -%}
