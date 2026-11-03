@@ -97,9 +97,14 @@ body {
 }
 
 /* 3. Shared building blocks for rg-* sections ---------------------------- */
-.rg {
+/* :where() = zero specificity. rg-base.css loads after the compiled section CSS, so a plain
+   .rg rule would override every section's own root colour (e.g. .rg-footer { color: #fff }). */
+:where(.rg) {
   font-family: var(--rg-font-body);
   color: var(--rg-ink);
+}
+
+.rg {
   scroll-margin-top: 76px;
 }
 
