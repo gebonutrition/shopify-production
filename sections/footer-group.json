@@ -18,28 +18,49 @@
           "type": "links",
           "settings": {
             "heading": "SHOP",
-            "links": "Home | /\nRaw Coffee+ Jar | /products/raw-coffee-signature-jar\nRaw Coffee+ Refill | /products/raw-coffee-refill-pouch"
+            "links": "Home | /\nRaw Coffee+ Jar | /products/raw-coffee-signature-jar\nRaw Coffee+ Refill | /products/raw-coffee-refill-pouch",
+            "show_on": "all"
           }
         },
         "rg_footer_col_2": {
           "type": "links",
           "settings": {
             "heading": "ON THIS PAGE",
-            "links": "Benefits | /#benefits\nReviews | /#reviews\nIngredients | /#ingredients\nShop | /#shop\nAmbassadors | /#ambassador"
+            "links": "Benefits | /#benefits\nReviews | /#reviews\nIngredients | /#ingredients\nShop | /#shop\nAmbassadors | /#ambassador",
+            "show_on": "other"
           }
         },
         "rg_footer_col_3": {
           "type": "links",
           "settings": {
             "heading": "SUPPORT",
-            "links": "FAQ | /#faq\nContact Us | /#contact"
+            "links": "FAQ | /#faq\nContact Us | /#contact",
+            "show_on": "other"
+          }
+        },
+        "rg_footer_col_pdp_page": {
+          "type": "links",
+          "settings": {
+            "heading": "ON THIS PAGE",
+            "links": "How to Make | #how-to\nBenefits | #benefits\nCompare | #compare\nIngredients | #ingredients\nReviews | #reviews",
+            "show_on": "product"
+          }
+        },
+        "rg_footer_col_pdp_support": {
+          "type": "links",
+          "settings": {
+            "heading": "SUPPORT",
+            "links": "FAQ | #faq\nContact Us | #contact-us",
+            "show_on": "product"
           }
         }
       },
       "block_order": [
         "rg_footer_col_1",
         "rg_footer_col_2",
-        "rg_footer_col_3"
+        "rg_footer_col_pdp_page",
+        "rg_footer_col_3",
+        "rg_footer_col_pdp_support"
       ],
       "settings": {
         "show_newsletter": true,

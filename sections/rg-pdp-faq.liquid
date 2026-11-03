@@ -1,0 +1,426 @@
+{%- comment -%}
+  RAW GRAVITY · Product page FAQ with 2+ tabs ("Taste & everyday use" / "Formula & benefits").
+  Questions are grouped into tabs by their "Tab" label; each tab is an exclusive accordion
+  (native <details name>), first question open. Tab switching: <rg-tabs> (sections/rg-reviews.liquid).
+  Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "11 FAQ".
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign groups = ''
+  for block in section.blocks
+    assign label = block.settings.group | strip
+    if label == blank
+      assign label = 'FAQ'
+    endif
+    assign groups_check = groups | split: '||'
+    unless groups_check contains label
+      if groups == ''
+        assign groups = label
+      else
+        assign groups = groups | append: '||' | append: label
+      endif
+    endunless
+  endfor
+  assign group_list = groups | split: '||'
+  assign button_link = s.button_link
+  if button_link == blank and shop.email != blank
+    assign button_link = 'mailto:' | append: shop.email
+  endif
+-%}
+
+<section
+  class="rg rg-pfaq"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="rg-pdp-wrap rg-pfaq__wrap">
+    <h2 class="rg-pdp-h2 rg-pfaq__title">{{ s.heading | escape }}</h2>
+
+    <rg-tabs class="rg-pfaq__root">
+      {%- if group_list.size > 1 -%}
+        <div class="rg-pfaq__tabs-row">
+          <div class="rg-pfaq__tabs" role="tablist" aria-label="{{ s.heading | escape }}">
+            {%- for group in group_list -%}
+              <button
+                type="button"
+                class="rg-pfaq__tab"
+                role="tab"
+                id="rg-pfaq-tab-{{ section.id }}-{{ forloop.index0 }}"
+                aria-controls="rg-pfaq-panel-{{ section.id }}-{{ forloop.index0 }}"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+                data-rg-tab="{{ forloop.index0 }}"
+              >
+                {{- group | escape -}}
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- for group in group_list -%}
+        {%- assign group_index = forloop.index0 -%}
+        {%- assign accordion_name = 'rg-pfaq-' | append: section.id | append: '-' | append: group_index -%}
+        {%- assign first_in_group = true -%}
+        <div
+          class="rg-pfaq__list"
+          role="tabpanel"
+          id="rg-pfaq-panel-{{ section.id }}-{{ group_index }}"
+          aria-labelledby="rg-pfaq-tab-{{ section.id }}-{{ group_index }}"
+          data-rg-panel="{{ group_index }}"
+          {% unless forloop.first %}
+            hidden
+          {% endunless %}
+        >
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign label = block.settings.group | strip
+              if label == blank
+                assign label = 'FAQ'
+              endif
+            -%}
+            {%- if label == group -%}
+              <details
+                class="rg-pfaq__item"
+                name="{{ accordion_name }}"
+                {% if first_in_group and s.open_first %}
+                  open
+                {% endif %}
+                {{ block.shopify_attributes }}
+              >
+                <summary class="rg-pfaq__q">
+                  <span>{{ block.settings.question | escape }}</span>
+                  <svg class="rg-pfaq__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </summary>
+                <div class="rg-pfaq__a">{{ block.settings.answer }}</div>
+              </details>
+              {%- assign first_in_group = false -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </rg-tabs>
+
+    {%- if s.button_label != blank -%}
+      <div class="rg-pfaq__more">
+        {%- if s.more_text != blank -%}
+          <p class="rg-pfaq__more-text">{{ s.more_text | escape }}</p>
+        {%- endif -%}
+        <a class="rg-pfaq__button" id="{{ s.button_anchor | default: 'contact-us' | handle }}" href="{{ button_link }}">{{ s.button_label | escape }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .rg-pfaq {
+    background: var(--rg-bg-2);
+  }
+
+  .rg-pfaq__title {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .rg-pfaq__tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    padding: 5px;
+    border-radius: 14px;
+    background: var(--rg-offer);
+  }
+
+  .rg-pfaq__tab {
+    flex: 1;
+    height: 44px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--rg-graphite);
+    font: 700 14px/1.2 var(--rg-font-body);
+    cursor: pointer;
+  }
+
+  .rg-pfaq__tab[aria-selected='true'] {
+    background: var(--rg-white);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .rg-pfaq__tab:focus-visible {
+    outline: 2px solid var(--rg-accent);
+    outline-offset: 2px;
+  }
+
+  .rg-pfaq__list:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .rg-pfaq__item {
+    border: 1px solid var(--rg-line-2);
+    border-radius: 14px;
+    background: var(--rg-white);
+  }
+
+  .rg-pfaq__item[open] {
+    border-color: var(--rg-accent);
+  }
+
+  .rg-pfaq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    min-height: 56px;
+    padding: 16px;
+    color: var(--rg-graphite);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.35;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .rg-pfaq__q:hover {
+    color: var(--rg-graphite);
+  }
+
+  .rg-pfaq__q::-webkit-details-marker {
+    display: none;
+  }
+
+  .rg-pfaq__q:focus-visible {
+    outline: 2px solid var(--rg-accent);
+    outline-offset: -2px;
+    border-radius: 14px;
+  }
+
+  .rg-pfaq__chev {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    color: var(--rg-accent-dark);
+    transition: transform 0.2s;
+  }
+
+  .rg-pfaq__item[open] .rg-pfaq__chev {
+    transform: rotate(180deg);
+  }
+
+  .rg-pfaq__a {
+    padding: 0 16px 18px;
+    color: var(--rg-text-2);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .rg-pfaq__a p {
+    margin: 0;
+  }
+
+  .rg-pfaq__a p + p {
+    margin-top: 8px;
+  }
+
+  .rg-pfaq__more {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-top: 32px;
+  }
+
+  .rg-pfaq__more-text {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .rg-pfaq__button {
+    display: flex;
+    align-items: center;
+    height: 52px;
+    padding: 0 40px;
+    border-radius: var(--rg-radius-btn);
+    background: var(--rg-accent);
+    box-shadow: var(--rg-shadow-btn);
+    color: var(--rg-ink);
+    font: 800 14px/1 var(--rg-font-body);
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .rg-pfaq__button:hover {
+    filter: brightness(1.05);
+    color: var(--rg-ink);
+  }
+
+  .rg-pfaq__button:focus-visible {
+    outline: 2px solid var(--rg-ink);
+    outline-offset: 3px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .rg-pfaq__wrap {
+      max-width: 920px;
+    }
+
+    .rg-pfaq__title {
+      margin-bottom: 28px;
+    }
+
+    .rg-pfaq__tabs-row {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .rg-pfaq__tabs {
+      margin: 0;
+      padding: 6px;
+    }
+
+    .rg-pfaq__tab {
+      flex: none;
+      height: 48px;
+      padding: 0 28px;
+      font-size: 16px;
+    }
+
+    .rg-pfaq__list:not([hidden]) {
+      gap: 12px;
+    }
+
+    .rg-pfaq__item {
+      border-radius: 16px;
+    }
+
+    .rg-pfaq__q {
+      gap: 20px;
+      padding: 22px 26px;
+      font-size: 18px;
+    }
+
+    .rg-pfaq__chev {
+      width: 20px;
+      height: 20px;
+    }
+
+    .rg-pfaq__a {
+      padding: 0 26px 24px;
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .rg-pfaq__more {
+      gap: 18px;
+      margin-top: 48px;
+    }
+
+    .rg-pfaq__more-text {
+      font-size: 22px;
+    }
+
+    .rg-pfaq__button {
+      height: 56px;
+      padding: 0 44px;
+      font-size: 16px;
+    }
+
+    .rg-pfaq__button:hover {
+      filter: none;
+      background: var(--rg-ink);
+      color: var(--rg-white);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RG · FAQ with tabs (product)",
+  "class": "rg-pfaq-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "default": "faq"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Questions & Answers"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first",
+      "label": "Open the first question of each tab",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "more_text",
+      "label": "Text before button",
+      "default": "Still have questions?"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "CONTACT US →"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "Empty = email the store's sender address."
+    },
+    {
+      "type": "text",
+      "id": "button_anchor",
+      "label": "Button anchor ID",
+      "default": "contact-us"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "group",
+          "label": "Tab",
+          "default": "Taste & everyday use",
+          "info": "Questions with the same tab label are shown together."
+        },
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How do I prepare it?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Add one scoop to 8–12 oz of hot water and stir.</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 24,
+  "presets": [
+    {
+      "name": "RG · FAQ with tabs (product)",
+      "blocks": [{ "type": "question" }, { "type": "question" }]
+    }
+  ]
+}
+{% endschema %}

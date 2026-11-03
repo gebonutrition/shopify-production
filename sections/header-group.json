@@ -82,7 +82,8 @@
           "settings": {
             "text": "25% OFF YOUR FIRST ORDER",
             "link": "",
-            "icon": "none"
+            "icon": "none",
+            "show_on": "other"
           }
         },
         "rg_ann_shipping": {
@@ -90,7 +91,8 @@
           "settings": {
             "text": "FREE US SHIPPING",
             "link": "",
-            "icon": "none"
+            "icon": "none",
+            "show_on": "all"
           }
         },
         "rg_ann_countdown": {
@@ -106,13 +108,24 @@
           "settings": {
             "text": "60-DAY MONEY-BACK GUARANTEE",
             "link": "",
-            "icon": "none"
+            "icon": "none",
+            "show_on": "all"
+          }
+        },
+        "rg_ann_save_today": {
+          "type": "text",
+          "settings": {
+            "text": "SAVE 25% TODAY",
+            "link": "",
+            "icon": "none",
+            "show_on": "product"
           }
         }
       },
       "block_order": [
         "rg_ann_first_order",
         "rg_ann_shipping",
+        "rg_ann_save_today",
         "rg_ann_countdown",
         "rg_ann_guarantee"
       ],

@@ -7,10 +7,21 @@
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
+  comment
+    Link columns can target page types ("Show on"), e.g. an "ON THIS PAGE" column
+    with home-page anchors and another one with product-page anchors.
+  endcomment
   assign column_count = 0
   for block in section.blocks
     if block.type == 'links'
-      assign column_count = column_count | plus: 1
+      assign col_show_on = block.settings.show_on | default: 'all'
+      if col_show_on == 'all'
+        assign column_count = column_count | plus: 1
+      elsif col_show_on == 'product' and template.name == 'product'
+        assign column_count = column_count | plus: 1
+      elsif col_show_on == 'other' and template.name != 'product'
+        assign column_count = column_count | plus: 1
+      endif
     endif
   endfor
 -%}
@@ -122,7 +133,20 @@
       </div>
 
       {%- for block in section.blocks -%}
-        {%- if block.type == 'links' -%}
+        {%- liquid
+          assign col_visible = false
+          assign col_show_on = block.settings.show_on | default: 'all'
+          if block.type == 'links'
+            if col_show_on == 'all'
+              assign col_visible = true
+            elsif col_show_on == 'product' and template.name == 'product'
+              assign col_visible = true
+            elsif col_show_on == 'other' and template.name != 'product'
+              assign col_visible = true
+            endif
+          endif
+        -%}
+        {%- if col_visible -%}
           <nav class="rg-footer__col" aria-label="{{ block.settings.heading | escape }}" {{ block.shopify_attributes }}>
             {%- if block.settings.heading != blank -%}
               <p class="rg-footer__col-title">{{ block.settings.heading | escape }}</p>
@@ -144,12 +168,21 @@
     </div>
 
     <div class="rg-footer__pay-row">
-      {%- if s.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
-        <ul class="rg-footer__pay" role="list" aria-label="Payment methods">
-          {%- for type in shop.enabled_payment_types -%}
-            <li>{{ type | payment_type_svg_tag: class: 'rg-footer__pay-icon' }}</li>
-          {%- endfor -%}
-        </ul>
+      {%- if s.show_payment_icons -%}
+        {%- comment -%}
+          Product pages use the drawn badges of the product page design; other pages use the
+          card icons of the main landing design.
+        {%- endcomment -%}
+        {%- if template.name == 'product' -%}
+          {%- render 'rg-pay-badges', modifier: 'rg-pay--wrap' -%}
+        {%- else -%}
+          <ul class="rg-footer__pay" role="list" aria-label="Payment methods">
+            {%- for name in 'visa,mastercard,paypal,shoppay,applepay,googlepay' | split: ',' -%}
+              {%- assign icon_file = 'rg-pay-' | append: name | append: '.svg' -%}
+              <li><img class="rg-footer__pay-icon" src="{{ icon_file | asset_url }}" alt="{{ name }}" width="47" height="31" loading="lazy"></li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
       {%- endif -%}
       {%- if s.secure_text != blank -%}
         <p class="rg-footer__secure">
@@ -416,7 +449,7 @@
   .rg-footer__pay-icon {
     display: block;
     width: auto;
-    height: 31px;
+    height: 34px;
     border-radius: 6px;
   }
 
@@ -549,6 +582,10 @@
 
     .rg-footer__pay {
       gap: 12px;
+    }
+
+    .rg-footer__pay-icon {
+      height: 31px;
     }
 
     .rg-footer__legal {
@@ -700,11 +737,22 @@
           "id": "links",
           "label": "Links",
           "info": "One per line: Label | URL (for example: FAQ | /#faq)"
+        },
+        {
+          "type": "select",
+          "id": "show_on",
+          "label": "Show on",
+          "options": [
+            { "value": "all", "label": "All pages" },
+            { "value": "product", "label": "Product pages only" },
+            { "value": "other", "label": "All pages except product pages" }
+          ],
+          "default": "all"
         }
       ]
     }
   ],
-  "max_blocks": 4,
+  "max_blocks": 6,
   "presets": [
     {
       "name": "RG · Footer",

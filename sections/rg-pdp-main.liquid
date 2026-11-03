@@ -23,15 +23,16 @@
 
   assign servings = s.servings_per_unit | at_least: 1
 
+  comment
+    Subscription: the first selling plan group (Shopify Subscriptions plan). Each bundle option
+    picks a delivery frequency by its position in that group ("Subscription frequency" setting),
+    so 3 units can ship every 3 months instead of monthly.
+  endcomment
   assign selling_plan = blank
-  assign sub_unit_price = unit_price
+  assign sub_plans = blank
   if product.selling_plan_groups.size > 0 and s.show_subscription
-    assign selling_plan = product.selling_plan_groups.first.selling_plans.first
-    for allocation in variant.selling_plan_allocations
-      if allocation.selling_plan.id == selling_plan.id
-        assign sub_unit_price = allocation.price
-      endif
-    endfor
+    assign sub_plans = product.selling_plan_groups.first.selling_plans
+    assign selling_plan = sub_plans.first
   endif
 
   assign default_pack_index = 0
@@ -227,6 +228,19 @@
                   assign base = unit_price | times: qty
                   assign pack_price = base | times: discount_bp | divided_by: 10000.0 | round | times: -1 | plus: base
 
+                  assign pack_plan = selling_plan
+                  assign sub_unit_price = unit_price
+                  if sub_plans != blank
+                    assign plan_index = b.plan_position | default: 1 | minus: 1 | at_least: 0
+                    if plan_index < sub_plans.size
+                      assign pack_plan = sub_plans[plan_index]
+                    endif
+                    for allocation in variant.selling_plan_allocations
+                      if allocation.selling_plan.id == pack_plan.id
+                        assign sub_unit_price = allocation.price
+                      endif
+                    endfor
+                  endif
                   assign base_sub = sub_unit_price | times: qty
                   assign pack_sub_price = base_sub | times: discount_bp | divided_by: 10000.0 | round | times: -1 | plus: base_sub
 
@@ -240,12 +254,18 @@
                     assign unit_word = s.unit_plural
                   endif
                 -%}
+                {%- if forloop.index0 == default_pack_index and pack_plan != blank -%}
+                  {%- assign default_plan_id = pack_plan.id -%}
+                {%- endif -%}
                 <label class="rg-pdp__pack" {{ block.shopify_attributes }}>
                   <input
                     class="rg-pdp__pack-input"
                     type="radio"
                     name="quantity"
                     value="{{ qty }}"
+                    {% if pack_plan != blank %}
+                      data-selling-plan="{{ pack_plan.id }}"
+                    {% endif %}
                     {% if forloop.index0 == default_pack_index %}
                       checked
                     {% endif %}
@@ -290,7 +310,7 @@
                   class="rg-pdp__sub-input"
                   type="checkbox"
                   name="selling_plan"
-                  value="{{ selling_plan.id }}"
+                  value="{{ default_plan_id | default: selling_plan.id }}"
                   {% if s.subscription_default %}
                     checked
                   {% endif %}
@@ -344,12 +364,10 @@
         </div>
       {%- endif -%}
 
-      {%- if s.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
-        <ul class="rg-pdp__payments" role="list" aria-label="Payment methods">
-          {%- for type in shop.enabled_payment_types -%}
-            <li>{{ type | payment_type_svg_tag: class: 'rg-pdp__payment-icon' }}</li>
-          {%- endfor -%}
-        </ul>
+      {%- if s.show_payment_icons -%}
+        <div class="rg-pdp__pay">
+          {%- render 'rg-pay-badges', modifier: 'rg-pay--fill rg-pay--responsive' -%}
+        </div>
       {%- endif -%}
 
       {%- liquid
@@ -1037,19 +1055,8 @@
     color: #666666;
   }
 
-  .rg-pdp__payments {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin: 12px 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .rg-pdp__payment-icon {
-    display: block;
-    width: 44px;
-    height: 30px;
+  .rg-pdp__pay {
+    margin-top: 12px;
   }
 
   /* Product accordion */
@@ -1381,11 +1388,6 @@
       font-size: 14px;
     }
 
-    .rg-pdp__payment-icon {
-      width: 51px;
-      height: 34px;
-    }
-
     .rg-pdp__acc {
       margin-top: 36px;
     }
@@ -1416,6 +1418,18 @@
 {% endstylesheet %}
 
 {% javascript %}
+  /* RAW GRAVITY · bundle option -> subscription frequency: the subscription checkbox submits
+     the selling plan that belongs to the selected bundle option. */
+  if (!window.rgPdpPlanSync) {
+    window.rgPdpPlanSync = true;
+    document.addEventListener('change', (event) => {
+      const radio = event.target.closest && event.target.closest('.rg-pdp__pack-input');
+      if (!radio || !radio.dataset.sellingPlan || !radio.form) return;
+      const box = radio.form.querySelector('.rg-pdp__sub-input');
+      if (box) box.value = radio.dataset.sellingPlan;
+    });
+  }
+
   /* RAW GRAVITY · product gallery: one image at a time, arrows + thumbnails. */
   if (!customElements.get('rg-pdp-gallery')) {
     customElements.define(
@@ -1669,8 +1683,7 @@
       "type": "checkbox",
       "id": "show_payment_icons",
       "label": "Show payment icons",
-      "default": true,
-      "info": "Uses the payment methods enabled in Settings → Payments."
+      "default": true
     },
     {
       "type": "header",
@@ -1734,6 +1747,13 @@
           "id": "default",
           "label": "Selected by default",
           "default": false
+        },
+        {
+          "type": "number",
+          "id": "plan_position",
+          "label": "Subscription frequency",
+          "default": 1,
+          "info": "Position of the delivery frequency in the Shopify Subscriptions plan (1 = first). E.g. 1 = every month, 2 = every 3 months."
         }
       ]
     },

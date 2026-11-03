@@ -1,0 +1,667 @@
+{%- comment -%}
+  RAW GRAVITY · Product page "Read Our Reviews" (dark).
+  Reviews are grouped into tabs by their "Tab" label; each tab is one page of 2 cards.
+  Desktop: arrows flank the 2-up page, dots below. Mobile: stacked cards, arrows + dots below.
+  Tab/page switching: <rg-tabs> from sections/rg-reviews.liquid (dots need .rg-reviews__dot).
+  Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "09.2 Read our reviews".
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign groups = ''
+  for block in section.blocks
+    assign label = block.settings.group | strip | upcase
+    if label == blank
+      assign label = 'REVIEWS'
+    endif
+    assign groups_check = groups | split: '||'
+    unless groups_check contains label
+      if groups == ''
+        assign groups = label
+      else
+        assign groups = groups | append: '||' | append: label
+      endif
+    endunless
+  endfor
+  assign group_list = groups | split: '||'
+-%}
+
+<section
+  class="rg rg-prev"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="rg-prev__inner">
+    {%- if s.eyebrow != blank -%}
+      <p class="rg-prev__eyebrow">
+        <span class="rg-prev__stars" aria-hidden="true">★★★★★</span>
+        <span>{{ s.eyebrow | escape }}</span>
+      </p>
+    {%- endif -%}
+    <h2 class="rg-pdp-h2 rg-prev__title">{{ s.heading | escape }}</h2>
+
+    {%- if section.blocks.size > 0 -%}
+      <rg-tabs class="rg-prev__root">
+        {%- if group_list.size > 1 -%}
+          <div class="rg-prev__tabs" role="tablist" aria-label="{{ s.heading | escape }}">
+            {%- for group in group_list -%}
+              <button
+                type="button"
+                class="rg-prev__tab"
+                role="tab"
+                id="rg-prev-tab-{{ section.id }}-{{ forloop.index0 }}"
+                aria-controls="rg-prev-panel-{{ section.id }}-{{ forloop.index0 }}"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+                data-rg-tab="{{ forloop.index0 }}"
+              >
+                {{- group | escape -}}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <div class="rg-prev__stage">
+          {%- if group_list.size > 1 -%}
+            <button type="button" class="rg-prev__arrow rg-prev__arrow--prev" data-rg-prev aria-label="Previous reviews">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+            </button>
+          {%- endif -%}
+
+          <div class="rg-prev__panels">
+            {%- for group in group_list -%}
+              {%- assign group_index = forloop.index0 -%}
+              <div
+                class="rg-prev__panel"
+                role="tabpanel"
+                id="rg-prev-panel-{{ section.id }}-{{ group_index }}"
+                aria-labelledby="rg-prev-tab-{{ section.id }}-{{ group_index }}"
+                data-rg-panel="{{ group_index }}"
+                {% unless forloop.first %}
+                  hidden
+                {% endunless %}
+              >
+                {%- for block in section.blocks -%}
+                  {%- liquid
+                    assign label = block.settings.group | strip | upcase
+                    if label == blank
+                      assign label = 'REVIEWS'
+                    endif
+                  -%}
+                  {%- if label == group -%}
+                    <article class="rg-prev__card" {{ block.shopify_attributes }}>
+                      <div class="rg-prev__photo">
+                        {%- if block.settings.photo != blank -%}
+                          {{
+                            block.settings.photo
+                            | image_url: width: 600
+                            | image_tag: widths: '300, 450, 600', sizes: '(min-width: 990px) 220px, 40vw', loading: 'lazy', alt: block.settings.name
+                          }}
+                        {%- endif -%}
+                      </div>
+                      <div class="rg-prev__body">
+                        <p class="rg-prev__card-stars" role="img" aria-label="5 out of 5 stars">★★★★★</p>
+                        <h3 class="rg-prev__card-title">{{ block.settings.title | escape }}</h3>
+                        <p class="rg-prev__text">{{ block.settings.text | escape }}</p>
+                        <div class="rg-prev__meta">
+                          <span class="rg-prev__name">
+                            <span class="rg-prev__avatar" aria-hidden="true">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+                            </span>
+                            {{- block.settings.name | escape -}}
+                          </span>
+                          {%- if block.settings.badge != blank -%}
+                            <span class="rg-prev__badge">{{ block.settings.badge | escape }}</span>
+                          {%- endif -%}
+                        </div>
+                      </div>
+                    </article>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- endfor -%}
+          </div>
+
+          {%- if group_list.size > 1 -%}
+            <button type="button" class="rg-prev__arrow rg-prev__arrow--next" data-rg-next aria-label="Next reviews">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <div class="rg-prev__dots">
+              {%- for group in group_list -%}
+                <button
+                  type="button"
+                  class="rg-reviews__dot rg-prev__dot"
+                  data-rg-tab="{{ forloop.index0 }}"
+                  aria-label="{{ group | escape }}"
+                  {% if forloop.first %}
+                    aria-current="true"
+                  {% endif %}
+                ></button>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </rg-tabs>
+    {%- endif -%}
+
+    {%- if s.button_label != blank -%}
+      <div class="rg-prev__cta">
+        <a class="rg-prev__button" href="{{ s.button_link | default: '#buy' }}">{{ s.button_label | escape }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  /* ---------- Mobile ---------- */
+  .rg-prev {
+    background: radial-gradient(ellipse at 85% 0%, #26464f 0%, #323232 45%, #2e2e2e 100%);
+    color: var(--rg-on-dark);
+  }
+
+  .rg-prev__inner {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 22px 0 44px;
+  }
+
+  .rg-prev__eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 0 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--rg-accent);
+  }
+
+  .rg-prev__stars {
+    color: #ff8a1f;
+    font-size: 15px;
+    letter-spacing: 2px;
+  }
+
+  .rg-prev__title {
+    margin-bottom: 18px;
+    padding-inline: 16px;
+    color: var(--rg-on-dark);
+    text-align: center;
+  }
+
+  .rg-prev__tabs {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 22px;
+    padding: 0 12px;
+  }
+
+  .rg-prev__tab {
+    height: 36px;
+    padding: 0 11px;
+    border: 0;
+    border-radius: 18px;
+    background: rgba(28, 203, 245, 0.1);
+    color: var(--rg-white);
+    font: 700 10px/1 var(--rg-font-body);
+    letter-spacing: 0.08em;
+    cursor: pointer;
+  }
+
+  .rg-prev__tab[aria-selected='true'] {
+    background: var(--rg-accent);
+    color: var(--rg-ink);
+  }
+
+  .rg-prev__tab:focus-visible,
+  .rg-prev__arrow:focus-visible,
+  .rg-prev__dot:focus-visible {
+    outline: 2px solid var(--rg-white);
+    outline-offset: 2px;
+  }
+
+  .rg-prev__stage {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-areas:
+      'panels panels panels'
+      'prev dots next';
+    justify-content: center;
+    align-items: center;
+    column-gap: 22px;
+  }
+
+  .rg-prev__panels {
+    grid-area: panels;
+    padding: 0 16px;
+  }
+
+  .rg-prev__panel:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .rg-prev__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-top: 20px;
+    padding: 0;
+    border: 1px solid rgba(28, 203, 245, 0.45);
+    border-radius: 50%;
+    background: #1e1e1e;
+    box-shadow: 0 0 18px rgba(28, 203, 245, 0.3);
+    color: var(--rg-white);
+    cursor: pointer;
+  }
+
+  .rg-prev__arrow svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .rg-prev__arrow--prev {
+    grid-area: prev;
+  }
+
+  .rg-prev__arrow--next {
+    grid-area: next;
+  }
+
+  .rg-prev__dots {
+    grid-area: dots;
+    display: flex;
+    gap: 6px;
+    margin-top: 20px;
+  }
+
+  .rg-prev .rg-prev__dot {
+    width: 8px;
+    height: 7px;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: #5a5a5a;
+    cursor: pointer;
+    transition: width 0.2s;
+  }
+
+  .rg-prev .rg-prev__dot[aria-current='true'] {
+    width: 28px;
+    background: var(--rg-accent);
+  }
+
+  .rg-prev__card {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    overflow: hidden;
+    border: 1.5px solid rgba(28, 203, 245, 0.4);
+    border-radius: 20px;
+    background: #2c3639;
+  }
+
+  .rg-prev__photo {
+    position: relative;
+    min-height: 100%;
+    background: #3a3a3a;
+  }
+
+  .rg-prev__photo img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .rg-prev__body {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+    padding: 14px 12px 14px 14px;
+  }
+
+  .rg-prev__card-stars {
+    margin: 0;
+    color: #ff8a1f;
+    font-size: 13px;
+    line-height: 1;
+    letter-spacing: 2px;
+  }
+
+  .rg-prev__card-title {
+    margin: 0;
+    color: var(--rg-accent);
+    font-family: var(--rg-font-body);
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  .rg-prev__text {
+    flex: 1;
+    margin: 0;
+    color: #c4c8ca;
+    font-size: 12.5px;
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .rg-prev__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .rg-prev__name {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--rg-white);
+    font-size: 13.5px;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .rg-prev__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: 1.5px solid rgba(28, 203, 245, 0.55);
+    border-radius: 50%;
+    color: var(--rg-on-dark-2);
+  }
+
+  .rg-prev__avatar svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .rg-prev__badge {
+    padding: 4px 9px;
+    border: 1.5px solid rgba(28, 203, 245, 0.55);
+    border-radius: 14px;
+    color: var(--rg-white);
+    font-size: 10.5px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .rg-prev__cta {
+    padding: 24px 16px 0;
+  }
+
+  .rg-prev__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 56px;
+    border-radius: var(--rg-radius-btn);
+    background: var(--rg-accent);
+    box-shadow: var(--rg-glow-btn);
+    color: var(--rg-ink);
+    font: 800 15px/1 var(--rg-font-body);
+    letter-spacing: 0.16em;
+    text-decoration: none;
+  }
+
+  .rg-prev__button:hover {
+    filter: brightness(1.05);
+    color: var(--rg-ink);
+  }
+
+  .rg-prev__button:focus-visible {
+    outline: 2px solid var(--rg-white);
+    outline-offset: 3px;
+  }
+
+  /* ---------- Desktop ---------- */
+  @media screen and (min-width: 990px) {
+    .rg-prev__inner {
+      padding: 28px 40px 40px;
+    }
+
+    .rg-prev__eyebrow {
+      gap: 14px;
+      font-size: 13px;
+      letter-spacing: 0.4em;
+    }
+
+    .rg-prev__stars {
+      font-size: 20px;
+    }
+
+    .rg-prev__title {
+      padding: 0;
+    }
+
+    .rg-prev__tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 0;
+    }
+
+    .rg-prev__tab {
+      height: 42px;
+      padding: 0 24px;
+      border-radius: 21px;
+      font-size: 13px;
+      letter-spacing: 0.16em;
+    }
+
+    .rg-prev__stage {
+      grid-template-columns: 52px minmax(0, 1fr) 52px;
+      grid-template-areas:
+        'prev panels next'
+        'dots dots dots';
+      justify-content: stretch;
+      column-gap: 22px;
+    }
+
+    .rg-prev__panels {
+      padding: 0;
+    }
+
+    .rg-prev__panel:not([hidden]) {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .rg-prev__arrow {
+      width: 52px;
+      height: 52px;
+      margin: 0;
+      border-color: rgba(28, 203, 245, 0.5);
+      background: rgba(14, 14, 14, 0.6);
+      box-shadow: 0 0 18px rgba(28, 203, 245, 0.35);
+    }
+
+    .rg-prev__arrow:hover {
+      background: #111111;
+    }
+
+    .rg-prev__arrow svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .rg-prev__dots {
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .rg-prev .rg-prev__dot {
+      height: 8px;
+    }
+
+    .rg-prev__card {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      min-height: 280px;
+      border-radius: 26px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    .rg-prev__photo {
+      min-height: 280px;
+    }
+
+    .rg-prev__body {
+      gap: 12px;
+      padding: 26px 26px 22px;
+    }
+
+    .rg-prev__card-stars {
+      font-size: 17px;
+      letter-spacing: 3px;
+    }
+
+    .rg-prev__card-title {
+      font-size: 21px;
+    }
+
+    .rg-prev__text {
+      font-size: 14.5px;
+      line-height: 1.6;
+    }
+
+    .rg-prev__meta {
+      gap: 12px;
+    }
+
+    .rg-prev__name {
+      gap: 10px;
+      font-size: 16px;
+    }
+
+    .rg-prev__avatar {
+      width: 28px;
+      height: 28px;
+    }
+
+    .rg-prev__badge {
+      padding: 6px 14px;
+      border-radius: 18px;
+      font-size: 13px;
+    }
+
+    .rg-prev__cta {
+      display: flex;
+      justify-content: center;
+      padding: 22px 0 0;
+    }
+
+    .rg-prev__button {
+      width: auto;
+      height: 60px;
+      padding: 0 64px;
+      font-size: 16px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RG · Reviews (product)",
+  "class": "rg-prev-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "default": "reviews"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Rating line",
+      "default": "RATED 4.8 ON AMAZON"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Read Our Reviews"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "TRY IT NOW →"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "Empty = back to the buy box (#buy)."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "text",
+          "id": "group",
+          "label": "Tab",
+          "default": "ENERGY",
+          "info": "Reviews with the same tab label are shown together (2 per tab)."
+        },
+        {
+          "type": "image_picker",
+          "id": "photo",
+          "label": "Customer photo"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Just amazing"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Review"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Customer"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge",
+          "default": "✓ Verified Buyer"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 16,
+  "presets": [
+    {
+      "name": "RG · Reviews (product)",
+      "blocks": [{ "type": "review" }, { "type": "review" }]
+    }
+  ]
+}
+{% endschema %}

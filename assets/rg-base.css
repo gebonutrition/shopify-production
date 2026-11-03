@@ -430,3 +430,180 @@ body {
     transition: none;
   }
 }
+
+/* 5. Payment badges (snippets/rg-pay-badges.liquid) ----------------------- */
+.rg-pay {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rg-pay--wrap {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rg-pay--center {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.rg-pay--fill .rg-pay__item {
+  flex: 1 1 auto;
+}
+
+.rg-pay__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 34px;
+  padding: 0 4px;
+  border: 1px solid #e2e2e2;
+  border-radius: 7px;
+  background: #ffffff;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.rg-pay__item--shop {
+  border-color: #5a31f4;
+  background: #5a31f4;
+}
+
+.rg-pay__item--apple {
+  border-color: #000000;
+  background: #000000;
+}
+
+.rg-pay__visa {
+  color: #1a1f71;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.rg-pay__mc {
+  position: relative;
+  display: block;
+  width: 28px;
+  height: 18px;
+}
+
+.rg-pay__mc span {
+  position: absolute;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+.rg-pay__mc span:nth-child(1) {
+  left: 0;
+  background: #eb001b;
+}
+
+.rg-pay__mc span:nth-child(2) {
+  right: 0;
+  background: #f79e1b;
+  mix-blend-mode: multiply;
+}
+
+.rg-pay__mc span:nth-child(3) {
+  left: 50%;
+  width: 7px;
+  background: #ff5f00;
+  transform: translateX(-50%);
+}
+
+.rg-pay__paypal {
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.rg-pay__paypal span:first-child {
+  color: #003087;
+}
+
+.rg-pay__paypal span:last-child {
+  color: #009cde;
+}
+
+.rg-pay__shop {
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.rg-pay__shop span {
+  margin-left: 1px;
+  font-weight: 600;
+}
+
+.rg-pay__apple {
+  width: 14px;
+  height: 16px;
+}
+
+.rg-pay__g {
+  color: #4285f4;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.rg-pay__word {
+  color: #5f6368;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.rg-pay__word--light {
+  color: #ffffff;
+}
+
+/* Product page, mobile: slightly smaller badges (Mobile v2 reference) */
+@media screen and (max-width: 989px) {
+  .rg-pay--responsive .rg-pay__item {
+    height: 30px;
+  }
+
+  .rg-pay--responsive .rg-pay__visa {
+    font-size: 13px;
+  }
+
+  .rg-pay--responsive .rg-pay__mc {
+    width: 26px;
+    height: 16px;
+  }
+
+  .rg-pay--responsive .rg-pay__mc span {
+    width: 16px;
+    height: 16px;
+  }
+
+  .rg-pay--responsive .rg-pay__mc span:nth-child(3) {
+    width: 6px;
+  }
+
+  .rg-pay--responsive .rg-pay__paypal {
+    font-size: 11px;
+    letter-spacing: -0.01em;
+  }
+
+  .rg-pay--responsive .rg-pay__apple {
+    width: 12px;
+    height: 14px;
+  }
+
+  .rg-pay--responsive .rg-pay__g {
+    font-size: 14px;
+  }
+}

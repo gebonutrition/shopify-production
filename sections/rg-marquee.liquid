@@ -13,7 +13,14 @@
     case block.type
       when 'text'
         if block.settings.text != blank
-          assign has_items = true
+          assign text_show_on = block.settings.show_on | default: 'all'
+          if text_show_on == 'all'
+            assign has_items = true
+          elsif text_show_on == 'product' and template.name == 'product'
+            assign has_items = true
+          elsif text_show_on == 'other' and template.name != 'product'
+            assign has_items = true
+          endif
         endif
       when 'countdown'
         if block.settings.show_on == 'all' or template.name == 'product'
@@ -59,7 +66,18 @@
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'text' -%}
-              {%- if block.settings.text != blank -%}
+              {%- liquid
+                assign text_show_on = block.settings.show_on | default: 'all'
+                assign text_visible = false
+                if text_show_on == 'all'
+                  assign text_visible = true
+                elsif text_show_on == 'product' and template.name == 'product'
+                  assign text_visible = true
+                elsif text_show_on == 'other' and template.name != 'product'
+                  assign text_visible = true
+                endif
+              -%}
+              {%- if block.settings.text != blank and text_visible -%}
                 <span
                   class="rg-marquee__item"
                   {% if copy == 1 %}
@@ -503,6 +521,17 @@
             { "value": "gift", "label": "Gift" }
           ],
           "default": "none"
+        },
+        {
+          "type": "select",
+          "id": "show_on",
+          "label": "Show on",
+          "options": [
+            { "value": "all", "label": "All pages" },
+            { "value": "product", "label": "Product pages only" },
+            { "value": "other", "label": "All pages except product pages" }
+          ],
+          "default": "all"
         }
       ]
     },
