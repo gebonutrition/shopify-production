@@ -24,6 +24,7 @@
   {%- endif -%}
 {%- endcapture -%}
 
+<script src="{{ 'rg-count-up.js' | asset_url }}" type="module"></script>
 <section class="rg rg-z rg-ptrust rg-pdp-dark">
   <div class="rg-pdp-wrap">
     {%- if stat_count > 0 -%}
@@ -283,8 +284,8 @@
     {
       "type": "checkbox",
       "id": "results_cta_mobile",
-      "label": "Mobile: button under the stats",
-      "default": true
+      "label": "Mobile: extra button under the stats",
+      "default": false
     },
     {
       "type": "header",

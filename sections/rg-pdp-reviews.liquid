@@ -26,6 +26,7 @@
   assign group_list = groups | split: '||'
 -%}
 
+<script src="{{ 'rg-tabs.js' | asset_url }}" type="module"></script>
 <section
   class="rg rg-z rg-prev"
   {% if s.anchor != blank %}
@@ -233,8 +234,7 @@
   .rg-prev__stage {
     display: grid;
     grid-template-areas: 'panels panels panels' 'prev dots next';
-    grid-template-columns: auto auto auto;
-    justify-content: center;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
     gap: 20px 14px;
   }
@@ -388,10 +388,12 @@
 
   .rg-prev__arrow--prev {
     grid-area: prev;
+    justify-self: end;
   }
 
   .rg-prev__arrow--next {
     grid-area: next;
+    justify-self: start;
   }
 
   .rg-prev__dots {

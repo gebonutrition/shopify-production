@@ -48,7 +48,7 @@
             {%- endif -%}
           </div>
           <span class="rg-steps__title">{{ block.settings.title | escape }}</span>
-          <span class="rg-steps__text">{{ block.settings.text | escape | newline_to_br | replace: '<br />', '<br class="rg-br-d">' }}</span>
+          <span class="rg-steps__step-text">{{ block.settings.text | escape | newline_to_br | replace: '<br />', '<br class="rg-br-d">' }}</span>
         </li>
       {%- endfor -%}
     </ol>
@@ -125,7 +125,7 @@
     color: var(--rg-on-dark);
   }
 
-  .rg-steps__text {
+  .rg-steps__step-text {
     margin-top: -5px;
     font-size: 10px;
     line-height: 1.45;
@@ -195,7 +195,7 @@
       line-height: normal;
     }
 
-    .rg-steps__text {
+    .rg-steps__step-text {
       margin-top: -6px;
       font-size: 17px;
       line-height: 1.5;

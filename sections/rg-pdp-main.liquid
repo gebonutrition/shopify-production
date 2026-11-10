@@ -52,6 +52,7 @@
   assign title_html = title_source | escape | replace: '®', '<sup>®</sup>' | replace: '™', '<sup>™</sup>' | newline_to_br
 -%}
 
+<script src="{{ 'rg-video-reviews.js' | asset_url }}" type="module"></script>
 <section class="rg rg-z rg-pdp" id="{{ s.anchor | default: 'buy' | handle }}">
   <div class="rg-pdp__grid">
     {%- comment -%} Gallery {%- endcomment -%}
@@ -268,7 +269,7 @@
                           {{
                             block.settings.image
                             | image_url: width: 300
-                            | image_tag: widths: '150, 300', sizes: '(min-width: 990px) 110px, 22vw', loading: 'lazy', alt: ''
+                            | image_tag: widths: '150, 300', sizes: '(min-width: 990px) 110px, 22vw', loading: 'eager', alt: ''
                           }}
                         {%- endif -%}
                         <span class="rg-pdp__tile-i" aria-hidden="true">i</span>

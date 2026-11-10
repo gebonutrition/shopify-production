@@ -78,7 +78,7 @@
               -%}
               <span class="rg-cmp__cell rg-cmp__cell--{{ cell_class }}" role="cell">
                 {%- if key == 'check' or check_text != '' -%}
-                  <svg class="rg-cmp__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
+                  <svg class="rg-cmp__check{% if check_text != '' %} rg-cmp__check--text{% endif %}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
                   {%- if check_text != '' -%}
                     <span class="rg-cmp__text">{{ check_text | escape | newline_to_br | replace: '<br />', '<br class="rg-br-m">' }}</span>
                   {%- else -%}
@@ -264,6 +264,10 @@
     height: 16px;
   }
 
+  .rg-cmp__check--text {
+    display: none;
+  }
+
   .rg-cmp__ban {
     flex: none;
     width: 16px;
@@ -334,6 +338,10 @@
     .rg-cmp__check {
       width: 22px;
       height: 22px;
+    }
+
+    .rg-cmp__check--text {
+      display: block;
     }
 
     .rg-cmp__ban {

@@ -29,6 +29,7 @@
   endif
 -%}
 
+<script src="{{ 'rg-tabs.js' | asset_url }}" type="module"></script>
 <section
   class="rg rg-z rg-pfaq"
   {% if s.anchor != blank %}
@@ -145,7 +146,7 @@
   }
 
   .rg-pfaq .rg-pfaq__title {
-    margin-bottom: 16px;
+    margin-bottom: 0;
   }
 
   .rg-pfaq__topic {

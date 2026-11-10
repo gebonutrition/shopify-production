@@ -28,6 +28,7 @@
   {%- endif -%}
 {%- endcapture -%}
 
+<script src="{{ 'rg-ingredients.js' | asset_url }}" type="module"></script>
 <section
   class="rg rg-z rg-ingp"
   {% if s.anchor != blank %}
@@ -192,6 +193,10 @@
     font-weight: 700;
     letter-spacing: 0.3em;
     color: var(--rg-accent);
+  }
+
+  .rg-ingp__root {
+    display: block;
   }
 
   .rg-ingp__grid {
@@ -524,6 +529,14 @@
       margin: 0 0 100px;
     }
 
+    /* The grid fills the section height (design: section min-height = viewport - 140px) */
+    .rg-ingp__root {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      min-height: 0;
+    }
+
     .rg-ingp__grid {
       position: relative;
       flex: 1;
@@ -609,10 +622,11 @@
       min-height: 500px;
     }
 
-    .rg-ingp__glass--desktop img {
+    .rg-ingp .rg-ingp__glass--desktop img {
       top: -14%;
       left: -16%;
       width: 132%;
+      max-width: none;
       height: 114%;
       object-position: center bottom;
       pointer-events: none;

@@ -87,7 +87,7 @@
           "type": "video",
           "settings": {
             "video": "shopify://files/videos/Talking Head.mp4",
-            "name": "Lara, 29"
+            "name": "Mike, 37"
           }
         },
         "video_3": {
@@ -101,7 +101,7 @@
           "type": "video",
           "settings": {
             "video": "shopify://files/videos/A5A77E57-AF72-4C60-B956-3B48DF91CB17.mov",
-            "name": "Mike, 37"
+            "name": "Lara, 29"
           }
         },
         "tab_1": {
@@ -590,7 +590,7 @@
         "results_eyebrow": "THE RESULTS",
         "results_heading": "WHAT RAW COFFEE+ DRINKERS REPORT",
         "results_text": "From a satisfaction survey of Raw Coffee+ customers.\nFigures reflect what customers report, not a medical outcome.",
-        "results_cta_mobile": true,
+        "results_cta_mobile": false,
         "quality_eyebrow": "QUALITY YOU CAN TRUST",
         "quality_heading": "TESTED FOR WHAT IS IN IT, AND WHAT IS NOT",
         "button_label": "TRY RAW COFFEE+ →",
