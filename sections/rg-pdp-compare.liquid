@@ -1,46 +1,50 @@
 {%- comment -%}
-  RAW GRAVITY · Product page comparison table (Raw Coffee+ vs regular coffee vs other blends).
-  In the two comparison columns, "x" renders the "not included" icon; any other text is shown as is.
+  RAW GRAVITY · Product page comparison table "Feel the difference" (Raw Coffee+ vs regular coffee vs other blends).
+  Cell values: "check" = check mark, "check: text" = check mark + text, "x" = ban icon, "-" = dash,
+  anything else = text. A line break in a cell shows on mobile only.
   Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "07 Comparison".
 {%- endcomment -%}
-{%- liquid
-  assign s = section.settings
-  assign rows = section.blocks
--%}
+{%- assign s = section.settings -%}
 
 <section
-  class="rg rg-cmp"
+  class="rg rg-z rg-cmp"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}
 >
-  <div class="rg-pdp-wrap">
+  <div class="rg-pdp-wrap rg-cmp__wrap">
+    {%- if s.eyebrow != blank -%}
+      <p class="rg-pdp-eyebrow rg-cmp__eyebrow">{{ s.eyebrow | escape }}</p>
+    {%- endif -%}
     <h2 class="rg-pdp-h2 rg-cmp__title">{{ s.heading | escape | newline_to_br }}</h2>
 
     <div class="rg-cmp__card">
       <div class="rg-cmp__table" role="table" aria-label="{{ s.heading | escape }}">
         <div class="rg-cmp__glow" aria-hidden="true"><span></span></div>
 
-        <div class="rg-cmp__row rg-cmp__row--head" role="row">
-          <span role="columnheader"><span class="rg-visually-hidden">Feature</span></span>
-          {%- for col in (1..3) -%}
+        <div class="rg-cmp__head" role="row">
+          <span role="columnheader"><span class="rg-visually-hidden">{{ s.label_feature | default: 'Feature' | escape }}</span></span>
+          {%- for column in (1..3) -%}
             {%- liquid
-              case col
+              case column
                 when 1
                   assign col_image = s.image_ours
                   assign col_label = s.label_ours
+                  assign col_class = 'ours'
                 when 2
                   assign col_image = s.image_regular
                   assign col_label = s.label_regular
-                when 3
+                  assign col_class = 'regular'
+                else
                   assign col_image = s.image_other
                   assign col_label = s.label_other
+                  assign col_class = 'other'
               endcase
             -%}
-            <span class="rg-cmp__col{% if col == 1 %} rg-cmp__col--ours{% endif %}" role="columnheader">
+            <span class="rg-cmp__col rg-cmp__col--{{ col_class }}" role="columnheader">
               <span class="rg-cmp__thumb">
                 {%- if col_image != blank -%}
-                  {{ col_image | image_url: width: 160 | image_tag: widths: '80, 160', sizes: '64px', loading: 'lazy', alt: '' }}
+                  {{ col_image | image_url: width: 200 | image_tag: widths: '100, 200', sizes: '76px', loading: 'lazy', alt: '' }}
                 {%- endif -%}
               </span>
               <span>{{ col_label | escape }}</span>
@@ -48,38 +52,45 @@
           {%- endfor -%}
         </div>
 
-        {%- for block in rows -%}
-          {%- liquid
-            assign b = block.settings
-            assign regular = b.regular | strip
-            assign other = b.other | strip
-            assign regular_down = regular | downcase
-            assign other_down = other | downcase
-          -%}
-          <div class="rg-cmp__row" role="row" {{ block.shopify_attributes }}>
-            <span class="rg-cmp__label" role="rowheader">{{ b.label | escape }}</span>
-            <span class="rg-cmp__yes{% if forloop.last %} rg-cmp__yes--last{% endif %}" role="cell">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
-              <span class="rg-visually-hidden">{{ s.label_ours | escape }}: yes</span>
-            </span>
-            {%- for value in (1..2) -%}
+        {%- for block in section.blocks -%}
+          <div class="rg-cmp__row{% if forloop.last %} rg-cmp__row--last{% endif %}" role="row" {{ block.shopify_attributes }}>
+            <span class="rg-cmp__label" role="rowheader">{{ block.settings.label | escape }}</span>
+            {%- for column in (1..3) -%}
               {%- liquid
-                if value == 1
-                  assign cell = regular
-                  assign cell_down = regular_down
-                  assign cell_label = s.label_regular
-                else
-                  assign cell = other
-                  assign cell_down = other_down
-                  assign cell_label = s.label_other
+                case column
+                  when 1
+                    assign raw = block.settings.ours | default: 'check'
+                    assign cell_class = 'ours'
+                  when 2
+                    assign raw = block.settings.regular
+                    assign cell_class = 'regular'
+                  else
+                    assign raw = block.settings.other
+                    assign cell_class = 'other'
+                endcase
+                assign value = raw | strip
+                assign key = value | downcase
+                assign check_text = ''
+                assign key_prefix = key | slice: 0, 6
+                if key_prefix == 'check:'
+                  assign check_text = value | slice: 6, value.size | strip
                 endif
               -%}
-              <span class="rg-cmp__cell" role="cell">
-                {%- if cell_down == 'x' or cell == blank -%}
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg>
-                  <span class="rg-visually-hidden">{{ cell_label | escape }}: no</span>
+              <span class="rg-cmp__cell rg-cmp__cell--{{ cell_class }}" role="cell">
+                {%- if key == 'check' or check_text != '' -%}
+                  <svg class="rg-cmp__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
+                  {%- if check_text != '' -%}
+                    <span class="rg-cmp__text">{{ check_text | escape | newline_to_br | replace: '<br />', '<br class="rg-br-m">' }}</span>
+                  {%- else -%}
+                    <span class="rg-visually-hidden">Yes</span>
+                  {%- endif -%}
+                {%- elsif key == 'x' -%}
+                  <svg class="rg-cmp__ban" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg>
+                  <span class="rg-visually-hidden">No</span>
+                {%- elsif key == '-' or key == '—' or key == '' -%}
+                  <span class="rg-cmp__dash" aria-label="Not stated">—</span>
                 {%- else -%}
-                  <span class="rg-cmp__text">{{ cell | escape }}</span>
+                  <span class="rg-cmp__text">{{ value | escape | newline_to_br | replace: '<br />', '<br class="rg-br-m">' }}</span>
                 {%- endif -%}
               </span>
             {%- endfor -%}
@@ -101,49 +112,51 @@
     background: var(--rg-bg-2);
   }
 
+  .rg-cmp .rg-cmp__eyebrow {
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
   .rg-cmp .rg-cmp__title {
-    margin-bottom: 20px;
+    margin-bottom: 22px;
     text-align: center;
   }
 
   .rg-cmp__card {
-    padding: 14px 10px;
+    margin: 0 auto;
+    padding: 12px 6px;
     border-radius: 22px;
     background: var(--rg-white);
-    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
   }
 
   .rg-cmp__table {
     position: relative;
-    --rg-cmp-cols: 1.35fr 1fr 0.9fr 0.9fr;
-    --rg-cmp-radius: 18px;
+    --rg-cmp-cols: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 0.9fr) minmax(0, 0.9fr);
+  }
+
+  .rg-cmp__glow,
+  .rg-cmp__head,
+  .rg-cmp__row {
+    display: grid;
+    grid-template-columns: var(--rg-cmp-cols);
   }
 
   .rg-cmp__glow {
     position: absolute;
     inset: 0;
-    display: grid;
-    grid-template-columns: var(--rg-cmp-cols);
     pointer-events: none;
   }
 
   .rg-cmp__glow span {
     grid-column: 2;
-    border-radius: var(--rg-cmp-radius);
-    box-shadow: 0 0 28px rgba(28, 203, 245, 0.35);
+    border-radius: 28px;
+    box-shadow: 0 0 44px rgba(28, 203, 245, 0.35);
   }
 
-  .rg-cmp__row {
+  .rg-cmp__head {
     position: relative;
-    display: grid;
-    grid-template-columns: var(--rg-cmp-cols);
-    min-height: 62px;
-    border-top: 1px solid #e6e6e6;
-  }
-
-  .rg-cmp__row--head {
-    height: 150px;
-    border-top: 0;
+    height: 78px;
   }
 
   .rg-cmp__col {
@@ -152,32 +165,31 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
+    padding: 0 2px;
     color: var(--rg-text-3);
     font-size: 11px;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.15;
     text-align: center;
   }
 
   .rg-cmp__col--ours {
-    padding: 0 4px;
-    border-radius: var(--rg-cmp-radius) var(--rg-cmp-radius) 0 0;
+    border-radius: 28px 28px 0 0;
     background: linear-gradient(180deg, #4fdcfb, #1ccbf5);
     color: var(--rg-white);
-    font-size: 13px;
     font-weight: 800;
-    line-height: 1.15;
+    letter-spacing: 0.01em;
   }
 
   .rg-cmp__thumb {
     display: flex;
     flex: none;
-    width: 56px;
-    height: 56px;
+    width: 44px;
+    height: 44px;
     padding: 6px;
     overflow: hidden;
     border: 1px solid var(--rg-line-2);
-    border-radius: 12px;
+    border-radius: 16px;
     background: var(--rg-white);
   }
 
@@ -193,119 +205,148 @@
     object-fit: contain;
   }
 
+  .rg-cmp__row {
+    position: relative;
+    min-height: 26px;
+    border-top: 1px solid #e6e6e6;
+  }
+
   .rg-cmp__label {
     display: flex;
     align-items: center;
-    padding: 8px 6px 8px 8px;
+    padding: 4px 6px 4px 10px;
     color: var(--rg-graphite);
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 600;
     line-height: 1.3;
-  }
-
-  .rg-cmp__yes {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: -1px;
-    border-top: 1px solid rgba(255, 255, 255, 0.35);
-    background: linear-gradient(180deg, #4fdcfb, #1ccbf5);
-    color: var(--rg-white);
-  }
-
-  .rg-cmp__yes--last {
-    border-radius: 0 0 var(--rg-cmp-radius) var(--rg-cmp-radius);
-  }
-
-  .rg-cmp__yes svg {
-    width: 18px;
-    height: 18px;
-    stroke-width: 2.2;
   }
 
   .rg-cmp__cell {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 4px;
+    min-width: 0;
+    padding: 5px 4px;
     color: var(--rg-text-3);
+    text-align: center;
   }
 
-  .rg-cmp__cell svg {
-    width: 18px;
-    height: 18px;
+  .rg-cmp__cell--ours {
+    margin-top: -1px;
+    border-top: 1px solid rgba(255, 255, 255, 0.35);
+    background: linear-gradient(180deg, #4fdcfb, #1ccbf5);
+    color: var(--rg-white);
+  }
+
+  .rg-cmp__row--last .rg-cmp__cell--ours {
+    border-radius: 0 0 28px 28px;
   }
 
   .rg-cmp__text {
-    font-size: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .rg-cmp__cell--ours .rg-cmp__text {
+    font-weight: 800;
+    line-height: 1.25;
+  }
+
+  .rg-cmp__cell--ours svg + .rg-cmp__text {
+    font-weight: 700;
+  }
+
+  .rg-cmp__check {
+    flex: none;
+    width: 16px;
+    height: 16px;
+  }
+
+  .rg-cmp__ban {
+    flex: none;
+    width: 16px;
+    height: 16px;
+  }
+
+  .rg-cmp__dash {
+    font-size: 11px;
     font-weight: 600;
   }
 
+  .rg-cmp .rg-pdp-cta {
+    font-size: 12px;
+  }
+
   @media screen and (min-width: 990px) {
-    .rg-cmp .rg-cmp__title {
-      margin-bottom: 28px;
+    .rg-cmp .rg-cmp__wrap {
+      padding-block: clamp(24px, 4vh, 44px);
     }
 
     .rg-cmp__card {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 26px 28px;
+      padding: 18px 32px;
       border-radius: 32px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
     }
 
     .rg-cmp__table {
       --rg-cmp-cols: 1.55fr 1fr 1fr 1fr;
-      --rg-cmp-radius: 28px;
     }
 
-    .rg-cmp__glow span {
-      box-shadow: 0 0 44px rgba(28, 203, 245, 0.35);
-    }
-
-    .rg-cmp__row {
-      min-height: 50px;
-      height: 50px;
-    }
-
-    .rg-cmp__row--head {
-      height: 150px;
+    .rg-cmp__head {
+      height: clamp(120px, 15vh, 150px);
     }
 
     .rg-cmp__col {
       gap: 12px;
-      font-size: 18px;
+      padding: 0;
+      font-size: 20px;
+      line-height: normal;
     }
 
     .rg-cmp__col--ours {
-      padding: 0;
       font-size: 22px;
-      letter-spacing: 0.01em;
     }
 
     .rg-cmp__thumb {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
+      width: clamp(56px, 8vh, 76px);
+      height: clamp(56px, 8vh, 76px);
+    }
+
+    .rg-cmp__row {
+      min-height: clamp(32px, 4.6vh, 44px);
     }
 
     .rg-cmp__label {
-      padding: 0 0 0 30px;
-      font-size: 18px;
+      padding: 6px 12px 6px 30px;
+      font-size: 17px;
     }
 
-    .rg-cmp__yes svg {
+    .rg-cmp__cell {
+      gap: 8px;
+      padding: 6px 14px;
+    }
+
+    .rg-cmp__text {
+      font-size: 17px;
+    }
+
+    .rg-cmp__check {
       width: 22px;
       height: 22px;
-      stroke-width: 2;
     }
 
-    .rg-cmp__cell svg {
+    .rg-cmp__ban {
       width: 24px;
       height: 24px;
     }
 
-    .rg-cmp__text {
-      font-size: 14px;
+    .rg-cmp__dash {
+      font-size: 20px;
+    }
+
+    .rg-cmp .rg-pdp-cta {
+      font-size: 15px;
     }
   }
 {% endstylesheet %}
@@ -322,54 +363,55 @@
       "default": "compare"
     },
     {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "SIDE BY SIDE"
+    },
+    {
       "type": "textarea",
       "id": "heading",
       "label": "Heading",
       "default": "FEEL THE DIFFERENCE\nWITH RAW COFFEE+"
     },
     {
-      "type": "header",
-      "content": "Columns"
-    },
-    {
       "type": "image_picker",
       "id": "image_ours",
-      "label": "Our product image"
+      "label": "Raw Coffee+ image"
     },
     {
       "type": "text",
       "id": "label_ours",
-      "label": "Our product label",
-      "default": "RAW COFFEE +"
+      "label": "Raw Coffee+ label",
+      "default": "RAW COFFEE+"
     },
     {
       "type": "image_picker",
       "id": "image_regular",
-      "label": "Column 2 image"
+      "label": "Regular coffee image"
     },
     {
       "type": "text",
       "id": "label_regular",
-      "label": "Column 2 label",
+      "label": "Regular coffee label",
       "default": "Regular Coffee"
     },
     {
       "type": "image_picker",
       "id": "image_other",
-      "label": "Column 3 image",
-      "info": "Do not show a real competitor's packaging or brand."
+      "label": "Other blends image"
     },
     {
       "type": "text",
       "id": "label_other",
-      "label": "Column 3 label",
+      "label": "Other blends label",
       "default": "Other Blends"
     },
     {
       "type": "text",
       "id": "button_label",
       "label": "Button label",
-      "default": "TRY RAW COFFEE →"
+      "default": "TRY RAW COFFEE+ →"
     },
     {
       "type": "url",
@@ -390,23 +432,28 @@
           "default": "No energy crash"
         },
         {
-          "type": "text",
-          "id": "regular",
-          "label": "Column 2 value",
-          "default": "x",
-          "info": "x = not included icon; any other text is shown."
+          "type": "textarea",
+          "id": "ours",
+          "label": "Raw Coffee+",
+          "default": "check",
+          "info": "check | check: text | x | - | text. A line break shows on mobile only."
         },
         {
-          "type": "text",
+          "type": "textarea",
+          "id": "regular",
+          "label": "Regular coffee",
+          "default": "x"
+        },
+        {
+          "type": "textarea",
           "id": "other",
-          "label": "Column 3 value",
-          "default": "x",
-          "info": "x = not included icon; any other text is shown."
+          "label": "Other blends",
+          "default": "x"
         }
       ]
     }
   ],
-  "max_blocks": 10,
+  "max_blocks": 16,
   "presets": [
     {
       "name": "RG · Comparison",

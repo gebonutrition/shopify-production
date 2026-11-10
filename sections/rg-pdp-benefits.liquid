@@ -1,62 +1,62 @@
 {%- comment -%}
-  RAW GRAVITY · Product page "Functional benefits" (photo + 4 icon cards).
+  RAW GRAVITY · Product page "Functional benefits".
+  Desktop: photo bleeding to the left edge | intro, 2 x 2 benefit cards, button.
+  Mobile: intro, photo (2:1), 2 x 2 cards, button.
   Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "06 Functional benefits".
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 
 <section
-  class="rg rg-fben"
+  class="rg rg-z rg-bnf"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}
 >
-  <div class="rg-pdp-wrap">
-    {%- if s.eyebrow != blank -%}
-      <p class="rg-pdp-eyebrow">{{ s.eyebrow | escape }}</p>
-    {%- endif -%}
-    <div class="rg-fben__head">
-      <h2 class="rg-pdp-h2 rg-fben__title">{{ s.heading | escape }}</h2>
+  <div class="rg-pdp-wrap rg-bnf__grid">
+    <div class="rg-bnf__intro">
+      {%- if s.eyebrow != blank -%}
+        <p class="rg-pdp-eyebrow">{{ s.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h2 class="rg-pdp-h2 rg-bnf__title">{{ s.heading | escape }}</h2>
       {%- if s.text != blank -%}
-        <p class="rg-pdp-lead rg-fben__text">{{ s.text | escape }}</p>
+        <p class="rg-pdp-lead rg-bnf__text">{{ s.text | escape }}</p>
       {%- endif -%}
     </div>
 
-    <div class="rg-fben__body">
-      <div class="rg-fben__photo">
-        {%- if s.image != blank -%}
-          {{
-            s.image
-            | image_url: width: 1000
-            | image_tag:
-              widths: '400, 600, 800, 1000',
-              sizes: '(min-width: 990px) 447px, calc(100vw - 32px)',
-              loading: 'lazy',
-              alt: s.image.alt
-          }}
-        {%- endif -%}
-      </div>
-
-      <ul class="rg-fben__cards" role="list">
-        {%- for block in section.blocks -%}
-          <li class="rg-fben__card" {{ block.shopify_attributes }}>
-            {%- if block.settings.icon != blank -%}
-              {{
-                block.settings.icon
-                | image_url: width: 160
-                | image_tag: widths: '80, 128, 160', sizes: '64px', loading: 'lazy', alt: '', class: 'rg-fben__icon'
-              }}
-            {%- endif -%}
-            <span class="rg-fben__copy">
-              <span class="rg-fben__card-title">{{ block.settings.title | escape }}</span>
-              <span class="rg-fben__card-text">{{ block.settings.text | escape }}</span>
-            </span>
-          </li>
-        {%- endfor -%}
-      </ul>
+    <div class="rg-bnf__photo">
+      {%- if s.image != blank -%}
+        {{
+          s.image
+          | image_url: width: 1400
+          | image_tag:
+            widths: '600, 800, 1000, 1400',
+            sizes: '(min-width: 990px) 45vw, calc(100vw - 32px)',
+            loading: 'lazy',
+            alt: s.image.alt
+        }}
+      {%- endif -%}
     </div>
 
+    <ul class="rg-bnf__cards" role="list">
+      {%- for block in section.blocks -%}
+        <li class="rg-bnf__card" {{ block.shopify_attributes }}>
+          <span class="rg-bnf__icon" aria-hidden="true">
+            {%- if block.settings.line_icon != 'none' -%}
+              {%- render 'rg-line-icon', name: block.settings.line_icon, size: 34 -%}
+            {%- elsif block.settings.icon != blank -%}
+              {{ block.settings.icon | image_url: width: 136 | image_tag: loading: 'lazy', alt: '', width: 34, height: 34 }}
+            {%- endif -%}
+          </span>
+          <span class="rg-bnf__copy">
+            <span class="rg-bnf__card-title">{{ block.settings.title | escape }}</span>
+            <span class="rg-bnf__card-text">{{ block.settings.text | escape | newline_to_br }}</span>
+          </span>
+        </li>
+      {%- endfor -%}
+    </ul>
+
     {%- if s.button_label != blank -%}
-      <div class="rg-pdp-cta-row">
+      <div class="rg-pdp-cta-row rg-bnf__cta">
         <a class="rg-pdp-cta" href="{{ s.button_link | default: '#buy' }}">{{ s.button_label | escape }}</a>
       </div>
     {%- endif -%}
@@ -64,17 +64,19 @@
 </section>
 
 {% stylesheet %}
-  .rg-fben {
+  .rg-bnf {
+    overflow: hidden;
     background: linear-gradient(180deg, #ffffff, #f4f4f6);
   }
 
-  .rg-fben__head .rg-fben__text {
+  .rg-bnf .rg-bnf__text {
     margin: 10px 0 20px;
   }
 
-  .rg-fben__photo {
+  .rg-bnf__photo {
+    position: relative;
     width: 100%;
-    height: 343px;
+    aspect-ratio: 2 / 1;
     margin-bottom: 12px;
     overflow: hidden;
     border-radius: 24px;
@@ -82,14 +84,15 @@
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
   }
 
-  .rg-fben__photo img {
-    display: block;
+  .rg-bnf__photo img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .rg-fben__cards {
+  .rg-bnf__cards {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
@@ -98,33 +101,49 @@
     list-style: none;
   }
 
-  .rg-fben__card {
+  .rg-bnf__card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    padding: 16px 10px 18px;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 8px;
     border-radius: 16px;
     background: var(--rg-white);
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
     text-align: center;
+    transition: transform 0.25s, box-shadow 0.25s;
   }
 
-  .rg-fben__icon {
-    display: block;
+  .rg-bnf__icon {
+    display: flex;
     flex: none;
-    width: 54px;
-    height: 54px;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #f4f5f6;
+    box-shadow: 0 0 0 1px rgba(28, 203, 245, 0.12), 0 0 16px rgba(28, 203, 245, 0.55), 0 0 30px rgba(28, 203, 245, 0.25);
+    color: var(--rg-accent);
+  }
+
+  .rg-bnf__icon svg,
+  .rg-bnf__icon img {
+    display: block;
+    width: 30px;
+    height: 30px;
     object-fit: contain;
   }
 
-  .rg-fben__copy {
+  .rg-bnf__copy {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    min-width: 0;
   }
 
-  .rg-fben__card-title {
+  .rg-bnf__card-title {
     font-size: 12.5px;
     font-weight: 800;
     line-height: 1.2;
@@ -133,86 +152,102 @@
     text-wrap: balance;
   }
 
-  .rg-fben__card-text {
-    font-size: 11.5px;
+  .rg-bnf__card-text {
+    font-size: 12px;
     line-height: 1.4;
     color: var(--rg-text-2);
     text-wrap: pretty;
   }
 
+  .rg-bnf .rg-bnf__cta {
+    margin-top: 24px;
+  }
+
   @media screen and (min-width: 990px) {
-    .rg-fben__head {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 48px;
-      margin-bottom: 24px;
+    .rg-bnf .rg-bnf__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      grid-template-rows: 1fr auto auto auto 1fr;
+      column-gap: 64px;
     }
 
-    .rg-fben__title {
-      max-width: 760px;
+    .rg-bnf__intro {
+      grid-column: 2;
+      grid-row: 2;
     }
 
-    .rg-fben__head .rg-fben__text {
-      max-width: 420px;
-      margin: 0;
+    .rg-bnf .rg-bnf__title {
+      max-width: 520px;
+      margin-bottom: 14px;
     }
 
-    .rg-fben__body {
-      display: flex;
-      align-items: stretch;
-      justify-content: center;
-      gap: 20px;
+    .rg-bnf .rg-bnf__text {
+      max-width: 440px;
+      margin: 0 0 22px;
     }
 
-    .rg-fben__photo {
-      flex: none;
-      width: 447px;
-      height: 405px;
-      margin: 0;
+    .rg-bnf__photo {
+      grid-column: 1;
+      grid-row: 1 / -1;
+      width: auto;
+      min-height: 420px;
+      aspect-ratio: auto;
+      margin: -24px 0 -8px -40%;
     }
 
-    .rg-fben__cards {
-      grid-template-columns: repeat(2, minmax(0, 260px));
+    .rg-bnf__cards {
+      grid-column: 2;
+      grid-row: 3;
       grid-auto-rows: 1fr;
-      gap: 16px;
+      gap: 14px;
     }
 
-    .rg-fben__card {
-      justify-content: center;
-      gap: 10px;
+    .rg-bnf__card {
       padding: 16px 18px;
       border-radius: 20px;
       box-shadow: 0 18px 40px rgba(0, 0, 0, 0.05);
-      transition: transform 0.25s var(--rg-ease), box-shadow 0.25s var(--rg-ease);
     }
 
-    .rg-fben__card:hover {
-      transform: translateY(-4px);
+    .rg-bnf__card:hover {
       box-shadow: 0 24px 50px rgba(0, 0, 0, 0.08);
+      transform: translateY(-4px);
     }
 
-    .rg-fben__icon {
-      width: 64px;
-      height: 64px;
+    .rg-bnf__icon {
+      width: 68px;
+      height: 68px;
+      box-shadow: 0 0 0 1px rgba(28, 203, 245, 0.12), 0 0 22px rgba(28, 203, 245, 0.55), 0 0 44px rgba(28, 203, 245, 0.25);
     }
 
-    .rg-fben__copy {
+    .rg-bnf__icon svg,
+    .rg-bnf__icon img {
+      width: 34px;
+      height: 34px;
+    }
+
+    .rg-bnf__copy {
       gap: 6px;
     }
 
-    .rg-fben__card-title {
+    .rg-bnf__card-title {
       font-size: 17px;
     }
 
-    .rg-fben__card-text {
-      font-size: 14px;
+    .rg-bnf__card-text {
+      font-size: 17px;
       line-height: 1.5;
+    }
+
+    .rg-bnf .rg-bnf__cta {
+      grid-column: 2;
+      grid-row: 4;
+      justify-content: flex-start;
+      margin-top: 22px;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .rg-fben__card {
+    .rg-bnf__card {
       transition: none;
     }
   }
@@ -221,7 +256,7 @@
 {% schema %}
 {
   "name": "RG · Functional benefits",
-  "class": "rg-fben-section",
+  "class": "rg-bnf-section",
   "settings": [
     {
       "type": "text",
@@ -239,8 +274,7 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "CLINICALLY STUDIED PROVEN RESULTS",
-      "info": "Claim must be substantiated."
+      "default": "UPGRADE EVERY MORNING"
     },
     {
       "type": "textarea",
@@ -271,9 +305,22 @@
       "name": "Benefit",
       "settings": [
         {
+          "type": "select",
+          "id": "line_icon",
+          "label": "Icon",
+          "options": [
+            { "value": "focus", "label": "Focus" },
+            { "value": "stress", "label": "Stress support" },
+            { "value": "resilience", "label": "Resilience" },
+            { "value": "immune", "label": "Immune support" },
+            { "value": "none", "label": "Custom image below" }
+          ],
+          "default": "focus"
+        },
+        {
           "type": "image_picker",
           "id": "icon",
-          "label": "Icon"
+          "label": "Custom icon image"
         },
         {
           "type": "text",
@@ -282,14 +329,15 @@
           "default": "SHARP MENTAL FOCUS"
         },
         {
-          "type": "text",
+          "type": "textarea",
           "id": "text",
-          "label": "Text"
+          "label": "Text",
+          "info": "A line break is kept."
         }
       ]
     }
   ],
-  "max_blocks": 4,
+  "max_blocks": 6,
   "presets": [
     {
       "name": "RG · Functional benefits",

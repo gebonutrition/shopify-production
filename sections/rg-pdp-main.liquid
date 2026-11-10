@@ -1,10 +1,14 @@
 {%- comment -%}
-  RAW GRAVITY · Product page, first screen (gallery + buy box)
-  Packs are quantities of the single product variant (1 SKU): each pack radio is the
-  form's "quantity" field. Pack prices mirror the automatic "Bundle Savings" discounts,
-  so the per-pack discount % below must match the discount set up in Shopify admin.
+  RAW GRAVITY · Product page, first screen (gallery + buy box).
+  One offer: a subscription of the single product variant (quantity 1).
+  Prices come from the catalog:
+    recurring price = price of the first selling plan (Shopify Subscriptions), or the variant price
+    first-order price = recurring price - "First-order discount" (must equal the automatic discount)
+    compare-at = variant compare-at price; [percent] = saving of the first order vs. compare-at
+  Without a selling plan the button adds a one-time purchase (a notice shows in the theme editor).
   Add to cart runs through Horizon's <product-form-component> (cart drawer, events).
-  Subscription toggle appears only when the product has a selling plan.
+  Ingredient tiles open the dialog of the "RG · Ingredients (PDP)" section.
+  Desktop is rendered through .rg-z (assets/rg-base.css), so sizes below are design values.
   Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "03 First screen".
 {%- endcomment -%}
 {%- liquid
@@ -13,109 +17,111 @@
   assign form_id = 'RgPdpForm-' | append: section.id
   assign media_count = product.media.size
 
-  assign unit_price = variant.price
-  assign unit_compare = variant.compare_at_price | default: 0
-  assign percent_off = 0
-  if unit_compare > unit_price
-    assign percent_off = unit_compare | minus: unit_price | times: 100.0 | divided_by: unit_compare | round
-  endif
-  assign percent_text = percent_off | append: ''
-
-  assign servings = s.servings_per_unit | at_least: 1
-
-  comment
-    Subscription: the first selling plan group (Shopify Subscriptions plan). Each bundle option
-    picks a delivery frequency by its position in that group ("Subscription frequency" setting),
-    so 3 units can ship every 3 months instead of monthly.
-  endcomment
   assign selling_plan = blank
-  assign sub_plans = blank
-  if product.selling_plan_groups.size > 0 and s.show_subscription
-    assign sub_plans = product.selling_plan_groups.first.selling_plans
-    assign selling_plan = sub_plans.first
+  if product.selling_plan_groups.size > 0
+    assign selling_plan = product.selling_plan_groups.first.selling_plans.first
   endif
 
-  assign default_pack_index = 0
-  for block in section.blocks
-    if block.type == 'pack' and block.settings.default
-      assign default_pack_index = forloop.index0
-      break
-    endif
-  endfor
+  assign recurring_price = variant.price
+  if selling_plan != blank
+    for allocation in variant.selling_plan_allocations
+      if allocation.selling_plan.id == selling_plan.id
+        assign recurring_price = allocation.price
+      endif
+    endfor
+  endif
+
+  assign first_discount = s.first_order_discount | default: 0 | times: 100 | round
+  assign first_price = recurring_price | minus: first_discount | at_least: 0
+  assign compare_price = variant.compare_at_price | default: 0
+  assign percent = 0
+  if compare_price > first_price
+    assign percent = compare_price | minus: first_price | times: 100.0 | divided_by: compare_price | round
+  endif
+  assign servings = s.servings | default: 30 | at_least: 1
+  assign per_serving = first_price | divided_by: servings
+
+  assign first_money = first_price | money
+  assign recurring_money = recurring_price | money
+  assign compare_money = compare_price | money
+  assign per_serving_money = per_serving | money
+  assign percent_text = percent | append: ''
 
   assign can_add_to_cart = variant.available
-  assign title_html = product.title | escape | replace: '®', '<sup>®</sup>' | replace: '™', '<sup>™</sup>'
+  assign title_source = s.heading | default: product.title
+  assign title_html = title_source | escape | replace: '®', '<sup>®</sup>' | replace: '™', '<sup>™</sup>' | newline_to_br
 -%}
 
-<section class="rg rg-pdp" id="{{ s.anchor | default: 'buy' | handle }}">
+<section class="rg rg-z rg-pdp" id="{{ s.anchor | default: 'buy' | handle }}">
   <div class="rg-pdp__grid">
     {%- comment -%} Gallery {%- endcomment -%}
-    <rg-pdp-gallery class="rg-pdp__gallery" data-count="{{ media_count }}">
-      <div class="rg-pdp__viewer">
-        {%- if media_count > 1 -%}
-          <button type="button" class="rg-pdp__arrow rg-pdp__arrow--prev" data-dir="-1" aria-label="Previous image">
-            <span aria-hidden="true">‹</span>
-          </button>
-        {%- endif -%}
-        <div class="rg-pdp__stage">
-          {%- for media in product.media -%}
-            <div class="rg-pdp__slide" data-index="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
-              {%- liquid
-                assign alt = media.alt | default: product.title
-                if forloop.first
-                  assign loading = 'eager'
-                else
-                  assign loading = 'lazy'
-                endif
-              -%}
-              {{
-                media.preview_image
-                | image_url: width: 1400
-                | image_tag:
-                  widths: '400, 600, 800, 1000, 1400',
-                  sizes: '(min-width: 990px) min(50vw, calc(100vh - 222px)), calc(100vw - 120px)',
-                  loading: loading,
-                  fetchpriority: 'auto',
-                  alt: alt,
-                  class: 'rg-pdp__image'
-              }}
-            </div>
-          {%- else -%}
-            <div class="rg-pdp__slide">{{ 'product-1' | placeholder_svg_tag: 'rg-pdp__image rg-pdp__image--placeholder' }}</div>
-          {%- endfor -%}
+    <div class="rg-pdp__media">
+      <rg-pdp-gallery class="rg-pdp__gallery" data-count="{{ media_count }}">
+        <div class="rg-pdp__viewer">
           {%- if media_count > 1 -%}
-            <span class="rg-pdp__counter" aria-live="polite"><span data-current>1</span> / {{ media_count }}</span>
+            <button type="button" class="rg-pdp__arrow rg-pdp__arrow--prev" data-dir="-1" aria-label="Previous image">
+              <span aria-hidden="true">‹</span>
+            </button>
+          {%- endif -%}
+          <div class="rg-pdp__stage">
+            {%- for media in product.media -%}
+              <div class="rg-pdp__slide" data-index="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %}>
+                {%- liquid
+                  assign alt = media.alt | default: product.title
+                  if forloop.first
+                    assign loading = 'eager'
+                  else
+                    assign loading = 'lazy'
+                  endif
+                -%}
+                {{
+                  media.preview_image
+                  | image_url: width: 1400
+                  | image_tag:
+                    widths: '400, 600, 800, 1000, 1400',
+                    sizes: '(min-width: 990px) 40vw, calc(100vw - 120px)',
+                    loading: loading,
+                    alt: alt,
+                    class: 'rg-pdp__image'
+                }}
+              </div>
+            {%- else -%}
+              <div class="rg-pdp__slide">{{ 'product-1' | placeholder_svg_tag: 'rg-pdp__image rg-pdp__image--placeholder' }}</div>
+            {%- endfor -%}
+            {%- if media_count > 1 -%}
+              <span class="rg-pdp__counter" aria-live="polite"><span data-current>1</span> / {{ media_count }}</span>
+            {%- endif -%}
+          </div>
+          {%- if media_count > 1 -%}
+            <button type="button" class="rg-pdp__arrow rg-pdp__arrow--next" data-dir="1" aria-label="Next image">
+              <span aria-hidden="true">›</span>
+            </button>
           {%- endif -%}
         </div>
-        {%- if media_count > 1 -%}
-          <button type="button" class="rg-pdp__arrow rg-pdp__arrow--next" data-dir="1" aria-label="Next image">
-            <span aria-hidden="true">›</span>
-          </button>
-        {%- endif -%}
-      </div>
 
-      {%- if media_count > 1 -%}
-        <div class="rg-pdp__thumbs">
-          {%- for media in product.media -%}
-            <button
-              type="button"
-              class="rg-pdp__thumb"
-              data-index="{{ forloop.index0 }}"
-              aria-label="Show image {{ forloop.index }} of {{ media_count }}"
-              {% if forloop.first %}
-                aria-current="true"
-              {% endif %}
-            >
-              {{
-                media.preview_image
-                | image_url: width: 200
-                | image_tag: widths: '100, 200', sizes: '(min-width: 990px) 70px, 11vw', loading: 'lazy', alt: ''
-              }}
-            </button>
-          {%- endfor -%}
-        </div>
-      {%- endif -%}
-    </rg-pdp-gallery>
+        {%- if media_count > 1 -%}
+          <div class="rg-pdp__thumbs">
+            {%- for media in product.media -%}
+              <button
+                type="button"
+                class="rg-pdp__thumb"
+                data-index="{{ forloop.index0 }}"
+                aria-label="Show image {{ forloop.index }} of {{ media_count }}"
+                {% if forloop.first %}
+                  aria-current="true"
+                {% endif %}
+              >
+                {{
+                  media.preview_image
+                  | image_url: width: 200
+                  | image_tag: widths: '100, 200', sizes: '(min-width: 990px) 70px, 11vw', loading: 'lazy', alt: ''
+                }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </rg-pdp-gallery>
+    </div>
 
     {%- comment -%} Buy box {%- endcomment -%}
     <product-form-component
@@ -129,52 +135,162 @@
     >
       <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
 
-      {%- if s.rating_text != blank -%}
-        <p class="rg-pdp__rating">
+      <div class="rg-pdp__meta">
+        {%- if s.edition_label != blank -%}
+          <span class="rg-pdp__edition">{{ s.edition_label | escape }}</span>
+        {%- endif -%}
+        {%- if s.rating_text != blank -%}
           <span class="rg-pdp__stars" aria-hidden="true">★★★★★</span>
-          {{- s.rating_text | escape -}}
-        </p>
-      {%- endif -%}
+          <span class="rg-pdp__rating">{{ s.rating_text | escape }}</span>
+        {%- endif -%}
+      </div>
 
       <h1 class="rg-pdp__title">{{ title_html }}</h1>
 
       {%- if s.subtitle != blank -%}
-        <p class="rg-pdp__subtitle">{{ s.subtitle | escape | newline_to_br }}</p>
+        <p class="rg-pdp__subtitle">{{ s.subtitle | escape | newline_to_br | replace: '<br />', '<br class="rg-br-m">' }}</p>
       {%- endif -%}
 
-      <div class="rg-pdp__price-row">
-        <span class="rg-pdp__price">{{ unit_price | money }}</span>
-        {%- if percent_off > 0 -%}
-          <span class="rg-pdp__price-old">{{ unit_compare | money }}</span>
-          {%- if s.badge_text != blank -%}
-            <span class="rg-pdp__badge">{{ s.badge_text | replace: '[percent]', percent_text | escape }}</span>
-          {%- endif -%}
+      <div class="rg-pdp__card">
+        {%- if s.card_brand != blank or s.card_text != blank -%}
+          <div class="rg-pdp__card-head">
+            <span class="rg-pdp__brand">{{ s.card_brand | escape }}</span>
+            <span class="rg-pdp__card-text">{{ s.card_text | escape }}</span>
+          </div>
         {%- endif -%}
-      </div>
 
-      {%- if s.show_countdown -%}
-        <div class="rg-pdp__timer">
-          <span class="rg-pdp__timer-label">{{ s.countdown_label | escape }}</span>
-          <rg-countdown class="rg-pdp__clock" data-minutes="{{ s.countdown_minutes }}" data-mode="boxes" role="timer">
-            <span class="rg-pdp__clock-box" data-part="h">00</span>
-            <span class="rg-pdp__clock-sep" aria-hidden="true">:</span>
-            <span class="rg-pdp__clock-box" data-part="m">{{ s.countdown_minutes | prepend: '0' | slice: -2, 2 }}</span>
-            <span class="rg-pdp__clock-sep" aria-hidden="true">:</span>
-            <span class="rg-pdp__clock-box" data-part="s">00</span>
-          </rg-countdown>
-        </div>
-      {%- endif -%}
+        {%- form 'product', product, id: form_id, class: 'rg-pdp__form', data-type: 'add-to-cart-form' -%}
+          <input type="hidden" name="id" ref="variantId" value="{{ variant.id }}">
+          <input type="hidden" name="quantity" value="1">
+          {%- if selling_plan != blank -%}
+            <input type="hidden" name="selling_plan" value="{{ selling_plan.id }}">
+          {%- endif -%}
 
-      {%- form 'product', product, id: form_id, class: 'rg-pdp__form', data-type: 'add-to-cart-form' -%}
-        <input type="hidden" name="id" ref="variantId" value="{{ variant.id }}">
+          <div class="rg-pdp__offer">
+            <div class="rg-pdp__offer-top">
+              <span class="rg-pdp__offer-name">
+                <span class="rg-pdp__radio" aria-hidden="true"></span>
+                <span class="rg-pdp__offer-copy">
+                  <span class="rg-pdp__offer-title">{{ s.offer_title | escape }}</span>
+                  {%- if s.offer_text != blank -%}
+                    <span class="rg-pdp__offer-text">{{ s.offer_text | escape }}</span>
+                  {%- endif -%}
+                </span>
+              </span>
+              {%- if s.offer_badge != blank and percent > 0 -%}
+                <span class="rg-pdp__offer-badge">{{ s.offer_badge | escape | replace: '[percent]', percent_text }}</span>
+              {%- endif -%}
+            </div>
 
-        <span class="product-form-text__error hidden rg-pdp__error" ref="addToCartTextError">
-          <span class="svg-wrapper">
-            {{- 'icon-error.svg' | inline_asset_content -}}
+            <div class="rg-pdp__offer-price">
+              <div class="rg-pdp__price-col">
+                <div class="rg-pdp__price-row">
+                  <span class="rg-pdp__price">{{ first_money }}</span>
+                  {%- if compare_price > first_price -%}
+                    <span class="rg-pdp__price-old">{{ compare_money }}</span>
+                  {%- endif -%}
+                </div>
+                {%- if s.price_note != blank -%}
+                  <span class="rg-pdp__price-note">
+                    {{- s.price_note
+                      | escape
+                      | replace: '[first_price]', first_money
+                      | replace: '[recurring_price]', recurring_money
+                      | replace: '[compare_price]', compare_money
+                      | newline_to_br
+                    -}}
+                  </span>
+                {%- endif -%}
+              </div>
+              {%- if s.per_serving_label != blank -%}
+                <div class="rg-pdp__serving">
+                  <span class="rg-pdp__serving-price">{{ per_serving_money }}</span>
+                  <span class="rg-pdp__serving-label">{{ s.per_serving_label | escape }}</span>
+                </div>
+              {%- endif -%}
+            </div>
+
+            {%- liquid
+              assign perk_count = 0
+              assign tile_count = 0
+              for block in section.blocks
+                if block.type == 'perk'
+                  assign perk_count = perk_count | plus: 1
+                elsif block.type == 'tile'
+                  assign tile_count = tile_count | plus: 1
+                endif
+              endfor
+            -%}
+
+            {%- if perk_count > 0 -%}
+              <ul class="rg-pdp__perks" role="list">
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'perk' -%}
+                    <li class="rg-pdp__perk" {{ block.shopify_attributes }}>
+                      <span class="rg-pdp__perk-icon" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                          {%- case block.settings.icon -%}
+                            {%- when 'energy' -%}
+                              <path d="M13 2L4 14h7l-1 8 9-12h-7z"/>
+                            {%- when 'gut' -%}
+                              <path d="M12 3c-2 3 2 5 0 8s2 5 0 10"/>
+                            {%- when 'dose' -%}
+                              <circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M7.5 8l3.5 8M16.5 8L13 16"/>
+                            {%- else -%}
+                              <path d="M12 3a6 6 0 0 0-6 6c0 2 1 3.5 2.5 4.5V17h7v-3.5C17 12.5 18 11 18 9a6 6 0 0 0-6-6z"/><path d="M9.5 20h5"/>
+                          {%- endcase -%}
+                        </svg>
+                      </span>
+                      <span class="rg-pdp__perk-text">{{ block.settings.text | escape | newline_to_br }}</span>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+
+            {%- if tile_count > 0 -%}
+              {%- if s.serving_heading != blank -%}
+                <span class="rg-pdp__serving-head">{{ s.serving_heading | escape }}</span>
+              {%- endif -%}
+              <div class="rg-pdp__tiles">
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'tile' -%}
+                    {%- assign tile_index = block.settings.ingredient | default: 1 | minus: 1 | at_least: 0 -%}
+                    <button
+                      type="button"
+                      class="rg-pdp__tile"
+                      data-rg-ing-open="{{ tile_index }}"
+                      aria-label="{{ block.settings.name | escape }}, {{ block.settings.dose | escape }}: more info"
+                      {{ block.shopify_attributes }}
+                    >
+                      <span class="rg-pdp__tile-img">
+                        {%- if block.settings.image != blank -%}
+                          {{
+                            block.settings.image
+                            | image_url: width: 300
+                            | image_tag: widths: '150, 300', sizes: '(min-width: 990px) 110px, 22vw', loading: 'lazy', alt: ''
+                          }}
+                        {%- endif -%}
+                        <span class="rg-pdp__tile-i" aria-hidden="true">i</span>
+                      </span>
+                      <span class="rg-pdp__tile-name">{{ block.settings.name | escape }}</span>
+                      <span class="rg-pdp__tile-dose">{{ block.settings.dose | escape }}</span>
+                    </button>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+              {%- if s.tap_text != blank -%}
+                <span class="rg-pdp__tap">{{ s.tap_text | escape }}</span>
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+
+          <span class="product-form-text__error hidden rg-pdp__error" ref="addToCartTextError">
+            <span class="svg-wrapper">
+              {{- 'icon-error.svg' | inline_asset_content -}}
+            </span>
           </span>
-        </span>
 
-        {%- capture cta_button -%}
           <add-to-cart-component
             ref="addToCartButtonContainer"
             data-product-variant-media="{{ product.featured_media.preview_image | image_url: width: 100 }}"
@@ -185,7 +301,7 @@
               name="add"
               ref="addToCartButton"
               on:click="/handleClick"
-              class="rg-pdp__cta rg-pdp__cta--CLASS"
+              class="rg-pdp__cta"
               {% unless can_add_to_cart %}
                 disabled
               {% endunless %}
@@ -197,177 +313,86 @@
               {%- endif -%}
             </button>
           </add-to-cart-component>
-        {%- endcapture -%}
 
-        {%- if s.show_top_cta -%}
-          {{ cta_button | replace: 'CLASS', 'top' }}
-        {%- endif -%}
+          {%- if s.checks != blank -%}
+            {%- assign check_lines = s.checks | newline_to_br | split: '<br />' -%}
+            <ul class="rg-pdp__checks" role="list">
+              {%- for line in check_lines -%}
+                {%- assign line_text = line | strip -%}
+                {%- if line_text != blank -%}
+                  <li>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
+                    {{- line_text | escape | replace: '[first_price]', first_money | replace: '[recurring_price]', recurring_money -}}
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
 
-        {%- if s.bullets != blank -%}
-          {%- assign bullet_lines = s.bullets | newline_to_br | split: '<br />' -%}
-          <ul class="rg-pdp__bullets" role="list">
-            {%- for line in bullet_lines -%}
-              {%- assign line_text = line | strip -%}
-              {%- if line_text != blank -%}
-                <li><span class="rg-pdp__check" aria-hidden="true">✓</span>{{ line_text | escape }}</li>
+          {%- if request.design_mode and selling_plan == blank -%}
+            <p class="rg-pdp__notice">
+              Theme editor only: this product has no subscription plan yet, so the button adds a one-time purchase at
+              {{ variant.price | money }}. Connect a Shopify Subscriptions plan and the first-order discount to match the page.
+            </p>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+
+      {%- liquid
+        assign video_count = 0
+        for block in section.blocks
+          if block.type == 'video'
+            assign video_count = video_count | plus: 1
+          endif
+        endfor
+      -%}
+      {%- if video_count > 0 -%}
+        <rg-video-reviews class="rg-pdp__vids">
+          {%- if video_count > 3 -%}
+            <button type="button" class="rg-pdp__vids-arrow rg-pdp__vids-arrow--prev" data-rg-step="-1" aria-label="Previous videos">‹</button>
+          {%- endif -%}
+          <ul class="rg-pdp__vids-track" role="list" data-rg-track>
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'video' -%}
+                <li class="rg-pdp__vid" data-rg-card {{ block.shopify_attributes }}>
+                  {%- if block.settings.video != blank -%}
+                    {{
+                      block.settings.video
+                      | video_tag:
+                        image_size: '480x',
+                        preload: 'none',
+                        playsinline: true,
+                        loop: true,
+                        controls: false,
+                        class: 'rg-pdp__vid-media'
+                    }}
+                  {%- endif -%}
+                  <span class="rg-pdp__vid-shade" aria-hidden="true"></span>
+                  {%- if block.settings.video != blank -%}
+                    <button
+                      type="button"
+                      class="rg-pdp__vid-play"
+                      data-rg-play
+                      aria-label="Play video{% if block.settings.name != blank %}: {{ block.settings.name | escape }}{% endif %}"
+                      aria-pressed="false"
+                    >
+                      <span class="rg-pdp__vid-badge" aria-hidden="true">
+                        <svg class="rg-pdp__vid-icon-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="currentColor"/></svg>
+                        <svg class="rg-pdp__vid-icon-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg>
+                      </span>
+                    </button>
+                  {%- endif -%}
+                  {%- if block.settings.name != blank -%}
+                    <span class="rg-pdp__vid-name">{{ block.settings.name | escape }}</span>
+                  {%- endif -%}
+                </li>
               {%- endif -%}
             {%- endfor -%}
           </ul>
-        {%- endif -%}
-
-        <fieldset class="rg-pdp__bundle">
-          <legend class="rg-pdp__bundle-head">{{ s.bundle_heading | escape }}</legend>
-          <div class="rg-pdp__bundle-body">
-            {%- for block in section.blocks -%}
-              {%- if block.type == 'pack' -%}
-                {%- liquid
-                  assign b = block.settings
-                  assign qty = b.quantity | at_least: 1
-                  assign discount_bp = b.discount_percent | times: 100 | round
-
-                  assign base = unit_price | times: qty
-                  assign pack_price = base | times: discount_bp | divided_by: 10000.0 | round | times: -1 | plus: base
-
-                  assign pack_plan = selling_plan
-                  assign sub_unit_price = unit_price
-                  if sub_plans != blank
-                    assign plan_index = b.plan_position | default: 1 | minus: 1 | at_least: 0
-                    if plan_index < sub_plans.size
-                      assign pack_plan = sub_plans[plan_index]
-                    endif
-                    for allocation in variant.selling_plan_allocations
-                      if allocation.selling_plan.id == pack_plan.id
-                        assign sub_unit_price = allocation.price
-                      endif
-                    endfor
-                  endif
-                  assign base_sub = sub_unit_price | times: qty
-                  assign pack_sub_price = base_sub | times: discount_bp | divided_by: 10000.0 | round | times: -1 | plus: base_sub
-
-                  assign pack_old = unit_compare | times: qty
-                  assign serving_count = servings | times: qty
-                  assign per_serving = pack_price | divided_by: serving_count
-                  assign per_serving_sub = pack_sub_price | divided_by: serving_count
-                  if qty == 1
-                    assign unit_word = s.unit_singular
-                  else
-                    assign unit_word = s.unit_plural
-                  endif
-                -%}
-                {%- if forloop.index0 == default_pack_index and pack_plan != blank -%}
-                  {%- assign default_plan_id = pack_plan.id -%}
-                {%- endif -%}
-                <label class="rg-pdp__pack" {{ block.shopify_attributes }}>
-                  <input
-                    class="rg-pdp__pack-input"
-                    type="radio"
-                    name="quantity"
-                    value="{{ qty }}"
-                    {% if pack_plan != blank %}
-                      data-selling-plan="{{ pack_plan.id }}"
-                    {% endif %}
-                    {% if forloop.index0 == default_pack_index %}
-                      checked
-                    {% endif %}
-                  >
-                  {%- if b.tag != blank -%}
-                    <span class="rg-pdp__pack-tag rg-pdp__pack-tag--{{ b.tag_style }}">{{ b.tag | escape }}</span>
-                  {%- endif -%}
-                  <span class="rg-pdp__radio" aria-hidden="true"></span>
-                  <span class="rg-pdp__pack-main">
-                    <span class="rg-pdp__pack-title-row">
-                      <span class="rg-pdp__pack-title">{{ b.title | escape }}</span>
-                      {%- if b.supply != blank -%}
-                        <span class="rg-pdp__pack-supply">{{ b.supply | escape }}</span>
-                      {%- endif -%}
-                    </span>
-                    <span class="rg-pdp__pack-line">
-                      {{- qty }}
-                      {{ unit_word | escape }} ·
-                      <span class="rg-pdp__when-once">{{ per_serving | money }}</span>
-                      {%- if selling_plan != blank -%}
-                        <span class="rg-pdp__when-sub">{{ per_serving_sub | money }}</span>
-                      {%- endif %}
-                      {{ s.per_serving_label | escape -}}
-                    </span>
-                  </span>
-                  <span class="rg-pdp__pack-prices">
-                    <span class="rg-pdp__pack-price rg-pdp__when-once">{{ pack_price | money }}</span>
-                    {%- if selling_plan != blank -%}
-                      <span class="rg-pdp__pack-price rg-pdp__when-sub">{{ pack_sub_price | money }}</span>
-                    {%- endif -%}
-                    {%- if pack_old > pack_price -%}
-                      <span class="rg-pdp__pack-old">{{ pack_old | money }}</span>
-                    {%- endif -%}
-                  </span>
-                </label>
-              {%- endif -%}
-            {%- endfor -%}
-
-            {%- if selling_plan != blank -%}
-              <label class="rg-pdp__sub">
-                <input
-                  class="rg-pdp__sub-input"
-                  type="checkbox"
-                  name="selling_plan"
-                  value="{{ default_plan_id | default: selling_plan.id }}"
-                  {% if s.subscription_default %}
-                    checked
-                  {% endif %}
-                >
-                <span class="rg-pdp__box" aria-hidden="true"></span>
-                <span class="rg-pdp__sub-text">
-                  <span class="rg-pdp__sub-title">{{ s.subscription_title | escape }}</span>
-                  <span class="rg-pdp__sub-desc">{{ s.subscription_text | replace: '[percent]', percent_text | escape }}</span>
-                </span>
-              </label>
-            {%- endif -%}
-          </div>
-        </fieldset>
-
-        {{ cta_button | replace: 'CLASS', 'bottom' }}
-      {%- endform -%}
-
-      {%- if s.show_shipping or s.show_guarantee -%}
-        <div class="rg-pdp__assure">
-          {%- if s.show_shipping -%}
-            <div class="rg-pdp__assure-card">
-              <span class="rg-pdp__assure-icon" aria-hidden="true">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h11v10H3z"/><path d="M14 9h4l3 3v4h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>
-              </span>
-              <span class="rg-pdp__assure-text">
-                <span class="rg-pdp__assure-title">{{ s.shipping_title | escape }}</span>
-                <span class="rg-pdp__assure-desc">{{ s.shipping_text | escape }}</span>
-              </span>
-            </div>
+          {%- if video_count > 3 -%}
+            <button type="button" class="rg-pdp__vids-arrow rg-pdp__vids-arrow--next" data-rg-step="1" aria-label="Next videos">›</button>
           {%- endif -%}
-          {%- if s.show_guarantee -%}
-            <div class="rg-pdp__assure-card">
-              <svg class="rg-pdp__seal" viewBox="0 0 100 100" role="img" aria-label="{{ s.guarantee_title | escape }}">
-                <defs>
-                  <path id="rgSealTop-{{ section.id }}" d="M22 50a28 28 0 0 1 56 0"/>
-                  <path id="rgSealBot-{{ section.id }}" d="M20 50a30 30 0 0 0 60 0"/>
-                </defs>
-                <path fill="#2b2b2b" d="M99.0 50.0L93.6 55.7L97.3 62.7L90.7 66.8L92.4 74.5L84.9 76.8L84.6 84.6L76.8 84.9L74.5 92.4L66.8 90.7L62.7 97.3L55.7 93.6L50.0 99.0L44.3 93.6L37.3 97.3L33.2 90.7L25.5 92.4L23.2 84.9L15.4 84.6L15.1 76.8L7.6 74.5L9.3 66.8L2.7 62.7L6.4 55.7L1.0 50.0L6.4 44.3L2.7 37.3L9.3 33.2L7.6 25.5L15.1 23.2L15.4 15.4L23.2 15.1L25.5 7.6L33.2 9.3L37.3 2.7L44.3 6.4L50.0 1.0L55.7 6.4L62.7 2.7L66.8 9.3L74.5 7.6L76.8 15.1L84.6 15.4L84.9 23.2L92.4 25.5L90.7 33.2L97.3 37.3L93.6 44.3Z"/>
-                <circle cx="50" cy="50" r="38" fill="none" stroke="#1ccbf5" stroke-width="1.6"/>
-                <text font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="#fff" letter-spacing="1.2"><textPath href="#rgSealTop-{{ section.id }}" startOffset="50%" text-anchor="middle">MONEY BACK</textPath></text>
-                <text x="50" y="58" text-anchor="middle" font-family="Archivo,Inter,sans-serif" font-size="30" font-weight="900" fill="#1ccbf5">{{ s.guarantee_days }}</text>
-                <text x="50" y="69" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="800" fill="#fff" letter-spacing="1">DAY</text>
-                <text font-family="Inter,sans-serif" font-size="8" font-weight="800" fill="#fff" letter-spacing="1.2"><textPath href="#rgSealBot-{{ section.id }}" startOffset="50%" text-anchor="middle" dominant-baseline="hanging">GUARANTEE</textPath></text>
-              </svg>
-              <span class="rg-pdp__assure-text">
-                <span class="rg-pdp__assure-title">{{ s.guarantee_title | escape }}</span>
-                <span class="rg-pdp__assure-desc">{{ s.guarantee_text | escape }}</span>
-              </span>
-            </div>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
-
-      {%- if s.show_payment_icons -%}
-        <div class="rg-pdp__pay">
-          {%- render 'rg-pay-badges', modifier: 'rg-pay--fill rg-pay--responsive' -%}
-        </div>
+        </rg-video-reviews>
       {%- endif -%}
 
       {%- liquid
@@ -419,7 +444,7 @@
 </script>
 
 {% stylesheet %}
-  /* ---------- Mobile first ---------- */
+  /* ---------- Mobile first (Raw Coffee Product Page Mobile v2) ---------- */
   .rg-pdp {
     background: linear-gradient(160deg, #f1ecfb 0%, #f8f8f8 30%, #f8f8f8 75%, #e6f6fb 100%);
     color: var(--rg-graphite);
@@ -497,7 +522,10 @@
   }
 
   .rg-pdp__arrow:focus-visible,
-  .rg-pdp__thumb:focus-visible {
+  .rg-pdp__thumb:focus-visible,
+  .rg-pdp__tile:focus-visible,
+  .rg-pdp__vid-play:focus-visible,
+  .rg-pdp__vids-arrow:focus-visible {
     outline: 2px solid var(--rg-accent);
     outline-offset: 2px;
   }
@@ -552,30 +580,47 @@
     min-width: 0;
   }
 
-  .rg-pdp__rating {
+  .rg-pdp__meta {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 10px;
-    margin: 16px 0 0;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--rg-text-2);
+    margin-top: 16px;
+  }
+
+  .rg-pdp__edition {
+    padding: 4px 9px;
+    border-radius: 6px;
+    background: var(--rg-accent);
+    box-shadow: 0 0 18px rgba(28, 203, 245, 0.55), 0 6px 20px rgba(28, 203, 245, 0.35);
+    color: var(--rg-ink);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
   }
 
   .rg-pdp__stars {
-    color: var(--rg-accent);
-    font-size: 16px;
-    letter-spacing: 2px;
+    color: #ff9f1c;
+    font-size: 14px;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  .rg-pdp__rating {
+    font-size: 13px;
+    color: var(--rg-text-2);
   }
 
   .rg-pdp__title {
-    margin: 4px 0 0;
+    margin: 12px 0 0;
     font-family: var(--rg-font-body);
-    font-size: 24px;
+    font-size: clamp(15px, 4.6vw, 20px);
     font-weight: 900;
-    line-height: 1.12;
-    letter-spacing: -0.01em;
-    text-wrap: balance;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
     color: var(--rg-graphite);
   }
 
@@ -588,114 +633,332 @@
 
   .rg-pdp__subtitle {
     margin: 8px 0 0;
-    font-size: 14px;
-    line-height: 1.45;
+    font-size: min(11px, 2.4vw);
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
     color: var(--rg-text-2);
   }
 
-  .rg-pdp__subtitle br {
-    display: none;
+  /* Card */
+  .rg-pdp__card {
+    margin-top: 12px;
+    overflow: hidden;
+    border: 1px solid #e6e6e6;
+    border-radius: 16px;
+    background: var(--rg-white);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   }
 
-  .rg-pdp__price-row {
+  .rg-pdp__card-head {
     display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: 10px;
-    margin: 14px 0;
-  }
-
-  .rg-pdp__price {
-    font-size: 30px;
-    font-weight: 900;
-    line-height: 1;
-    white-space: nowrap;
-  }
-
-  .rg-pdp__price-old {
-    font-size: 20px;
-    font-weight: 800;
-    line-height: 1;
-    color: #b5b5b5;
-    text-decoration: line-through;
-    white-space: nowrap;
-  }
-
-  .rg-pdp__badge {
-    flex: none;
-    padding: 6px 9px;
-    border-radius: 8px;
-    background: var(--rg-offer);
-    font-size: 11.5px;
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: 0.06em;
-    white-space: nowrap;
-  }
-
-  .rg-pdp__timer {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 0 0 14px;
-  }
-
-  .rg-pdp__timer-label {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .rg-pdp__clock {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .rg-pdp__clock-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 36px;
-    height: 34px;
-    padding: 0 6px;
-    border-radius: 10px;
-    background: var(--rg-graphite);
+    flex-direction: column;
+    padding: 9px 16px;
+    background: radial-gradient(ellipse at 15% 0%, #26464f 0%, #323232 55%, #2e2e2e 100%);
     color: var(--rg-white);
-    font-size: 17px;
-    font-weight: 800;
-    font-variant-numeric: tabular-nums;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
   }
 
-  .rg-pdp__clock-sep {
-    font-size: 20px;
+  .rg-pdp__brand {
+    color: var(--rg-accent);
     font-weight: 800;
+    letter-spacing: 0.08em;
   }
 
   .rg-pdp__form {
     display: flex;
     flex-direction: column;
+    gap: 12px;
+    padding: 12px 12px 14px;
+  }
+
+  .rg-pdp__offer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 16px;
+    border: 2px solid var(--rg-accent);
+    border-radius: 14px;
+    background: #f2fbfe;
+  }
+
+  .rg-pdp__offer-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .rg-pdp__offer-name {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .rg-pdp__radio {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    border: 2px solid var(--rg-accent);
+    border-radius: 50%;
+    background: var(--rg-white);
+  }
+
+  .rg-pdp__radio::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--rg-accent);
+  }
+
+  .rg-pdp__offer-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .rg-pdp__offer-title {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--rg-ink);
+  }
+
+  .rg-pdp__offer-text {
+    font-size: 11px;
+    color: var(--rg-text-2);
+  }
+
+  .rg-pdp__offer-badge {
+    flex: none;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: var(--rg-accent);
+    box-shadow: 0 0 18px rgba(28, 203, 245, 0.55), 0 6px 20px rgba(28, 203, 245, 0.35);
+    color: var(--rg-ink);
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .rg-pdp__offer-price {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dcebf0;
+  }
+
+  .rg-pdp__price-col {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .rg-pdp__price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .rg-pdp__price {
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--rg-ink);
+  }
+
+  .rg-pdp__price-old {
+    font-size: 13px;
+    font-weight: 500;
+    color: #9a9a9a;
+    text-decoration: line-through;
+  }
+
+  .rg-pdp__price-note {
+    font-size: min(10px, 2.15vw);
+    line-height: 1.4;
+    white-space: nowrap;
+    color: #777777;
+  }
+
+  .rg-pdp__serving {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1px;
+  }
+
+  .rg-pdp__serving-price {
+    font-size: min(12px, 2.8vw);
+    font-weight: 900;
+    line-height: 1.2;
+    color: var(--rg-ink);
+  }
+
+  .rg-pdp__serving-label {
+    font-size: min(11px, 2.35vw);
+    line-height: 1.4;
+    white-space: nowrap;
+    color: #777777;
+  }
+
+  .rg-pdp__perks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: min(11px, 2.7vw);
+    line-height: 1.3;
+    color: var(--rg-graphite);
+  }
+
+  .rg-pdp__perk {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 40px;
+  }
+
+  .rg-pdp__perk-icon {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e6f8fd;
+    box-shadow: 0 0 12px rgba(28, 203, 245, 0.35);
+    color: var(--rg-accent-dark);
+  }
+
+  .rg-pdp__perk-text {
+    white-space: nowrap;
+  }
+
+  .rg-pdp__serving-head {
+    margin-top: 2px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: var(--rg-accent-dark);
+  }
+
+  .rg-pdp__tiles {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .rg-pdp__tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .rg-pdp__tile:hover {
+    opacity: 0.85;
+  }
+
+  .rg-pdp__tile-img {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #eef2f3;
+  }
+
+  .rg-pdp__tile-img img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .rg-pdp__tile-i {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    border: 1.5px solid var(--rg-accent);
+    border-radius: 50%;
+    background: var(--rg-white);
+    color: var(--rg-accent-dark);
+    font-size: 9px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .rg-pdp__tile-name {
+    margin-top: 6px;
+    font-size: 11px;
+    line-height: 1.2;
+    color: var(--rg-ink);
+  }
+
+  .rg-pdp__tile-dose {
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--rg-accent-dark);
+  }
+
+  .rg-pdp__tap {
+    font-size: 11px;
+    text-align: center;
+    color: #777777;
   }
 
   .rg-pdp__error:not(.hidden) {
     display: flex;
     gap: 8px;
-    margin-bottom: 12px;
     color: #c62828;
     font-size: 14px;
   }
 
   .rg-pdp__cta {
     width: 100%;
-    height: 56px;
+    height: 42px;
+    padding: 0 12px;
     border: 0;
-    border-radius: var(--rg-radius-btn);
+    border-radius: 10px;
     background: var(--rg-accent);
-    box-shadow: var(--rg-shadow-btn);
+    box-shadow: 0 0 18px rgba(28, 203, 245, 0.55), 0 6px 20px rgba(28, 203, 245, 0.35);
     color: var(--rg-ink);
-    font: 800 16px/1 var(--rg-font-body);
-    letter-spacing: 0.04em;
+    font: 800 13px/1 var(--rg-font-body);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
     cursor: pointer;
     transition: filter 0.2s var(--rg-ease), box-shadow 0.2s var(--rg-ease), transform 0.2s var(--rg-ease);
   }
@@ -720,349 +983,165 @@
     cursor: not-allowed;
   }
 
-  .rg-pdp__cta[data-added='true'] {
-    filter: brightness(0.96);
-  }
-
-  .rg-pdp__cta--top {
-    margin: 0 0 18px;
-  }
-
-  .rg-pdp__cta--bottom {
-    height: 60px;
-    margin-top: 18px;
-  }
-
-  .rg-pdp__bullets {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  .rg-pdp__checks {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    gap: 8px;
     margin: 0;
-    padding: 0;
+    padding: 4px 4px 0;
     list-style: none;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: clamp(7.5px, 2.2vw, 9.5px);
+    line-height: 1.3;
+    color: var(--rg-text-3);
   }
 
-  .rg-pdp__bullets li {
-    display: flex;
-    gap: 10px;
-  }
-
-  .rg-pdp__check {
-    color: var(--rg-accent);
-    font-weight: 800;
-  }
-
-  /* Bundle box */
-  .rg-pdp__bundle {
-    min-width: 0;
-    margin: 24px 0 0;
-    padding: 0;
-    overflow: hidden;
-    border: 2px solid var(--rg-accent);
-    border-radius: 16px;
-    background: var(--rg-offer);
-  }
-
-  .rg-pdp__bundle-head {
-    float: left;
-    width: 100%;
-    padding: 10px 16px;
-    background: var(--rg-graphite);
-    color: var(--rg-white);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-  }
-
-  .rg-pdp__bundle-body {
-    clear: both;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 18px 14px 16px;
-  }
-
-  /* Doubled class beats Horizon's input[type='radio'|'checkbox'] rules */
-  .rg-pdp .rg-pdp__pack-input,
-  .rg-pdp .rg-pdp__sub-input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: 0;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .rg-pdp__pack {
-    position: relative;
+  .rg-pdp__checks li {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 14px 12px;
-    border: 2px solid #d9d6f5;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.55);
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-  }
-
-  .rg-pdp__pack:has(.rg-pdp__pack-input:checked) {
-    border-color: var(--rg-accent);
-    background: var(--rg-white);
-    box-shadow: 0 8px 22px rgba(28, 203, 245, 0.18);
-  }
-
-  .rg-pdp__pack:has(.rg-pdp__pack-input:focus-visible),
-  .rg-pdp__sub:has(.rg-pdp__sub-input:focus-visible) {
-    outline: 2px solid var(--rg-ink);
-    outline-offset: 2px;
-  }
-
-  .rg-pdp__pack-tag {
-    position: absolute;
-    top: -11px;
-    right: 12px;
-    padding: 4px 10px;
-    border-radius: 6px;
-    background: var(--rg-graphite);
-    color: var(--rg-white);
-    font-size: 10px;
-    font-weight: 800;
-    line-height: 1.2;
-    letter-spacing: 0.1em;
-  }
-
-  .rg-pdp__pack-tag--accent {
-    background: var(--rg-accent-dark);
-  }
-
-  .rg-pdp__radio {
-    display: flex;
-    flex: none;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    border: 2px solid #bdbdbd;
-    border-radius: 50%;
-    background: var(--rg-white);
-  }
-
-  .rg-pdp__radio::after {
-    content: '';
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: transparent;
-  }
-
-  .rg-pdp__pack:has(.rg-pdp__pack-input:checked) .rg-pdp__radio {
-    border-color: var(--rg-accent);
-  }
-
-  .rg-pdp__pack:has(.rg-pdp__pack-input:checked) .rg-pdp__radio::after {
-    background: var(--rg-accent);
-  }
-
-  .rg-pdp__pack-main {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
     gap: 5px;
-    min-width: 0;
-  }
-
-  .rg-pdp__pack-title-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 5px 8px;
-  }
-
-  .rg-pdp__pack-title {
-    font-size: 15px;
-    font-weight: 800;
-    line-height: 1.2;
-    color: var(--rg-ink);
-  }
-
-  .rg-pdp__pack-supply {
-    padding: 3px 9px;
-    border-radius: 999px;
-    background: var(--rg-offer);
-    color: var(--rg-text-2);
-    font-size: 11px;
-    font-weight: 600;
     white-space: nowrap;
   }
 
-  .rg-pdp__pack-line {
-    font-size: 12px;
-    color: var(--rg-text-2);
-  }
-
-  .rg-pdp__pack-prices {
-    display: flex;
+  .rg-pdp__checks svg {
     flex: none;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 3px;
+    width: 14px;
+    height: 14px;
+    color: var(--rg-accent);
   }
 
-  .rg-pdp__pack-price {
-    font-size: 17px;
-    font-weight: 900;
-    color: var(--rg-ink);
-  }
-
-  .rg-pdp__pack-old {
+  .rg-pdp__notice {
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px dashed #c62828;
+    border-radius: 10px;
+    color: #c62828;
     font-size: 12px;
-    font-weight: 600;
-    color: #9a9a9a;
-    text-decoration: line-through;
+    line-height: 1.4;
   }
 
-  /* One-time vs subscription prices: CSS only, driven by the checkbox */
-  .rg-pdp__when-sub {
-    display: none;
-  }
-
-  .rg-pdp__bundle:has(.rg-pdp__sub-input:checked) .rg-pdp__when-once {
-    display: none;
-  }
-
-  .rg-pdp__bundle:has(.rg-pdp__sub-input:checked) .rg-pdp__when-sub {
-    display: inline;
-  }
-
-  .rg-pdp__sub {
+  /* Customer videos */
+  .rg-pdp__vids {
     position: relative;
+    display: block;
+    margin-top: 12px;
+  }
+
+  .rg-pdp__vids-track {
     display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 12px;
-    border: 2px dashed #cfcfcf;
-    border-radius: 14px;
-    background: var(--rg-white);
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    list-style: none;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .rg-pdp__vids-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .rg-pdp__vid {
+    position: relative;
+    flex: 0 0 calc((100% - 12px) / 3);
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #2b2b2b;
+    scroll-snap-align: start;
+  }
+
+  .rg-pdp__vid-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .rg-pdp__vid-shade {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.18);
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .rg-pdp__vid.is-playing .rg-pdp__vid-shade {
+    opacity: 0;
+  }
+
+  .rg-pdp__vid-play {
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
     cursor: pointer;
   }
 
-  .rg-pdp__sub:has(.rg-pdp__sub-input:checked) {
-    border-color: var(--rg-accent);
-  }
-
-  .rg-pdp__box {
+  .rg-pdp__vid-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
     display: flex;
-    flex: none;
     align-items: center;
     justify-content: center;
-    width: 22px;
-    height: 22px;
-    margin-top: 1px;
-    border: 2px solid var(--rg-accent);
-    border-radius: 6px;
-    background: var(--rg-white);
-  }
-
-  .rg-pdp__sub:has(.rg-pdp__sub-input:checked) .rg-pdp__box {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
     background: var(--rg-accent);
-  }
-
-  .rg-pdp__sub:has(.rg-pdp__sub-input:checked) .rg-pdp__box::after {
-    content: '✓';
-    color: var(--rg-white);
-    font-size: 14px;
-    font-weight: 900;
-    line-height: 1;
-  }
-
-  .rg-pdp__sub-text {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-
-  .rg-pdp__sub-title {
-    font-size: 14px;
-    font-weight: 800;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
     color: var(--rg-ink);
+    transform: translate(-50%, -50%);
   }
 
-  .rg-pdp__sub-desc {
-    font-size: 12px;
-    line-height: 1.45;
-    color: var(--rg-text-2);
+  .rg-pdp__vid-badge svg {
+    width: 12px;
+    height: 12px;
   }
 
-  /* Shipping + guarantee */
-  .rg-pdp__assure {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 18px;
+  .rg-pdp__vid-icon-pause,
+  .rg-pdp__vid.is-playing .rg-pdp__vid-icon-play {
+    display: none;
   }
 
-  .rg-pdp__assure-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 14px;
-    border: 1px solid var(--rg-line-2);
-    border-radius: 14px;
-    background: var(--rg-white);
-  }
-
-  .rg-pdp__assure-icon {
-    display: flex;
-    flex: none;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: #e6f8fd;
-    color: var(--rg-accent-dark);
-  }
-
-  .rg-pdp__assure-icon svg {
-    width: 22px;
-    height: 22px;
-  }
-
-  .rg-pdp__seal {
+  .rg-pdp__vid.is-playing .rg-pdp__vid-icon-pause {
     display: block;
-    flex: none;
-    width: 52px;
-    height: 52px;
   }
 
-  .rg-pdp__assure-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+  .rg-pdp__vid.is-playing .rg-pdp__vid-badge {
+    opacity: 0;
+    transition: opacity 0.2s;
   }
 
-  .rg-pdp__assure-title {
-    font-size: 15px;
+  .rg-pdp__vid.is-playing:hover .rg-pdp__vid-badge {
+    opacity: 1;
+  }
+
+  .rg-pdp__vid-name {
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: var(--rg-white);
+    color: var(--rg-ink);
+    font-size: 10px;
     font-weight: 700;
+    line-height: 1.1;
+    pointer-events: none;
   }
 
-  .rg-pdp__assure-desc {
-    font-size: 13px;
-    line-height: 1.4;
-    color: #666666;
-  }
-
-  .rg-pdp__pay {
-    margin-top: 12px;
+  .rg-pdp__vids-arrow {
+    display: none;
   }
 
   /* Product accordion */
   .rg-pdp__acc {
-    margin-top: 28px;
-    border-top: 1px solid #e2e2e2;
+    margin-top: 6px;
   }
 
   .rg-pdp__acc-item {
@@ -1074,11 +1153,9 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    min-height: 56px;
-    padding: 16px 0;
+    padding: 12px 0;
     font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
+    font-weight: 600;
     color: var(--rg-graphite);
     cursor: pointer;
     list-style: none;
@@ -1099,9 +1176,9 @@
 
   .rg-pdp__acc-icon {
     flex: none;
-    width: 22px;
+    width: 18px;
     color: var(--rg-accent-dark);
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 400;
     line-height: 1;
     text-align: center;
@@ -1116,9 +1193,9 @@
   }
 
   .rg-pdp__acc-a {
-    padding: 0 0 18px;
-    font-size: 14px;
-    line-height: 1.55;
+    padding: 0 28px 14px 0;
+    font-size: 12px;
+    line-height: 1.6;
     color: var(--rg-text-2);
     text-wrap: pretty;
   }
@@ -1127,19 +1204,11 @@
     margin: 0;
   }
 
-  .rg-pdp__acc-a p + p,
-  .rg-pdp__acc-a p + ul,
-  .rg-pdp__acc-a ul + p {
+  .rg-pdp__acc-a p + p {
     margin-top: 8px;
   }
 
-  .rg-pdp__acc-a ul {
-    margin: 0;
-    padding-left: 0;
-    list-style: none;
-  }
-
-  /* ---------- Desktop ---------- */
+  /* ---------- Desktop (Raw Coffee Product Page v2, rendered through .rg-z) ---------- */
   @media screen and (min-width: 990px) {
     .rg-pdp {
       background: linear-gradient(100deg, #f1ecfb 0%, #f8f8f8 22%, #f8f8f8 75%, #e6f6fb 100%);
@@ -1147,34 +1216,45 @@
 
     .rg-pdp__grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: 48px;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 585px);
+      gap: 56px;
       align-items: start;
-      max-width: 1320px;
-      padding: 16px 40px 80px;
+      max-width: none;
+      padding: 8px max(40px, calc((100% - 1240px) / 2)) 80px 24px;
+    }
+
+    .rg-pdp__media {
+      position: sticky;
+      top: calc((var(--header-group-height, 94px) + 10px) / var(--rg-z, 1));
+      justify-self: center;
+      width: min(
+        calc(100% - 152px),
+        max(260px, calc(((100vh - var(--header-group-height, 94px)) / var(--rg-z, 1) - 52px) * 0.889))
+      );
     }
 
     .rg-pdp__gallery {
-      position: sticky;
-      top: calc(var(--header-group-height, 94px) + 10px);
       gap: 10px;
     }
 
     .rg-pdp__viewer {
       position: relative;
       display: block;
-      width: min(100%, calc(100vh - 222px));
     }
 
     .rg-pdp__stage {
       width: 100%;
-      border-radius: 24px;
+      border-radius: 16px;
+    }
+
+    .rg-pdp__image {
+      object-fit: contain;
     }
 
     .rg-pdp__arrow {
       position: absolute;
       top: 50%;
-      z-index: 2;
+      z-index: 3;
       width: 48px;
       height: 48px;
       padding: 0;
@@ -1202,8 +1282,7 @@
     }
 
     .rg-pdp__thumbs {
-      width: min(100%, calc(100vh - 222px));
-      gap: 8px;
+      gap: 10px;
       margin-top: 0;
     }
 
@@ -1211,222 +1290,222 @@
       border-radius: 12px;
     }
 
-    .rg-pdp__info {
-      padding-top: 8px;
+    .rg-pdp__meta {
+      margin-top: 0;
     }
 
-    .rg-pdp__rating {
-      gap: 12px;
-      margin-top: 0;
-      font-size: 17px;
+    .rg-pdp__edition {
+      font-size: 13px;
     }
 
     .rg-pdp__stars {
-      font-size: 22px;
+      font-size: 13px;
     }
 
     .rg-pdp__title {
-      margin-top: 0;
-      font-size: 46px;
-      line-height: 1.08;
+      margin-top: 14px;
+      font-size: 29px;
+      letter-spacing: -0.01em;
     }
 
     .rg-pdp__subtitle {
       margin-top: 12px;
-      font-size: 18px;
-      line-height: 1.5;
+      font-size: 16px;
+      line-height: 1.6;
+      letter-spacing: 0;
+      white-space: normal;
+      text-wrap: pretty;
     }
 
-    .rg-pdp__subtitle br {
-      display: inline;
+    .rg-pdp__card {
+      margin-top: 18px;
     }
 
-    .rg-pdp__price-row {
-      flex-wrap: wrap;
-      gap: 12px 16px;
-      margin: 24px 0 22px;
+    .rg-pdp__card-head {
+      font-size: 17px;
     }
 
-    .rg-pdp__price {
-      font-size: clamp(34px, 3.6vw, 52px);
-    }
-
-    .rg-pdp__price-old {
-      font-size: clamp(24px, 2.8vw, 40px);
-    }
-
-    .rg-pdp__badge {
-      padding: 9px 14px;
+    .rg-pdp__offer-title,
+    .rg-pdp__offer-text {
       font-size: 15px;
     }
 
-    .rg-pdp__timer {
-      gap: 16px;
+    .rg-pdp__offer-badge {
+      font-size: 13px;
     }
 
-    .rg-pdp__timer-label {
-      font-size: 16px;
+    .rg-pdp__offer-price {
+      gap: 12px;
     }
 
-    .rg-pdp__clock-box {
-      min-width: 52px;
-      height: 46px;
-      font-size: 24px;
+    .rg-pdp__price {
+      font-size: 30px;
     }
 
-    .rg-pdp__clock-sep {
-      font-size: 22px;
+    .rg-pdp__price-old {
+      font-size: 17px;
+    }
+
+    .rg-pdp__price-note {
+      font-size: 15px;
+      line-height: normal;
+      white-space: normal;
+    }
+
+    .rg-pdp__serving-price {
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .rg-pdp__serving-label {
+      font-size: 15px;
+      line-height: normal;
+    }
+
+    .rg-pdp__perks {
+      gap: 12px 20px;
+      font-size: 15px;
+    }
+
+    .rg-pdp__perk-text {
+      white-space: normal;
+      text-wrap: balance;
+    }
+
+    .rg-pdp__serving-head {
+      font-size: 13px;
+    }
+
+    .rg-pdp__tile-name,
+    .rg-pdp__tile-dose,
+    .rg-pdp__tap {
+      font-size: 15px;
     }
 
     .rg-pdp__cta {
-      height: 64px;
+      height: 60px;
+      border-radius: 12px;
       font-size: 19px;
     }
 
-    .rg-pdp__cta--top {
-      margin-bottom: 22px;
+    .rg-pdp__checks {
+      grid-template-columns: max-content max-content;
+      gap: 10px 24px;
+      padding: 4px 8px 0;
+      font-size: 15px;
     }
 
-    .rg-pdp__cta--bottom {
-      height: 68px;
-      margin-top: 22px;
-      font-size: 20px;
+    .rg-pdp__checks li {
+      gap: 8px;
     }
 
-    .rg-pdp__bullets {
+    .rg-pdp__checks svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .rg-pdp__vids {
+      margin-top: 40px;
+    }
+
+    .rg-pdp__vids-track {
       gap: 12px;
-      font-size: 18px;
+      scroll-behavior: smooth;
     }
 
-    .rg-pdp__bullets li {
-      gap: 12px;
+    .rg-pdp__vid {
+      flex-basis: calc((100% - 24px) / 3);
+      border-radius: 12px;
     }
 
-    .rg-pdp__bundle {
-      margin-top: 32px;
-      border-radius: 18px;
+    .rg-pdp__vid-badge {
+      top: 8px;
+      right: 8px;
+      left: auto;
+      width: 30px;
+      height: 30px;
+      box-shadow: 0 0 18px rgba(28, 203, 245, 0.55), 0 6px 20px rgba(28, 203, 245, 0.35);
+      transform: none;
     }
 
-    .rg-pdp__bundle-head {
-      padding: 12px 24px;
-      font-size: 14px;
+    .rg-pdp__vid-badge svg {
+      width: 11px;
+      height: 11px;
     }
 
-    .rg-pdp__bundle-body {
-      gap: 14px;
-      padding: 22px 24px;
-    }
-
-    .rg-pdp__pack {
-      gap: 14px;
-      padding: 16px 18px;
-    }
-
-    .rg-pdp__pack-tag {
-      right: 16px;
+    .rg-pdp__vid-name {
+      bottom: 8px;
+      left: 8px;
       font-size: 11px;
     }
 
-    .rg-pdp__pack-title {
-      font-size: 17px;
+    .rg-pdp__vids-arrow {
+      position: absolute;
+      top: 50%;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: var(--rg-white);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+      color: var(--rg-graphite);
+      font: 400 20px/1 var(--rg-font-body);
+      transform: translateY(-50%);
+      cursor: pointer;
     }
 
-    .rg-pdp__pack-supply {
-      font-size: 12px;
+    .rg-pdp__vids-arrow:hover {
+      background: var(--rg-accent);
     }
 
-    .rg-pdp__pack-line {
-      font-size: 14px;
+    .rg-pdp__vids-arrow--prev {
+      left: -16px;
     }
 
-    .rg-pdp__pack-price {
-      font-size: 20px;
-    }
-
-    .rg-pdp__pack-old {
-      font-size: 14px;
-    }
-
-    .rg-pdp__sub {
-      gap: 14px;
-      padding: 14px 18px;
-    }
-
-    .rg-pdp__sub-title {
-      font-size: 16px;
-    }
-
-    .rg-pdp__sub-desc {
-      font-size: 14px;
-    }
-
-    .rg-pdp__assure-card {
-      gap: 14px;
-      padding: 14px 16px;
-    }
-
-    .rg-pdp__assure-icon {
-      width: 44px;
-      height: 44px;
-    }
-
-    .rg-pdp__assure-icon svg {
-      width: 24px;
-      height: 24px;
-    }
-
-    .rg-pdp__seal {
-      width: 60px;
-      height: 60px;
-    }
-
-    .rg-pdp__assure-title {
-      font-size: 16px;
-    }
-
-    .rg-pdp__assure-desc {
-      font-size: 14px;
+    .rg-pdp__vids-arrow--next {
+      right: -16px;
     }
 
     .rg-pdp__acc {
-      margin-top: 36px;
+      margin-top: 8px;
     }
 
     .rg-pdp__acc-q {
-      padding: 22px 0;
+      padding: 14px 0;
       font-size: 17px;
     }
 
-    .rg-pdp__acc-icon {
-      width: 24px;
-      font-size: 24px;
-    }
-
     .rg-pdp__acc-a {
-      padding: 0 40px 24px 0;
-      font-size: 16px;
-      line-height: 1.65;
+      font-size: 17px;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .rg-pdp__cta,
-    .rg-pdp__pack {
+    .rg-pdp__vids-track {
       transition: none;
+      scroll-behavior: auto;
     }
   }
 {% endstylesheet %}
 
 {% javascript %}
-  /* RAW GRAVITY · bundle option -> subscription frequency: the subscription checkbox submits
-     the selling plan that belongs to the selected bundle option. */
-  if (!window.rgPdpPlanSync) {
-    window.rgPdpPlanSync = true;
-    document.addEventListener('change', (event) => {
-      const radio = event.target.closest && event.target.closest('.rg-pdp__pack-input');
-      if (!radio || !radio.dataset.sellingPlan || !radio.form) return;
-      const box = radio.form.querySelector('.rg-pdp__sub-input');
-      if (box) box.value = radio.dataset.sellingPlan;
+  /* RAW GRAVITY · ingredient tiles in the buy box open the dialog of the Ingredients section. */
+  if (!window.rgPdpIngredientTiles) {
+    window.rgPdpIngredientTiles = true;
+    document.addEventListener('click', (event) => {
+      const tile = event.target.closest && event.target.closest('[data-rg-ing-open]');
+      if (!tile) return;
+      const host = document.querySelector('rg-ingredients[data-rg-ing-host]') || document.querySelector('rg-ingredients');
+      if (!host || typeof host.show !== 'function') return;
+      event.preventDefault();
+      host.opener = tile;
+      host.show(Number(tile.dataset.rgIngOpen) || 0);
     });
   }
 
@@ -1505,185 +1584,114 @@
     },
     {
       "type": "text",
+      "id": "edition_label",
+      "label": "Label",
+      "default": "LIMITED EDITION"
+    },
+    {
+      "type": "text",
       "id": "rating_text",
       "label": "Rating text",
-      "default": "Rated 4.8 on Amazon",
+      "default": "4.8 · Rated on Amazon",
       "info": "Must match the current Amazon rating."
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Empty = product title. ® and ™ are shown superscript; a line break is kept."
     },
     {
       "type": "textarea",
       "id": "subtitle",
       "label": "Subtitle",
-      "info": "A line break shows on desktop only. Can be connected to a product metafield.",
-      "default": "Our low-caffeine mushroom coffee\nin a limited-run collab pack."
-    },
-    {
-      "type": "text",
-      "id": "badge_text",
-      "label": "Discount badge",
-      "info": "[percent] = saving vs. compare-at price.",
-      "default": "[percent]% OFF TODAY"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_countdown",
-      "label": "Show countdown",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "countdown_label",
-      "label": "Countdown label",
-      "default": "Sale Ends in"
-    },
-    {
-      "type": "range",
-      "id": "countdown_minutes",
-      "label": "Countdown length",
-      "min": 5,
-      "max": 60,
-      "step": 5,
-      "unit": "min",
-      "default": 15,
-      "info": "Same timer as the announcement bar."
-    },
-    {
-      "type": "text",
-      "id": "cta_label",
-      "label": "Button label",
-      "default": "GET STARTED TODAY →"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_top_cta",
-      "label": "Show button above the bundles",
-      "default": true
-    },
-    {
-      "type": "textarea",
-      "id": "bullets",
-      "label": "Benefit bullets",
-      "info": "One per line.",
-      "default": "Calm, steady energy, no jitters, no 3 p.m. crash\nClear, sharp focus that lasts for hours\nGentle on your gut, low caffeine, no bloating"
+      "info": "A line break shows on mobile only."
     },
     {
       "type": "header",
-      "content": "Bundles"
+      "content": "Offer card"
     },
     {
       "type": "text",
-      "id": "bundle_heading",
-      "label": "Bundle heading",
-      "default": "CHOOSE YOUR BUNDLE · SAVE UP TO 35%"
+      "id": "card_brand",
+      "label": "Card title",
+      "default": "RAW COFFEE+"
     },
     {
       "type": "text",
-      "id": "unit_singular",
-      "label": "Unit name (1)",
-      "default": "Jar"
+      "id": "card_text",
+      "label": "Card subtitle",
+      "default": "60-Day Money-Back Guarantee · Free US Shipping"
     },
     {
       "type": "text",
-      "id": "unit_plural",
-      "label": "Unit name (2+)",
-      "default": "Jars"
+      "id": "offer_title",
+      "label": "Offer title",
+      "default": "30-Day Supply"
+    },
+    {
+      "type": "text",
+      "id": "offer_text",
+      "label": "Offer text",
+      "default": "1 bag · 30 servings"
+    },
+    {
+      "type": "text",
+      "id": "offer_badge",
+      "label": "Offer badge",
+      "default": "BEST VALUE · SAVE [percent]%",
+      "info": "[percent] = first-order saving vs. compare-at price."
+    },
+    {
+      "type": "text",
+      "id": "first_order_discount",
+      "label": "First-order discount, $",
+      "default": "10",
+      "info": "Must equal the automatic discount on the first subscription order. 0 = none."
+    },
+    {
+      "type": "textarea",
+      "id": "price_note",
+      "label": "Price note",
+      "default": "[first_price] on your first order, then [recurring_price] every 30 days.\nPause or cancel anytime.",
+      "info": "[first_price], [recurring_price], [compare_price]. Must match the subscription plan."
     },
     {
       "type": "number",
-      "id": "servings_per_unit",
-      "label": "Servings per unit",
+      "id": "servings",
+      "label": "Servings per bag",
       "default": 30
     },
     {
       "type": "text",
       "id": "per_serving_label",
       "label": "Per-serving label",
-      "default": "per serving"
-    },
-    {
-      "type": "header",
-      "content": "Subscription"
-    },
-    {
-      "type": "paragraph",
-      "content": "Shows only when the product has a selling plan (Shopify Subscriptions)."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_subscription",
-      "label": "Show subscription option",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "subscription_default",
-      "label": "Selected by default",
-      "default": true
+      "default": "per serving",
+      "info": "Empty hides the per-serving price."
     },
     {
       "type": "text",
-      "id": "subscription_title",
-      "label": "Title",
-      "default": "Subscribe & never run out"
+      "id": "serving_heading",
+      "label": "Ingredient tiles heading",
+      "default": "IN EVERY SERVING"
     },
     {
       "type": "text",
-      "id": "subscription_text",
-      "label": "Text",
-      "info": "[percent] = saving vs. compare-at price.",
-      "default": "Keep your [percent]% off on every refill. Skip, pause or cancel anytime."
-    },
-    {
-      "type": "header",
-      "content": "Assurance"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_shipping",
-      "label": "Show shipping card",
-      "default": true
+      "id": "tap_text",
+      "label": "Ingredient tiles hint",
+      "default": "Tap any item to see what’s inside"
     },
     {
       "type": "text",
-      "id": "shipping_title",
-      "label": "Shipping title",
-      "default": "Free US Shipping"
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "START NOW RISK FREE"
     },
     {
-      "type": "text",
-      "id": "shipping_text",
-      "label": "Shipping text",
-      "default": "Fast, tracked delivery straight to your door."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_guarantee",
-      "label": "Show guarantee card",
-      "default": true
-    },
-    {
-      "type": "number",
-      "id": "guarantee_days",
-      "label": "Guarantee days",
-      "default": 60
-    },
-    {
-      "type": "text",
-      "id": "guarantee_title",
-      "label": "Guarantee title",
-      "default": "60-Day Money-Back Guarantee"
-    },
-    {
-      "type": "text",
-      "id": "guarantee_text",
-      "label": "Guarantee text",
-      "default": "Results or a full refund. No return required. No questions asked."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "Show payment icons",
-      "default": true
+      "type": "textarea",
+      "id": "checks",
+      "label": "Checklist under the button",
+      "info": "One per line. [recurring_price] and [first_price] are replaced with prices."
     },
     {
       "type": "header",
@@ -1692,80 +1700,94 @@
     {
       "type": "checkbox",
       "id": "open_first_tab",
-      "label": "Open the first tab",
+      "label": "Open the first item",
       "default": true
     }
   ],
   "blocks": [
     {
-      "type": "pack",
-      "name": "Bundle option",
-      "limit": 5,
+      "type": "perk",
+      "name": "Benefit",
+      "limit": 6,
       "settings": [
         {
-          "type": "number",
-          "id": "quantity",
-          "label": "Units",
-          "default": 1
-        },
-        {
-          "type": "text",
-          "id": "discount_percent",
-          "label": "Discount, %",
-          "default": "0",
-          "info": "Must equal the automatic discount in Shopify admin for this quantity, e.g. 13.23."
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Starter — 1 Jar"
-        },
-        {
-          "type": "text",
-          "id": "supply",
-          "label": "Supply pill",
-          "default": "30-Day Supply"
-        },
-        {
-          "type": "text",
-          "id": "tag",
-          "label": "Tag"
-        },
-        {
           "type": "select",
-          "id": "tag_style",
-          "label": "Tag color",
+          "id": "icon",
+          "label": "Icon",
           "options": [
-            { "value": "dark", "label": "Graphite" },
-            { "value": "accent", "label": "Cyan" }
+            { "value": "focus", "label": "Bulb" },
+            { "value": "energy", "label": "Lightning" },
+            { "value": "gut", "label": "Wave" },
+            { "value": "dose", "label": "Molecule" }
           ],
-          "default": "dark"
+          "default": "focus"
         },
         {
-          "type": "checkbox",
-          "id": "default",
-          "label": "Selected by default",
-          "default": false
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Supports focus\nand mental clarity",
+          "info": "A line break is kept."
+        }
+      ]
+    },
+    {
+      "type": "tile",
+      "name": "Ingredient tile",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Lion’s Mane"
+        },
+        {
+          "type": "text",
+          "id": "dose",
+          "label": "Dose",
+          "default": "1,000 mg"
         },
         {
           "type": "number",
-          "id": "plan_position",
-          "label": "Subscription frequency",
+          "id": "ingredient",
+          "label": "Opens ingredient #",
           "default": 1,
-          "info": "Position of the delivery frequency in the Shopify Subscriptions plan (1 = first). E.g. 1 = every month, 2 = every 3 months."
+          "info": "Position of the ingredient block in the Ingredients section (1 = first)."
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Customer video",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name label",
+          "info": "Must be the real name of the person in the video."
         }
       ]
     },
     {
       "type": "tab",
-      "name": "Accordion tab",
+      "name": "Accordion item",
       "settings": [
         {
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "PRODUCT DESCRIPTION"
+          "default": "Description"
         },
         {
           "type": "checkbox",
@@ -1777,7 +1799,7 @@
           "type": "richtext",
           "id": "content",
           "label": "Content",
-          "default": "<p>Tab content.</p>"
+          "default": "<p>Item content.</p>"
         }
       ]
     }

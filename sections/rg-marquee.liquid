@@ -39,6 +39,9 @@
   if s.pause_on_hover
     assign rg_mq_classes = rg_mq_classes | append: ' rg-marquee--pausable'
   endif
+  if s.product_gradient and template.name == 'product'
+    assign rg_mq_classes = rg_mq_classes | append: ' rg-marquee--gradient'
+  endif
 -%}
 
 {%- if has_items -%}
@@ -239,6 +242,11 @@
       animation: none;
     }
   }
+
+  /* Product page design: dark teal-to-graphite band */
+  .rg-marquee.rg-marquee--gradient {
+    background: linear-gradient(90deg, #26464f 0%, #2f3a3d 35%, #323232 70%, #2e2e2e 100%);
+  }
 {% endstylesheet %}
 
 {% javascript %}
@@ -330,6 +338,12 @@
       "type": "checkbox",
       "id": "alternate_colors",
       "label": "Alternate text and accent colors",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "product_gradient",
+      "label": "Product pages: gradient background",
       "default": true
     },
     {

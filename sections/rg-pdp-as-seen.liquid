@@ -4,7 +4,7 @@
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 
-<section class="rg rg-seen">
+<section class="rg rg-z rg-seen">
   <div class="rg-seen__inner">
     {%- if s.label != blank -%}
       <span class="rg-seen__label">{{ s.label | escape }}</span>
@@ -87,14 +87,15 @@
     }
 
     .rg-seen__pill {
-      height: 38px;
-      padding: 0 18px;
-      border-radius: 19px;
-      font-size: 18px;
+      height: 46px;
+      padding: 0 24px;
+      border-radius: 23px;
+      box-shadow: 0 0 0 2px rgba(28, 203, 245, 0.55), 0 0 26px rgba(28, 203, 245, 0.65), 0 0 48px rgba(28, 203, 245, 0.3);
+      font-size: 22px;
     }
 
     .rg-seen__logo {
-      height: 22px;
+      height: 26px;
     }
   }
 {% endstylesheet %}

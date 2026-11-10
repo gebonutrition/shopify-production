@@ -24,10 +24,53 @@
       endif
     endif
   endfor
+
+  comment
+    Product pages can use the compact footer of the product page design:
+    the newsletter becomes a card in the last column (mobile: on top).
+  endcomment
+  assign pdp_compact = false
+  if template.name == 'product' and s.pdp_compact
+    assign pdp_compact = true
+  endif
 -%}
 
-<div class="rg rg-footer">
-  {%- if s.show_newsletter -%}
+{%- capture newsletter_form -%}
+{%- form 'customer', id: 'rg-footer-newsletter', class: 'rg-footer__form' -%}
+  <input type="hidden" name="contact[tags]" value="newsletter">
+  <div class="rg-footer__form-row">
+    <label class="rg-visually-hidden" for="rg-footer-email-{{ section.id }}">Email</label>
+    <input
+      id="rg-footer-email-{{ section.id }}"
+      class="rg-footer__input{% if form.errors %} is-invalid{% endif %}"
+      type="email"
+      name="contact[email]"
+      autocomplete="email"
+      autocorrect="off"
+      autocapitalize="off"
+      placeholder="{{ s.newsletter_placeholder | escape }}"
+      required
+      {% if form.errors %}
+        aria-invalid="true"
+        aria-describedby="rg-footer-msg-{{ section.id }}"
+      {% endif %}
+    >
+    <button type="submit" class="rg-btn rg-footer__submit">
+      {{- s.newsletter_button | escape }} <span aria-hidden="true">→</span>
+    </button>
+  </div>
+  <p class="rg-footer__msg" id="rg-footer-msg-{{ section.id }}" role="status">
+    {%- if form.posted_successfully? -%}
+      <span class="is-success">{{ s.newsletter_success | escape }}</span>
+    {%- elsif form.errors -%}
+      <span class="is-error">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</span>
+    {%- endif -%}
+  </p>
+{%- endform -%}
+{%- endcapture -%}
+
+<div class="rg rg-footer{% if pdp_compact %} rg-z rg-footer--pdp{% endif %}">
+  {%- if s.show_newsletter and pdp_compact == false -%}
     <div class="rg-container rg-footer__top">
       <div class="rg-footer__club">
         <div class="rg-footer__club-copy">
@@ -43,37 +86,7 @@
           {%- endif -%}
         </div>
 
-        {%- form 'customer', id: 'rg-footer-newsletter', class: 'rg-footer__form' -%}
-          <input type="hidden" name="contact[tags]" value="newsletter">
-          <div class="rg-footer__form-row">
-            <label class="rg-visually-hidden" for="rg-footer-email-{{ section.id }}">Email</label>
-            <input
-              id="rg-footer-email-{{ section.id }}"
-              class="rg-footer__input{% if form.errors %} is-invalid{% endif %}"
-              type="email"
-              name="contact[email]"
-              autocomplete="email"
-              autocorrect="off"
-              autocapitalize="off"
-              placeholder="{{ s.newsletter_placeholder | escape }}"
-              required
-              {% if form.errors %}
-                aria-invalid="true"
-                aria-describedby="rg-footer-msg-{{ section.id }}"
-              {% endif %}
-            >
-            <button type="submit" class="rg-btn rg-footer__submit">
-              {{- s.newsletter_button | escape }} <span aria-hidden="true">→</span>
-            </button>
-          </div>
-          <p class="rg-footer__msg" id="rg-footer-msg-{{ section.id }}" role="status">
-            {%- if form.posted_successfully? -%}
-              <span class="is-success">{{ s.newsletter_success | escape }}</span>
-            {%- elsif form.errors -%}
-              <span class="is-error">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</span>
-            {%- endif -%}
-          </p>
-        {%- endform -%}
+        {{ newsletter_form }}
       </div>
     </div>
   {%- endif -%}
@@ -165,6 +178,19 @@
           </nav>
         {%- endif -%}
       {%- endfor -%}
+
+      {%- if s.show_newsletter and pdp_compact -%}
+        <div class="rg-footer__club-card">
+          <p class="rg-footer__club-label">{{ s.pdp_club_title | escape }}</p>
+          {%- if s.pdp_club_text != blank -%}
+            <p class="rg-footer__club-note rg-footer__club-note--desktop">{{ s.pdp_club_text | escape }}</p>
+          {%- endif -%}
+          {%- if s.pdp_club_text_mobile != blank -%}
+            <p class="rg-footer__club-note rg-footer__club-note--mobile">{{ s.pdp_club_text_mobile | escape }}</p>
+          {%- endif -%}
+          {{ newsletter_form }}
+        </div>
+      {%- endif -%}
     </div>
 
     <div class="rg-footer__pay-row">
@@ -606,6 +632,219 @@
       padding-bottom: 36px;
     }
   }
+
+  /* Compact product-page footer (Raw Coffee Product Page v2 + Mobile v2); desktop through .rg-z */
+  .rg-footer__club-card {
+    display: none;
+  }
+
+  .rg-footer--pdp .rg-footer__main {
+    padding-top: 44px;
+  }
+
+  .rg-footer--pdp .rg-footer__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    padding-bottom: 28px;
+  }
+
+  .rg-footer--pdp .rg-footer__brand {
+    grid-column: 1 / -1;
+    gap: 14px;
+    padding: 20px 0 16px;
+  }
+
+  .rg-footer--pdp .rg-footer__col {
+    gap: 12px;
+  }
+
+  .rg-footer--pdp .rg-footer__col-title {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+  }
+
+  .rg-footer--pdp .rg-footer__links {
+    gap: 12px;
+  }
+
+  .rg-footer--pdp .rg-footer__link {
+    font-size: 14px;
+  }
+
+  .rg-footer--pdp .rg-footer__club-card {
+    display: flex;
+    flex-direction: column;
+    grid-column: 1 / -1;
+    order: -1;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid rgba(28, 203, 245, 0.3);
+    border-radius: 14px;
+    background: rgba(28, 203, 245, 0.06);
+  }
+
+  .rg-footer--pdp .rg-footer__club-label {
+    color: var(--rg-accent);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+  }
+
+  .rg-footer--pdp .rg-footer__club-note {
+    margin-top: -5px;
+    color: var(--rg-on-dark-2);
+    font-size: 11px;
+  }
+
+  .rg-footer--pdp .rg-footer__club-note--desktop {
+    display: none;
+  }
+
+  .rg-footer--pdp .rg-footer__club-card .rg-footer__form {
+    gap: 6px;
+  }
+
+  .rg-footer--pdp .rg-footer__club-card .rg-footer__form-row {
+    flex-direction: row;
+    gap: 6px;
+  }
+
+  .rg-footer--pdp .rg-footer__club-card .rg-footer__input {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    height: 36px;
+    padding: 0 12px;
+    border-color: rgba(28, 203, 245, 0.45);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.25);
+    font-size: 13px;
+  }
+
+  .rg-footer--pdp .rg-footer__club-card .rg-footer__submit {
+    flex: none;
+    width: auto;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 8px;
+    box-shadow: 0 0 14px rgba(28, 203, 245, 0.45);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+
+  @media screen and (min-width: 990px) {
+    .rg-footer--pdp .rg-footer__main {
+      padding-top: 40px;
+    }
+
+    .rg-footer--pdp .rg-footer__grid {
+      grid-template-columns: 1.1fr 0.8fr 0.9fr 0.8fr 1.6fr;
+      gap: 40px;
+      padding: 8px 0 36px;
+    }
+
+    .rg-footer--pdp .rg-footer__brand {
+      grid-column: auto;
+      gap: 18px;
+      padding: 0;
+    }
+
+    .rg-footer--pdp .rg-footer__logo-img {
+      height: 25px;
+    }
+
+    .rg-footer--pdp .rg-footer__social {
+      width: 40px;
+      height: 40px;
+      border-color: rgba(28, 203, 245, 0.45);
+      background: rgba(28, 203, 245, 0.08);
+    }
+
+    .rg-footer--pdp .rg-footer__social svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .rg-footer--pdp .rg-footer__col,
+    .rg-footer--pdp .rg-footer__links {
+      gap: 14px;
+    }
+
+    .rg-footer--pdp .rg-footer__col-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+    }
+
+    .rg-footer--pdp .rg-footer__link {
+      font-size: 17px;
+    }
+
+    .rg-footer--pdp .rg-footer__club-card {
+      grid-column: auto;
+      order: 0;
+      align-self: start;
+      gap: 10px;
+      margin-top: -21px;
+      padding: 20px 22px;
+      border-color: rgba(28, 203, 245, 0.35);
+      border-radius: 18px;
+      background: rgba(28, 203, 245, 0.08);
+      box-shadow: 0 0 30px rgba(28, 203, 245, 0.1) inset;
+    }
+
+    .rg-footer--pdp .rg-footer__club-label {
+      font-size: 13px;
+    }
+
+    .rg-footer--pdp .rg-footer__club-note {
+      margin-top: 0;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    .rg-footer--pdp .rg-footer__club-note--desktop {
+      display: block;
+    }
+
+    .rg-footer--pdp .rg-footer__club-note--mobile {
+      display: none;
+    }
+
+    .rg-footer--pdp .rg-footer__club-card .rg-footer__form {
+      margin-top: 4px;
+    }
+
+    .rg-footer--pdp .rg-footer__club-card .rg-footer__form-row {
+      gap: 8px;
+    }
+
+    .rg-footer--pdp .rg-footer__club-card .rg-footer__input {
+      height: 44px;
+      padding: 0 16px;
+      border-radius: 22px;
+      font-size: 17px;
+    }
+
+    .rg-footer--pdp .rg-footer__club-card .rg-footer__submit {
+      height: 44px;
+      padding: 0 18px;
+      border-radius: 12px;
+      box-shadow: 0 0 18px rgba(28, 203, 245, 0.55), 0 6px 20px rgba(28, 203, 245, 0.35);
+      font-size: 14px;
+    }
+
+    .rg-footer--pdp .rg-footer__secure,
+    .rg-footer--pdp .rg-footer__legal,
+    .rg-footer--pdp .rg-footer__disclaimer {
+      font-size: 17px;
+    }
+
+    .rg-footer--pdp .rg-footer__legal {
+      padding: 20px 0;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -625,6 +864,31 @@
       "id": "show_newsletter",
       "label": "Show newsletter card",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pdp_compact",
+      "label": "Product pages: compact footer",
+      "default": true,
+      "info": "Newsletter as a card in the last column (product page design)."
+    },
+    {
+      "type": "text",
+      "id": "pdp_club_title",
+      "label": "Product pages: club title",
+      "default": "JOIN THE CLUB"
+    },
+    {
+      "type": "text",
+      "id": "pdp_club_text",
+      "label": "Product pages: club text (desktop)",
+      "default": "Exclusive offers, giveaways, new recipes and wellness tips."
+    },
+    {
+      "type": "text",
+      "id": "pdp_club_text_mobile",
+      "label": "Product pages: club text (mobile)",
+      "default": "Exclusive offers, giveaways, recipes and tips."
     },
     {
       "type": "text",

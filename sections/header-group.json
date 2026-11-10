@@ -95,27 +95,37 @@
             "show_on": "all"
           }
         },
-        "rg_ann_countdown": {
-          "type": "countdown",
-          "settings": {
-            "label": "SALE ENDS IN",
-            "minutes": 15,
-            "show_on": "product"
-          }
-        },
         "rg_ann_guarantee": {
           "type": "text",
           "settings": {
             "text": "60-DAY MONEY-BACK GUARANTEE",
             "link": "",
             "icon": "none",
-            "show_on": "all"
+            "show_on": "other"
           }
         },
         "rg_ann_save_today": {
           "type": "text",
           "settings": {
-            "text": "SAVE 25% TODAY",
+            "text": "SAVE 50% TODAY",
+            "link": "",
+            "icon": "none",
+            "show_on": "product"
+          }
+        },
+        "rg_ann_guarantee_pdp": {
+          "type": "text",
+          "settings": {
+            "text": "60-DAY MONEY-BACK GUARANTEE",
+            "link": "",
+            "icon": "none",
+            "show_on": "product"
+          }
+        },
+        "rg_ann_lab_tested": {
+          "type": "text",
+          "settings": {
+            "text": "LAB TESTED",
             "link": "",
             "icon": "none",
             "show_on": "product"
@@ -124,9 +134,10 @@
       },
       "block_order": [
         "rg_ann_first_order",
+        "rg_ann_guarantee_pdp",
         "rg_ann_shipping",
         "rg_ann_save_today",
-        "rg_ann_countdown",
+        "rg_ann_lab_tested",
         "rg_ann_guarantee"
       ],
       "settings": {
@@ -146,7 +157,8 @@
         "letter_spacing": 22,
         "speed": 80,
         "copies": 4,
-        "pause_on_hover": true
+        "pause_on_hover": true,
+        "product_gradient": true
       }
     }
   },

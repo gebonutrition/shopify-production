@@ -12,133 +12,177 @@
     "main": {
       "type": "rg-pdp-main",
       "blocks": {
-        "pack_1": {
-          "type": "pack",
+        "perk_focus": {
+          "type": "perk",
           "settings": {
-            "quantity": 1,
-            "discount_percent": "0",
-            "title": "Starter — 1 Jar",
-            "supply": "30-Day Supply",
-            "tag": "",
-            "tag_style": "dark",
-            "default": false,
-            "plan_position": 1
+            "icon": "focus",
+            "text": "Supports focus\nand mental clarity"
           }
         },
-        "pack_3": {
-          "type": "pack",
+        "perk_energy": {
+          "type": "perk",
           "settings": {
-            "quantity": 3,
-            "discount_percent": "13.23",
-            "title": "Full Reset — 3 Jars",
-            "supply": "90-Day Supply",
-            "tag": "MOST CHOSEN",
-            "tag_style": "dark",
-            "default": true,
-            "plan_position": 2
+            "icon": "energy",
+            "text": "Clean energy with\nno jitters or crash"
           }
         },
-        "pack_5": {
-          "type": "pack",
+        "perk_gut": {
+          "type": "perk",
           "settings": {
-            "quantity": 5,
-            "discount_percent": "19.88",
-            "title": "Stock Up — 5 Jars",
-            "supply": "150-Day Supply",
-            "tag": "BEST VALUE",
-            "tag_style": "accent",
-            "default": false,
-            "plan_position": 3
+            "icon": "gut",
+            "text": "Supports digestion\nand gut health"
+          }
+        },
+        "perk_dose": {
+          "type": "perk",
+          "settings": {
+            "icon": "dose",
+            "text": "Fully dosed actives,\nzero fairy dusting"
+          }
+        },
+        "tile_lions_mane": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/rg-pdp-ing-lions-mane.jpg",
+            "name": "Lion’s Mane",
+            "dose": "1,000 mg",
+            "ingredient": 3
+          }
+        },
+        "tile_creatine": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/rg-pdp-ing-creatine.jpg",
+            "name": "Creatine",
+            "dose": "3,000 mg",
+            "ingredient": 1
+          }
+        },
+        "tile_amino": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/rg-pdp-ing-l-tyrosine.jpg",
+            "name": "Amino acids",
+            "dose": "400 mg",
+            "ingredient": 5
+          }
+        },
+        "tile_adaptogens": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/rg-pdp-ing-holy-basil.jpg",
+            "name": "Adaptogens",
+            "dose": "300 mg",
+            "ingredient": 7
+          }
+        },
+        "video_1": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/review.MOV",
+            "name": "Amanda, 34"
+          }
+        },
+        "video_2": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/Talking Head.mp4",
+            "name": "Lara, 29"
+          }
+        },
+        "video_3": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/22AB9584-0A69-458C-B70D-8BC20B416E72.mov",
+            "name": "Devon, 41"
+          }
+        },
+        "video_4": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/A5A77E57-AF72-4C60-B956-3B48DF91CB17.mov",
+            "name": "Mike, 37"
           }
         },
         "tab_1": {
           "type": "tab",
           "settings": {
-            "title": "PRODUCT DESCRIPTION",
+            "title": "What does it help with?",
             "use_description": false,
-            "content": "<p>Raw Coffee+ is low-caffeine 100% Arabica blended with Lion's Mane and creatine, plus L-Theanine and Taurine for calm, steady energy, L-Tyrosine for motivation, Bacopa and Ginkgo for memory and alertness, and Holy Basil to help you handle stress. You keep the taste and ritual of real coffee, and the energy builds gently and stays. 30 servings per bag.</p>"
+            "content": "<p>Raw Coffee+ gives you calm, steady energy without jitters or the afternoon crash. Lion's Mane, Bacopa and Ginkgo support focus and memory, Holy Basil helps you handle stress, and 3,000 mg of creatine supports your body's natural energy.</p>"
           }
         },
         "tab_2": {
           "type": "tab",
           "settings": {
-            "title": "WHY RAW COFFEE+",
+            "title": "How to use",
             "use_description": false,
-            "content": "<p>Regular coffee lifts you fast and drops you just as fast. Raw Coffee+ has about 23 mg of caffeine per serving — roughly a quarter of a regular coffee — plus L-Theanine and adaptogens, so your energy stays smooth from morning to evening.</p>"
+            "content": "<p>Add one scoop (7 g) to 8–12 oz of hot water or milk and stir for 15 seconds. Prefer it iced? Dissolve it in a splash of hot water, then add ice and oat milk. One cup a day, best in the morning.</p>"
           }
         },
         "tab_3": {
           "type": "tab",
           "settings": {
-            "title": "INGREDIENTS",
+            "title": "How are results for people with sensitive stomachs?",
             "use_description": false,
-            "content": "<p>Creatine Monohydrate 3,000 mg · 100% Arabica Coffee, decaffeinated 2,300 mg · Lion's Mane Extract 10:1 1,000 mg · Taurine 200 mg · L-Theanine 100 mg · L-Tyrosine 100 mg · Holy Basil Extract 100 mg · Bacopa Monnieri 100 mg · Ginkgo Biloba Extract 100 mg. No added sugar, no fillers, no proprietary blends.</p>"
+            "content": "<p>Our low-acid, low-caffeine Arabica is much gentler than regular coffee. L-Theanine slows caffeine absorption, so most customers with sensitive stomachs report no acid reflux, bloating or jitters.</p>"
           }
         },
         "tab_4": {
           "type": "tab",
           "settings": {
-            "title": "BENEFITS",
+            "title": "What does it taste like?",
             "use_description": false,
-            "content": "<p>Steady energy: low caffeine plus 3,000 mg of creatine, L-Theanine and Taurine give you smooth energy that lasts all day, with no jitters and no 3 p.m. crash. Sharper focus: 1,000 mg of Lion's Mane, L-Tyrosine, Bacopa and Ginkgo support concentration, motivation and memory. Less stress: Holy Basil and L-Theanine help you stay calm and clear-headed when the day gets busy. A happier gut: low-caffeine Arabica with no added sugar or fillers is gentler on your stomach than regular coffee.</p>"
+            "content": "<p>Bold Arabica flavor with a deep, full-bodied mushroom note from our 10:1 Lion’s Mane extract, the highest amount among functional coffees on the market. No artificial flavors or maskers, just the real taste of a quality mushroom coffee that works.</p>"
           }
         },
         "tab_5": {
           "type": "tab",
           "settings": {
-            "title": "SHIPPING, RETURNS & GUARANTEE",
+            "title": "Description",
             "use_description": false,
-            "content": "<p>✓  Free US shipping</p><p>✓  60-day money-back guarantee</p><p>✓  Secure checkout</p>"
-          }
-        },
-        "tab_6": {
-          "type": "tab",
-          "settings": {
-            "title": "HOW TO USE",
-            "use_description": false,
-            "content": "<p>Add one scoop (7 g) to 8–12 oz of hot water or milk and stir for 15 seconds. Prefer it iced? Dissolve it in a splash of hot water, then add ice and oat milk. One cup a day, best in the morning.</p>"
+            "content": "<p>Low-caffeine 100% Arabica blended with Lion's Mane 10:1 extract, creatine, L-Theanine, Taurine, L-Tyrosine, Bacopa, Ginkgo and Holy Basil. 30 servings per bag. Vegan, non-GMO, no added sugar, made in the USA and third-party lab tested.</p>"
           }
         }
       },
       "block_order": [
-        "pack_1",
-        "pack_3",
-        "pack_5",
+        "perk_focus",
+        "perk_energy",
+        "perk_gut",
+        "perk_dose",
+        "tile_lions_mane",
+        "tile_creatine",
+        "tile_amino",
+        "tile_adaptogens",
+        "video_1",
+        "video_2",
+        "video_3",
+        "video_4",
         "tab_1",
         "tab_2",
         "tab_3",
         "tab_4",
-        "tab_5",
-        "tab_6"
+        "tab_5"
       ],
       "settings": {
         "anchor": "buy",
-        "rating_text": "Rated 4.8 on Amazon",
-        "subtitle": "Our low-caffeine mushroom coffee\nin a limited-run collab pack.",
-        "badge_text": "25% OFF TODAY",
-        "show_countdown": true,
-        "countdown_label": "Sale Ends in",
-        "countdown_minutes": 15,
-        "cta_label": "GET STARTED TODAY →",
-        "show_top_cta": true,
-        "bullets": "Calm, steady energy  no jitters, no 3 p.m. crash\nClear, sharp focus that lasts for hours\nGentle on your gut  low caffeine, no bloating",
-        "bundle_heading": "CHOOSE YOUR BUNDLE · SAVE UP TO 35%",
-        "unit_singular": "Jar",
-        "unit_plural": "Jars",
-        "servings_per_unit": 30,
+        "edition_label": "LIMITED EDITION",
+        "rating_text": "4.8 · Rated on Amazon",
+        "heading": "Raw Gravity® & Take My Muffin®\nMushroom Coffee",
+        "subtitle": "Instant Half Caff Arabica Coffee with Creatine 3,000mg, Lion’s Mane\n1,000mg, Nootropics & Adaptogens for Memory & Brain Health, Made in USA",
+        "card_brand": "RAW COFFEE+",
+        "card_text": "60-Day Money-Back Guarantee · Free US Shipping",
+        "offer_title": "30-Day Supply",
+        "offer_text": "1 bag · 30 servings",
+        "offer_badge": "BEST VALUE · SAVE [percent]%",
+        "first_order_discount": "10",
+        "price_note": "[first_price] on your first order, then [recurring_price] every 30 days.\nPause or cancel anytime.",
+        "servings": 30,
         "per_serving_label": "per serving",
-        "show_subscription": true,
-        "subscription_default": true,
-        "subscription_title": "Subscribe & never run out",
-        "subscription_text": "Keep your 25% off on every refill. Skip, pause or cancel anytime.",
-        "show_shipping": true,
-        "shipping_title": "Free US Shipping",
-        "shipping_text": "Fast, tracked delivery straight to your door.",
-        "show_guarantee": true,
-        "guarantee_days": 60,
-        "guarantee_title": "60-Day Money-Back Guarantee",
-        "guarantee_text": "Results or a full refund. No return required. No questions asked.",
-        "show_payment_icons": true,
+        "serving_heading": "IN EVERY SERVING",
+        "tap_text": "Tap any item to see what’s inside",
+        "cta_label": "START NOW RISK FREE",
+        "checks": "Free US Shipping\n30-Day Money-Back Guarantee\n[recurring_price] Refill Ships in 30 Days\nAdjust Shipments or Cancel Anytime",
         "open_first_tab": true
       }
     },
@@ -195,9 +239,10 @@
       ],
       "settings": {
         "anchor": "how-to",
-        "heading": "YOUR PERFECT CUP IN 30 SECONDS",
+        "eyebrow": "HOW TO MAKE",
+        "heading": "YOUR PERFECT CUP\nIN 30 SECONDS",
         "text": "One scoop, a splash of water and a quick stir - that's it. Raw Coffee+ dissolves instantly with no clumps, so you can make it at home, at the office or on the road. Drink it hot, pour it over ice or blend it into a creamy latte.",
-        "button_label": "TRY RAW COFFEE →",
+        "button_label": "TRY RAW COFFEE+ →",
         "button_link": ""
       }
     },
@@ -207,22 +252,25 @@
         "benefit_1": {
           "type": "benefit",
           "settings": {
+            "line_icon": "focus",
             "icon": "shopify://shop_images/rg-benefit-1.png",
             "title": "SHARP MENTAL FOCUS",
-            "text": "Clear head and better focus on anything you do."
+            "text": "Clear head and better focus \non anything you do."
           }
         },
         "benefit_2": {
           "type": "benefit",
           "settings": {
+            "line_icon": "stress",
             "icon": "shopify://shop_images/rg-benefit-2.png",
             "title": "HEALTHY STRESS SUPPORT",
-            "text": "Less stress, more calm, even when life gets busy."
+            "text": "Less stress, more calm, \neven when life gets busy."
           }
         },
         "benefit_3": {
           "type": "benefit",
           "settings": {
+            "line_icon": "resilience",
             "icon": "shopify://shop_images/rg-benefit-3.png",
             "title": "ADAPTIVE RESILIENCE",
             "text": "Faster recovery and more energy after tough days."
@@ -231,9 +279,10 @@
         "benefit_4": {
           "type": "benefit",
           "settings": {
+            "line_icon": "immune",
             "icon": "shopify://shop_images/rg-benefit-4.png",
             "title": "IMMUNE SUPPORT",
-            "text": "Stronger body defenses all year round."
+            "text": "Stronger body defenses \nall year round."
           }
         }
       },
@@ -246,7 +295,7 @@
       "settings": {
         "anchor": "benefits",
         "eyebrow": "FUNCTIONAL BENEFITS",
-        "heading": "CLINICALLY STUDIED PROVEN RESULTS",
+        "heading": "UPGRADE EVERY MORNING",
         "text": "Adaptogenic mushrooms and nootropics work with your body so the energy feels steady, not borrowed.",
         "image": "shopify://shop_images/rg-pdp-benefits.jpg",
         "button_label": "GET STARTED NOW →",
@@ -261,7 +310,7 @@
           "settings": {
             "when": "DAY 1:",
             "title": "Clean Energy, Zero Jitters",
-            "text": "Your first cup gives a calm, clear lift. L-Theanine smooths out the caffeine, Taurine keeps energy even, so you stay sharp — without the racing heart or the 3 p.m. crash.",
+            "text": "Your first cup gives a calm, clear lift. L-Theanine smooths out the caffeine, Taurine keeps energy even, so you stay sharp without the racing heart or the 3 p.m. crash.",
             "stat_strong": "87% of customers",
             "stat_text": "felt steadier energy from their very first cup."
           }
@@ -291,7 +340,7 @@
           "settings": {
             "when": "DAY 90:",
             "title": "A Ritual That Pays You Back",
-            "text": "3,000 mg of daily creatine and 9 active ingredients have become part of your routine. Mornings feel clearer, days feel steadier — and regular coffee feels like a step back.",
+            "text": "3,000 mg of daily creatine and 9 active ingredients have become part of your routine. Mornings feel clearer, days feel steadier and regular coffee feels like a step back.",
             "stat_strong": "91% of customers",
             "stat_text": "say they would never go back to regular coffee."
           }
@@ -304,74 +353,10 @@
         "stage_4"
       ],
       "settings": {
-        "eyebrow": "YOUR FIRST 90 DAYS\nWITH RAW COFFEE+",
-        "heading": "THE LONGER YOU DRINK, THE MORE IT WORKS",
+        "eyebrow": "YOUR FIRST 90 DAYS WITH RAW COFFEE+",
+        "heading": "THE LONGER YOU DRINK THE MORE IT WORKS",
         "text": "Coffee gives you a spike. Raw Coffee+ gives you results that build. Here's what our customers notice, cup after cup.",
         "button_label": "GET STARTED NOW →",
-        "button_link": ""
-      }
-    },
-    "rg_compare": {
-      "type": "rg-pdp-compare",
-      "blocks": {
-        "row_1": {
-          "type": "row",
-          "settings": {
-            "label": "No energy crash",
-            "regular": "x",
-            "other": "x"
-          }
-        },
-        "row_2": {
-          "type": "row",
-          "settings": {
-            "label": "Nootropic focus support",
-            "regular": "x",
-            "other": "Some"
-          }
-        },
-        "row_3": {
-          "type": "row",
-          "settings": {
-            "label": "Gut health support",
-            "regular": "x",
-            "other": "x"
-          }
-        },
-        "row_4": {
-          "type": "row",
-          "settings": {
-            "label": "Clean, non-GMO label",
-            "regular": "Some",
-            "other": "Some"
-          }
-        },
-        "row_5": {
-          "type": "row",
-          "settings": {
-            "label": "3rd party lab tested",
-            "regular": "x",
-            "other": "x"
-          }
-        }
-      },
-      "block_order": [
-        "row_1",
-        "row_2",
-        "row_3",
-        "row_4",
-        "row_5"
-      ],
-      "settings": {
-        "anchor": "compare",
-        "heading": "FEEL THE DIFFERENCE\nWITH RAW COFFEE+",
-        "image_ours": "shopify://shop_images/rg-pdp-cmp-raw.jpg",
-        "label_ours": "RAW COFFEE +",
-        "image_regular": "shopify://shop_images/rg-pdp-cmp-regular.jpg",
-        "label_regular": "Regular Coffee",
-        "image_other": "shopify://shop_images/rg-pdp-cmp-other.jpg",
-        "label_other": "Other Blends",
-        "button_label": "TRY RAW COFFEE →",
         "button_link": ""
       }
     },
@@ -381,10 +366,9 @@
         "ing_1": {
           "type": "ingredient",
           "settings": {
-            "show_in_list": true,
             "list_name": "Creatine Monohydrate",
             "list_dose": "3,000 mg",
-            "list_text": "More power for your body and your brain.",
+            "list_text": "Supports ATP and cellular energy levels.",
             "image": "shopify://shop_images/rg-pdp-ing-creatine.jpg",
             "tag": "CELLULAR ENERGY",
             "title": "Creatine Monohydrate",
@@ -396,10 +380,9 @@
         "ing_2": {
           "type": "ingredient",
           "settings": {
-            "show_in_list": true,
-            "list_name": "100% Arabica Coffee Decaffeinated (<2% caffeine)",
+            "list_name": "100% Arabica Coffee\n<2% caffeine",
             "list_dose": "2,300 mg",
-            "list_text": "Real coffee taste. Smooth energy. No jitters.",
+            "list_text": "Low caffeine for clear energy.",
             "image": "shopify://shop_images/rg-pdp-ing-arabica.jpg",
             "tag": "THE BASE",
             "title": "100% Arabica Coffee",
@@ -411,10 +394,9 @@
         "ing_3": {
           "type": "ingredient",
           "settings": {
-            "show_in_list": true,
-            "list_name": "Lion’s Mane Mushroom Extract 10:1 (50% polysaccharides)",
+            "list_name": "Lion’s Mane 10:1 Extract\n100% Fruiting Body",
             "list_dose": "1,000 mg",
-            "list_text": "Stay sharp, focused and clear-headed.",
+            "list_text": "Supports NGF & BDNF for peak \ncognitive performance.",
             "image": "shopify://shop_images/rg-pdp-ing-lions-mane.jpg",
             "tag": "NOOTROPIC MUSHROOM",
             "title": "Lion’s Mane 10:1 Extract",
@@ -426,10 +408,9 @@
         "ing_4": {
           "type": "ingredient",
           "settings": {
-            "show_in_list": true,
             "list_name": "Taurine",
             "list_dose": "200 mg",
-            "list_text": "Energy that lasts all day.",
+            "list_text": "Supports neuroprotection and \nphysical endurance levels.",
             "image": "shopify://shop_images/rg-pdp-ing-taurine.jpg",
             "tag": "AMINO ACID",
             "title": "Taurine",
@@ -441,10 +422,9 @@
         "ing_5": {
           "type": "ingredient",
           "settings": {
-            "show_in_list": true,
             "list_name": "L-Theanine & L-Tyrosine",
             "list_dose": "100 mg + 100 mg",
-            "list_text": "Calm focus and the motivation to get things done.",
+            "list_text": "Promotes calm focus and mental clarity.",
             "image": "shopify://shop_images/rg-pdp-ing-l-theanine.jpg",
             "tag": "AMINO ACID",
             "title": "L-Theanine",
@@ -456,10 +436,9 @@
         "ing_6": {
           "type": "ingredient",
           "settings": {
-            "show_in_list": false,
-            "list_name": "L-Tyrosine",
-            "list_dose": "100 mg",
-            "list_text": "Motivation to get things done.",
+            "list_name": "",
+            "list_dose": "",
+            "list_text": "",
             "image": "shopify://shop_images/rg-pdp-ing-l-tyrosine.jpg",
             "tag": "AMINO ACID",
             "title": "L-Tyrosine",
@@ -471,10 +450,9 @@
         "ing_7": {
           "type": "ingredient",
           "settings": {
-            "show_in_list": true,
-            "list_name": "Holy Basil Extract",
+            "list_name": "Holy Basil\nLeaf Extract",
             "list_dose": "100 mg",
-            "list_text": "Stay calm when life gets busy.",
+            "list_text": "Supports a healthy stress response \nfor mental calm.",
             "image": "shopify://shop_images/rg-pdp-ing-holy-basil.jpg",
             "tag": "ADAPTOGEN",
             "title": "Holy Basil Extract",
@@ -486,10 +464,9 @@
         "ing_8": {
           "type": "ingredient",
           "settings": {
-            "show_in_list": true,
-            "list_name": "Bacopa Monnieri (20% bacosides)",
+            "list_name": "Bacopa Monnieri\n20% bacosides",
             "list_dose": "100 mg",
-            "list_text": "Remember more, forget less.",
+            "list_text": "Supports information recall \nand mental clarity.",
             "image": "shopify://shop_images/rg-pdp-ing-bacopa.jpg",
             "tag": "ADAPTOGENIC HERB",
             "title": "Bacopa Monnieri",
@@ -501,10 +478,9 @@
         "ing_9": {
           "type": "ingredient",
           "settings": {
-            "show_in_list": true,
-            "list_name": "Ginkgo Biloba Leaf Extract 10:1",
+            "list_name": "Ginkgo Biloba\nLeaf Extract 10:1",
             "list_dose": "100 mg",
-            "list_text": "Feel more alert and mentally sharp.",
+            "list_text": "Supports brain circulation \nand cognitive sharpness.",
             "image": "shopify://shop_images/rg-pdp-ing-ginkgo.jpg",
             "tag": "BOTANICAL",
             "title": "Ginkgo Biloba 10:1 Extract",
@@ -527,14 +503,227 @@
       ],
       "settings": {
         "anchor": "ingredients",
-        "eyebrow": "NOOTROPICS",
+        "eyebrow": "WHAT’S INSIDE",
         "heading": "Nootropics For Your Mind",
-        "text": "Nootropics are known as “<strong>cognitive enhancers</strong>”. They boost <strong>brain function</strong> including <strong>memory</strong>, <strong>alertness</strong>, <strong>focus</strong> and <strong>mood</strong>.",
-        "fact": "Fun Fact: <strong>Caffeine</strong> is also considered a nootropic.",
-        "hint": "Tap any ingredient to see the science behind it",
         "image": "shopify://shop_images/rg-pdp-ing-glass.png",
-        "left_count": 4,
+        "left_items": "2,3,1,4",
+        "right_items": "5,7,8,9",
         "button_label": "TRY IT NOW →",
+        "button_link": ""
+      }
+    },
+    "rg_trust": {
+      "type": "rg-pdp-trust",
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "value": "93%",
+            "label": "positive overall"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "value": "91%",
+            "label": "made it a routine"
+          }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "value": "87%",
+            "label": "fewer or no jitters & crashes"
+          }
+        },
+        "stat_4": {
+          "type": "stat",
+          "settings": {
+            "value": "82%",
+            "label": "better focus"
+          }
+        },
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "line_icon": "gmp",
+            "title": "GMP-certified facility",
+            "text": "Blended and packed to Good Manufacturing Practice standards."
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "line_icon": "lab",
+            "title": "Third-party tested",
+            "text": "Verified by independent labs. Results on file."
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+            "line_icon": "metals",
+            "title": "Heavy metals and mycotoxins",
+            "text": "Screened for heavy metals, mold, mycotoxins and allergens."
+          }
+        },
+        "card_4": {
+          "type": "card",
+          "settings": {
+            "line_icon": "batch",
+            "title": "Batch potency verified",
+            "text": "Every batch confirmed before it ships."
+          }
+        }
+      },
+      "block_order": [
+        "stat_1",
+        "stat_2",
+        "stat_3",
+        "stat_4",
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4"
+      ],
+      "settings": {
+        "results_eyebrow": "THE RESULTS",
+        "results_heading": "WHAT RAW COFFEE+ DRINKERS REPORT",
+        "results_text": "From a satisfaction survey of Raw Coffee+ customers.\nFigures reflect what customers report, not a medical outcome.",
+        "results_cta_mobile": true,
+        "quality_eyebrow": "QUALITY YOU CAN TRUST",
+        "quality_heading": "TESTED FOR WHAT IS IN IT, AND WHAT IS NOT",
+        "button_label": "TRY RAW COFFEE+ →",
+        "button_link": ""
+      }
+    },
+    "rg_compare": {
+      "type": "rg-pdp-compare",
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "label": "Caffeine per cup",
+            "ours": "~23 mg",
+            "regular": "~95 mg",
+            "other": "~45–90 mg"
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "label": "Every mg on the label",
+            "ours": "check",
+            "regular": "-",
+            "other": "Often a “proprietary blend”"
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "label": "Creatine",
+            "ours": "3,000 mg",
+            "regular": "x",
+            "other": "Rarely"
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "label": "Lion’s Mane",
+            "ours": "1,000 mg\n(10:1 extract)",
+            "regular": "x",
+            "other": "Usually\n≤500 mg"
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "label": "Holy Basil (stress support)",
+            "ours": "check",
+            "regular": "x",
+            "other": "x"
+          }
+        },
+        "row_6": {
+          "type": "row",
+          "settings": {
+            "label": "Nootropic stack",
+            "ours": "6 ingredients",
+            "regular": "x",
+            "other": "Some"
+          }
+        },
+        "row_7": {
+          "type": "row",
+          "settings": {
+            "label": "Real mushroom taste",
+            "ours": "check: Rich, from 10:1 extract",
+            "regular": "x",
+            "other": "Barely there"
+          }
+        },
+        "row_8": {
+          "type": "row",
+          "settings": {
+            "label": "Works for your 2nd, 3rd… 5th cup",
+            "ours": "check",
+            "regular": "x",
+            "other": "Some"
+          }
+        },
+        "row_9": {
+          "type": "row",
+          "settings": {
+            "label": "Gut health support",
+            "ours": "check",
+            "regular": "x",
+            "other": "x"
+          }
+        },
+        "row_10": {
+          "type": "row",
+          "settings": {
+            "label": "Clean, non-GMO label",
+            "ours": "check",
+            "regular": "Some",
+            "other": "Some"
+          }
+        },
+        "row_11": {
+          "type": "row",
+          "settings": {
+            "label": "3rd party lab tested",
+            "ours": "check",
+            "regular": "x",
+            "other": "x"
+          }
+        }
+      },
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4",
+        "row_5",
+        "row_6",
+        "row_7",
+        "row_8",
+        "row_9",
+        "row_10",
+        "row_11"
+      ],
+      "settings": {
+        "anchor": "compare",
+        "eyebrow": "SIDE BY SIDE",
+        "heading": "FEEL THE DIFFERENCE\nWITH RAW COFFEE+",
+        "image_ours": "shopify://shop_images/rg-pdp-cmp-raw.jpg",
+        "label_ours": "RAW COFFEE+",
+        "image_regular": "shopify://shop_images/rg-pdp-cmp-regular.jpg",
+        "label_regular": "Regular Coffee",
+        "image_other": "shopify://shop_images/rg-pdp-cmp-other.jpg",
+        "label_other": "Other Blends",
+        "button_label": "TRY RAW COFFEE+ →",
         "button_link": ""
       }
     },
@@ -545,7 +734,8 @@
           "type": "video",
           "settings": {
             "video": "shopify://files/videos/review.MOV",
-            "caption": "My morning starts with this cup",
+            "name": "Elena R.",
+            "caption": "Smooth energy, zero jitters.",
             "duration": "0:24"
           }
         },
@@ -553,7 +743,8 @@
           "type": "video",
           "settings": {
             "video": "shopify://files/videos/Talking Head.mp4",
-            "caption": "My new pre-workout ritual",
+            "name": "Marcus J.",
+            "caption": "Replaced my pre-workout with this.",
             "duration": "0:31"
           }
         },
@@ -561,7 +752,8 @@
           "type": "video",
           "settings": {
             "video": "shopify://files/videos/22AB9584-0A69-458C-B70D-8BC20B416E72.mov",
-            "caption": "Always in my bag, wherever I go",
+            "name": "Dr. Lisa M.",
+            "caption": "The nootropic stack is legit.",
             "duration": "0:18"
           }
         },
@@ -569,7 +761,8 @@
           "type": "video",
           "settings": {
             "video": "shopify://files/videos/A5A77E57-AF72-4C60-B956-3B48DF91CB17.mov",
-            "caption": "Ready in 30 seconds",
+            "name": "Sarah K.",
+            "caption": "No more 2pm crash.",
             "duration": "0:27"
           }
         }
@@ -582,7 +775,8 @@
       ],
       "settings": {
         "eyebrow": "REAL PEOPLE. REAL MORNINGS.",
-        "heading": "Join the Community",
+        "heading": "JOIN THE COMMUNITY",
+        "swipe_hint": "Scroll to see more",
         "button_label": "GET STARTED NOW →",
         "button_link": ""
       }
@@ -651,7 +845,7 @@
             "group": "TASTE",
             "photo": "shopify://shop_images/rg-pdp-rev-elle.jpg",
             "title": "Great flavor, low-caffeine coffee with lion's mane & creatine",
-            "text": "The taste is probably my favorite part. It has a really nice, rich coffee flavor and doesn't have that overly earthy mushroom taste that some mushroom coffees can have. I usually mix mine with almond milk and a little natural sweetener, and it turns into almost a dessert-like coffee drink.",
+            "text": "The taste is probably my favorite part. It has a really nice, rich coffee flavor and doesn't have that overpowering mushroom taste that some mushroom coffees can have. I usually mix mine with almond milk and a little natural sweetener, and it turns into almost a dessert-like coffee drink.",
             "name": "Elle",
             "badge": "Amazon Vine Review"
           }
@@ -692,76 +886,8 @@
       "settings": {
         "anchor": "reviews",
         "eyebrow": "RATED 4.8 ON AMAZON",
-        "heading": "Read Our Reviews",
+        "heading": "READ OUR REVIEWS",
         "button_label": "TRY IT NOW →",
-        "button_link": ""
-      }
-    },
-    "rg_trust": {
-      "type": "rg-pdp-trust",
-      "blocks": {
-        "card_1": {
-          "type": "card",
-          "settings": {
-            "icon": "shopify://shop_images/rg-pdp-trust-1.jpg",
-            "title": "Third-Party Lab Tested",
-            "text": "Every batch is independently tested for heavy metals, pesticides and potency."
-          }
-        },
-        "card_2": {
-          "type": "card",
-          "settings": {
-            "icon": "shopify://shop_images/rg-pdp-trust-2.jpg",
-            "title": "Real Fruiting Bodies",
-            "text": "Our Lion's Mane is 100% fruiting body. Never mycelium, never grain fillers."
-          }
-        },
-        "card_3": {
-          "type": "card",
-          "settings": {
-            "icon": "shopify://shop_images/rg-pdp-trust-3.jpg",
-            "title": "Clean Label",
-            "text": "Vegan, gluten-free and non-GMO. No added sugar, nothing artificial."
-          }
-        },
-        "card_4": {
-          "type": "card",
-          "settings": {
-            "icon": "shopify://shop_images/rg-pdp-trust-4.jpg",
-            "title": "Made in the USA",
-            "text": "Blended and packed in a GMP-certified facility."
-          }
-        },
-        "card_5": {
-          "type": "card",
-          "settings": {
-            "icon": "shopify://shop_images/rg-pdp-trust-5.jpg",
-            "title": "Full Doses, Fully Disclosed",
-            "text": "Every ingredient and its exact dose on the label. No proprietary blends."
-          }
-        },
-        "card_6": {
-          "type": "card",
-          "settings": {
-            "icon": "shopify://shop_images/rg-pdp-trust-6.jpg",
-            "title": "60-Day Guarantee",
-            "text": "Try it risk-free. Full refund, no questions asked."
-          }
-        }
-      },
-      "block_order": [
-        "card_1",
-        "card_2",
-        "card_3",
-        "card_4",
-        "card_5",
-        "card_6"
-      ],
-      "settings": {
-        "eyebrow": "QUALITY & TRUST",
-        "heading": "WHY PEOPLE TRUST RAW GRAVITY",
-        "text": "Everything is on the label, and we stand behind every bag.",
-        "button_label": "TRY RAW COFFEE →",
         "button_link": ""
       }
     },
@@ -773,7 +899,7 @@
           "settings": {
             "group": "Taste & everyday use",
             "question": "What does this functional coffee taste like?",
-            "answer": "<p>Bold Arabica flavor meets powerful functional benefits. We don’t hide our ingredients behind artificial flavors or maskers. The rich, authentic taste proves the high dose of extracts, giving you a pure, premium brew that works.</p>"
+            "answer": "<p>Bold Arabica flavor with a deep, full-bodied mushroom note from our 10:1 Lion’s Mane extract, the highest amount among functional coffees on the market. No artificial flavors or maskers, just the real taste of a quality mushroom coffee that works.</p>"
           }
         },
         "q_2": {
@@ -854,7 +980,9 @@
       ],
       "settings": {
         "anchor": "faq",
-        "heading": "Questions & Answers",
+        "eyebrow": "QUESTIONS & ANSWERS",
+        "heading": "FREQUENTLY ASKED QUESTIONS",
+        "topic_label": "Choose a topic",
         "open_first": true,
         "more_text": "Still have questions?",
         "button_label": "CONTACT US →",
@@ -869,11 +997,11 @@
     "rg_steps",
     "rg_benefits",
     "rg_timeline",
-    "rg_compare",
     "rg_ingredients",
+    "rg_trust",
+    "rg_compare",
     "rg_community",
     "rg_reviews",
-    "rg_trust",
     "rg_faq"
   ]
 }

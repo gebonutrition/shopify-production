@@ -298,41 +298,80 @@ body {
 }
 
 /* 4. Product page (rg-pdp-*) shared pieces --------------------------------
-   Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2. */
+   Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2.
+   The desktop design is rendered at zoom 0.6-0.8 (0.8 * viewport / 1440, see its _fitHero),
+   so desktop PDP sections carry .rg-z and use the design's pixel values unchanged. */
+@media screen and (min-width: 990px) {
+  :root {
+    --rg-z: 0.6;
+  }
+
+  .rg-z {
+    zoom: var(--rg-z);
+    scroll-margin-top: calc((var(--header-group-height, 94px) + 8px) / var(--rg-z));
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  :root {
+    --rg-z: 0.667;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  :root {
+    --rg-z: 0.711;
+  }
+}
+
+@media screen and (min-width: 1366px) {
+  :root {
+    --rg-z: 0.76;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  :root {
+    --rg-z: 0.8;
+  }
+}
+
+/* Line breaks that only one layout keeps: <br class="rg-br-m"> (mobile) / <br class="rg-br-d"> (desktop) */
+.rg-br-d {
+  display: none;
+}
+
 .rg-pdp-wrap {
   width: 100%;
   max-width: 1320px;
   margin-inline: auto;
-  padding: 44px 16px;
+  padding: 30px 16px;
 }
 
 .rg-pdp-eyebrow {
   margin: 0 0 12px;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
   line-height: 1.3;
   letter-spacing: 0.3em;
   color: var(--rg-accent-dark);
 }
 
-.rg-pdp-eyebrow br {
-  display: none;
-}
-
 .rg-pdp-h2 {
   margin: 0;
-  font-family: var(--rg-font-display);
-  font-size: 27px;
+  font-family: var(--rg-font-body);
+  font-size: clamp(15px, 4.6vw, 20px);
   font-weight: 900;
-  line-height: 1.05;
+  line-height: 1.1;
   letter-spacing: -0.02em;
+  text-transform: uppercase;
   text-wrap: balance;
   color: var(--rg-ink);
 }
 
 .rg-pdp-lead {
-  margin: 0;
-  font-size: 14px;
+  margin: 10px 0 0;
+  font-size: 12px;
   line-height: 1.55;
   color: var(--rg-text-2);
   text-wrap: pretty;
@@ -341,22 +380,26 @@ body {
 .rg-pdp-cta-row {
   display: flex;
   justify-content: center;
-  margin-top: 24px;
+  margin-top: 22px;
 }
 
 .rg-pdp-cta {
   display: flex;
+  flex: none;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 50px;
-  padding: 0 24px;
-  border-radius: var(--rg-radius-btn);
+  width: 250px;
+  max-width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 10px;
   background: var(--rg-accent);
-  box-shadow: var(--rg-shadow-btn);
+  box-shadow: 0 0 18px rgba(28, 203, 245, 0.55), 0 6px 20px rgba(28, 203, 245, 0.35);
   color: var(--rg-ink);
-  font: 800 15px/1 var(--rg-font-body);
+  font: 800 13px/1 var(--rg-font-body);
   letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
   text-decoration: none;
   transition: filter 0.2s var(--rg-ease);
 }
@@ -372,7 +415,7 @@ body {
 }
 
 .rg-pdp-dark {
-  background: radial-gradient(ellipse at 15% 0%, #26464f 0%, #323232 45%, #2e2e2e 100%);
+  background: radial-gradient(ellipse at 15% 0%, #26464f 0%, #323232 50%, #2e2e2e 100%);
   color: var(--rg-on-dark);
 }
 
@@ -384,10 +427,8 @@ body {
   color: var(--rg-on-dark);
 }
 
-.rg-pdp-dark .rg-pdp-cta {
-  height: 56px;
-  font-size: 16px;
-  box-shadow: var(--rg-glow-btn);
+.rg-pdp-dark .rg-pdp-lead {
+  color: #d0d4d6;
 }
 
 .rg-pdp-dark .rg-pdp-cta:focus-visible {
@@ -395,8 +436,16 @@ body {
 }
 
 @media screen and (min-width: 990px) {
+  .rg-br-d {
+    display: inline;
+  }
+
+  .rg-br-m {
+    display: none;
+  }
+
   .rg-pdp-wrap {
-    padding: clamp(28px, 4.5vh, 44px) 40px;
+    padding: clamp(48px, 7vh, 80px) 40px;
   }
 
   .rg-pdp-eyebrow {
@@ -404,16 +453,14 @@ body {
     font-size: 13px;
   }
 
-  .rg-pdp-eyebrow br {
-    display: inline;
-  }
-
   .rg-pdp-h2 {
     font-size: clamp(32px, 3.2vw, 46px);
+    line-height: 1.05;
   }
 
   .rg-pdp-lead {
-    font-size: 18px;
+    margin-top: 20px;
+    font-size: 17px;
     line-height: 1.6;
   }
 
@@ -421,12 +468,13 @@ body {
     margin-top: 22px;
   }
 
-  .rg-pdp-cta,
-  .rg-pdp-dark .rg-pdp-cta {
+  .rg-pdp-cta {
     width: auto;
-    height: 58px;
-    padding: 0 56px;
-    font-size: 17px;
+    max-width: none;
+    height: 60px;
+    padding: 0 48px;
+    border-radius: 12px;
+    font-size: 15px;
   }
 }
 

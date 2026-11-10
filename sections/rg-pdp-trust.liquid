@@ -1,200 +1,312 @@
 {%- comment -%}
-  RAW GRAVITY · Product page "Why people trust Raw Gravity" (6 icon cards, numbered).
-  Desktop: 3 x 2 grid. Mobile: one column.
+  RAW GRAVITY · Product page "The results" (survey stats) + "Quality you can trust" (4 cards), dark.
+  Desktop: 4 stats in a row (numbers count up), 4 cards in a row. Mobile: 2 x 2 each.
+  Stat values are customer-survey figures: keep them in line with the survey data.
+  Count-up: <rg-count-up> from sections/rg-pdp-timeline.liquid (desktop only here, as in the design).
   Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "10 Quality & Trust".
 {%- endcomment -%}
-{%- assign s = section.settings -%}
+{%- liquid
+  assign s = section.settings
+  assign stat_count = 0
+  assign card_count = 0
+  for block in section.blocks
+    if block.type == 'stat'
+      assign stat_count = stat_count | plus: 1
+    elsif block.type == 'card'
+      assign card_count = card_count | plus: 1
+    endif
+  endfor
+-%}
 
-<section class="rg rg-ptrust">
+{%- capture trust_cta -%}
+  {%- if s.button_label != blank -%}
+    <a class="rg-pdp-cta" href="{{ s.button_link | default: '#buy' }}">{{ s.button_label | escape }}</a>
+  {%- endif -%}
+{%- endcapture -%}
+
+<section class="rg rg-z rg-ptrust rg-pdp-dark">
   <div class="rg-pdp-wrap">
-    {%- if s.eyebrow != blank -%}
-      <p class="rg-pdp-eyebrow rg-ptrust__eyebrow">{{ s.eyebrow | escape }}</p>
-    {%- endif -%}
-    <h2 class="rg-pdp-h2 rg-ptrust__title">{{ s.heading | escape }}</h2>
-    {%- if s.text != blank -%}
-      <p class="rg-pdp-lead rg-ptrust__text">{{ s.text | escape }}</p>
-    {%- endif -%}
+    {%- if stat_count > 0 -%}
+      {%- if s.results_eyebrow != blank -%}
+        <p class="rg-pdp-eyebrow rg-ptrust__eyebrow">{{ s.results_eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if s.results_heading != blank -%}
+        <h2 class="rg-pdp-h2">{{ s.results_heading | escape }}</h2>
+      {%- endif -%}
+      {%- if s.results_text != blank -%}
+        <p class="rg-pdp-lead rg-ptrust__text">{{ s.results_text | escape | newline_to_br | replace: '<br />', '<br class="rg-br-d">' }}</p>
+      {%- endif -%}
 
-    <ul class="rg-ptrust__grid" role="list">
-      {%- for block in section.blocks -%}
-        <li class="rg-ptrust__card" {{ block.shopify_attributes }}>
-          <span class="rg-ptrust__num" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
-          {%- if block.settings.icon != blank -%}
-            {{
-              block.settings.icon
-              | image_url: width: 168
-              | image_tag: widths: '112, 168', sizes: '56px', loading: 'lazy', alt: '', class: 'rg-ptrust__icon'
-            }}
+      <rg-count-up class="rg-ptrust__stats" data-min-width="990">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'stat' -%}
+            <div class="rg-ptrust__stat" {{ block.shopify_attributes }}>
+              <span class="rg-ptrust__value" data-count>{{ block.settings.value | escape }}</span>
+              <span class="rg-ptrust__label">{{ block.settings.label | escape }}</span>
+            </div>
           {%- endif -%}
-          <span class="rg-ptrust__copy">
-            <span class="rg-ptrust__card-title">{{ block.settings.title | escape }}</span>
-            <span class="rg-ptrust__card-text">{{ block.settings.text | escape }}</span>
-          </span>
-        </li>
-      {%- endfor -%}
-    </ul>
+        {%- endfor -%}
+      </rg-count-up>
 
-    {%- if s.button_label != blank -%}
-      <div class="rg-pdp-cta-row">
-        <a class="rg-pdp-cta" href="{{ s.button_link | default: '#buy' }}">{{ s.button_label | escape }}</a>
-      </div>
+      {%- if trust_cta != blank and s.results_cta_mobile -%}
+        <div class="rg-pdp-cta-row rg-ptrust__cta--mobile">{{ trust_cta }}</div>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if card_count > 0 -%}
+      {%- if stat_count > 0 -%}
+        <div class="rg-ptrust__spacer" aria-hidden="true"></div>
+      {%- endif -%}
+      {%- if s.quality_eyebrow != blank -%}
+        <p class="rg-pdp-eyebrow rg-ptrust__eyebrow">{{ s.quality_eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if s.quality_heading != blank -%}
+        <h2 class="rg-pdp-h2 rg-ptrust__quality-title">{{ s.quality_heading | escape }}</h2>
+      {%- endif -%}
+
+      <ul class="rg-ptrust__cards" role="list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'card' -%}
+            <li class="rg-ptrust__card" {{ block.shopify_attributes }}>
+              <span class="rg-ptrust__icon" aria-hidden="true">
+                {%- if block.settings.line_icon != 'none' -%}
+                  {%- render 'rg-line-icon', name: block.settings.line_icon, size: 34 -%}
+                {%- elsif block.settings.icon != blank -%}
+                  {{ block.settings.icon | image_url: width: 136 | image_tag: loading: 'lazy', alt: '', width: 34, height: 34 }}
+                {%- endif -%}
+              </span>
+              <span class="rg-ptrust__card-title">{{ block.settings.title | escape }}</span>
+              <span class="rg-ptrust__card-text">{{ block.settings.text | escape }}</span>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if trust_cta != blank -%}
+      <div class="rg-pdp-cta-row">{{ trust_cta }}</div>
     {%- endif -%}
   </div>
 </section>
 
 {% stylesheet %}
-  .rg-ptrust {
-    background: var(--rg-white);
-  }
-
-  .rg-ptrust__eyebrow,
-  .rg-ptrust__title,
-  .rg-ptrust__text {
-    text-align: center;
+  .rg-ptrust .rg-ptrust__eyebrow {
+    margin-bottom: 16px;
   }
 
   .rg-ptrust .rg-ptrust__text {
-    margin: 14px 0 24px;
+    max-width: 760px;
+    margin: 10px 0 16px;
+    font-size: 11.5px;
+    line-height: 1.6;
   }
 
-  .rg-ptrust__grid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  .rg-ptrust__stats,
+  .rg-ptrust__cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
+  .rg-ptrust__stat,
   .rg-ptrust__card {
-    position: relative;
     display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    overflow: hidden;
-    padding: 16px;
-    border: 1px solid var(--rg-line-2);
-    border-radius: 16px;
-    background: linear-gradient(160deg, #ffffff 0%, #f6f6f8 100%);
-    transition: transform 0.25s var(--rg-ease), box-shadow 0.25s var(--rg-ease), border-color 0.25s var(--rg-ease);
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    border: 1px solid rgba(28, 203, 245, 0.3);
+    border-radius: 14px;
+    background: rgba(28, 203, 245, 0.08);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
   }
 
-  .rg-ptrust__card:hover {
-    border-color: var(--rg-accent);
-    box-shadow: 0 18px 40px rgba(28, 203, 245, 0.18);
-    transform: translateY(-6px);
-  }
-
-  .rg-ptrust__num {
-    position: absolute;
-    right: -4px;
-    bottom: -18px;
-    color: rgba(28, 203, 245, 0.07);
-    font-size: 72px;
+  .rg-ptrust__value {
+    font-family: var(--rg-font-body);
+    font-size: 27px;
     font-weight: 900;
     line-height: 1;
-    pointer-events: none;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--rg-accent);
+  }
+
+  .rg-ptrust__label {
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--rg-on-dark);
+  }
+
+  .rg-ptrust .rg-ptrust__cta--mobile {
+    margin-top: 16px;
+  }
+
+  .rg-ptrust__spacer {
+    height: 22px;
+  }
+
+  .rg-ptrust .rg-ptrust__quality-title {
+    margin-bottom: 16px;
   }
 
   .rg-ptrust__icon {
-    display: block;
+    display: flex;
     flex: none;
-    width: 56px;
-    height: 56px;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #3a3f42;
+    box-shadow: 0 0 0 1px rgba(28, 203, 245, 0.12), 0 0 22px rgba(28, 203, 245, 0.55), 0 0 44px rgba(28, 203, 245, 0.25);
+    color: var(--rg-accent);
+  }
+
+  .rg-ptrust__icon svg,
+  .rg-ptrust__icon img {
+    display: block;
+    width: 24px;
+    height: 24px;
     object-fit: contain;
   }
 
-  .rg-ptrust__copy {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    min-width: 0;
-  }
-
   .rg-ptrust__card-title {
-    font-size: 16px;
+    font-size: 11.5px;
     font-weight: 800;
     line-height: 1.25;
+    color: var(--rg-on-dark);
+    text-wrap: balance;
   }
 
   .rg-ptrust__card-text {
-    font-size: 14px;
+    font-size: 11.5px;
     line-height: 1.5;
-    color: var(--rg-text-2);
+    color: var(--rg-on-dark-2);
+    text-wrap: pretty;
   }
 
   @media screen and (min-width: 990px) {
-    .rg-ptrust .rg-ptrust__title {
-      margin-bottom: 12px;
-    }
-
     .rg-ptrust .rg-ptrust__text {
-      margin: 0 0 22px;
+      margin: 14px 0 28px;
+      font-size: 17px;
     }
 
-    .rg-ptrust__grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
+    .rg-ptrust__stats,
+    .rg-ptrust__cards {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
     }
 
-    .rg-ptrust__card {
-      align-items: center;
-      gap: 16px;
-      padding: 18px 20px;
+    .rg-ptrust__stat {
+      gap: 8px;
+      padding: 28px 26px;
       border-radius: 20px;
     }
 
-    .rg-ptrust__card:hover {
-      transform: translateY(-4px);
+    .rg-ptrust__value {
+      font-size: clamp(40px, 4vw, 56px);
     }
 
-    .rg-ptrust__num {
-      right: -6px;
-      bottom: -24px;
-      font-size: 96px;
+    .rg-ptrust__label {
+      font-size: 17px;
+    }
+
+    .rg-ptrust .rg-ptrust__cta--mobile {
+      display: none;
+    }
+
+    .rg-ptrust__spacer {
+      height: clamp(48px, 7vh, 72px);
+    }
+
+    .rg-ptrust .rg-ptrust__quality-title {
+      margin-bottom: 28px;
+    }
+
+    .rg-ptrust__card {
+      gap: 14px;
+      padding: 26px 24px;
+      border-radius: 20px;
+    }
+
+    .rg-ptrust__icon {
+      width: 68px;
+      height: 68px;
+    }
+
+    .rg-ptrust__icon svg,
+    .rg-ptrust__icon img {
+      width: 34px;
+      height: 34px;
     }
 
     .rg-ptrust__card-title {
-      font-size: 17px;
+      font-size: 18px;
     }
-  }
 
-  @media (prefers-reduced-motion: reduce) {
-    .rg-ptrust__card {
-      transition: none;
+    .rg-ptrust__card-text {
+      font-size: 17px;
     }
   }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "RG · Trust cards (PDP)",
+  "name": "RG · Results & quality",
   "class": "rg-ptrust-section",
   "settings": [
     {
+      "type": "header",
+      "content": "Results"
+    },
+    {
       "type": "text",
-      "id": "eyebrow",
+      "id": "results_eyebrow",
       "label": "Eyebrow",
-      "default": "QUALITY & TRUST"
+      "default": "THE RESULTS"
     },
     {
       "type": "text",
-      "id": "heading",
+      "id": "results_heading",
       "label": "Heading",
-      "default": "WHY PEOPLE TRUST RAW GRAVITY"
+      "default": "WHAT RAW COFFEE+ DRINKERS REPORT"
+    },
+    {
+      "type": "textarea",
+      "id": "results_text",
+      "label": "Text",
+      "info": "A line break shows on desktop only."
+    },
+    {
+      "type": "checkbox",
+      "id": "results_cta_mobile",
+      "label": "Mobile: button under the stats",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Quality"
     },
     {
       "type": "text",
-      "id": "text",
-      "label": "Text"
+      "id": "quality_eyebrow",
+      "label": "Eyebrow",
+      "default": "QUALITY YOU CAN TRUST"
+    },
+    {
+      "type": "text",
+      "id": "quality_heading",
+      "label": "Heading",
+      "default": "TESTED FOR WHAT IS IN IT, AND WHAT IS NOT"
     },
     {
       "type": "text",
       "id": "button_label",
       "label": "Button label",
-      "default": "TRY RAW COFFEE →"
+      "default": "TRY RAW COFFEE+ →"
     },
     {
       "type": "url",
@@ -205,19 +317,53 @@
   ],
   "blocks": [
     {
-      "type": "card",
-      "name": "Trust card",
+      "type": "stat",
+      "name": "Survey stat",
+      "limit": 8,
       "settings": [
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "93%",
+          "info": "The number counts up on desktop. Must be backed by survey data."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "positive overall"
+        }
+      ]
+    },
+    {
+      "type": "card",
+      "name": "Quality card",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "select",
+          "id": "line_icon",
+          "label": "Icon",
+          "options": [
+            { "value": "gmp", "label": "Facility" },
+            { "value": "lab", "label": "Lab flask" },
+            { "value": "metals", "label": "Tag" },
+            { "value": "batch", "label": "Document" },
+            { "value": "none", "label": "Custom image below" }
+          ],
+          "default": "lab"
+        },
         {
           "type": "image_picker",
           "id": "icon",
-          "label": "Icon"
+          "label": "Custom icon image"
         },
         {
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "Third-Party Lab Tested"
+          "default": "Third-party tested"
         },
         {
           "type": "text",
@@ -227,11 +373,10 @@
       ]
     }
   ],
-  "max_blocks": 9,
   "presets": [
     {
-      "name": "RG · Trust cards (PDP)",
-      "blocks": [{ "type": "card" }, { "type": "card" }, { "type": "card" }]
+      "name": "RG · Results & quality",
+      "blocks": [{ "type": "stat" }, { "type": "stat" }, { "type": "card" }, { "type": "card" }]
     }
   ]
 }

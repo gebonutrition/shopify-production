@@ -2,6 +2,7 @@
   RAW GRAVITY · Product page FAQ with 2+ tabs ("Taste & everyday use" / "Formula & benefits").
   Questions are grouped into tabs by their "Tab" label; each tab is an exclusive accordion
   (native <details name>), first question open. Tab switching: <rg-tabs> (sections/rg-reviews.liquid).
+  Desktop is rendered through .rg-z (assets/rg-base.css).
   Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "11 FAQ".
 {%- endcomment -%}
 {%- liquid
@@ -29,16 +30,22 @@
 -%}
 
 <section
-  class="rg rg-pfaq"
+  class="rg rg-z rg-pfaq"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}
 >
   <div class="rg-pdp-wrap rg-pfaq__wrap">
+    {%- if s.eyebrow != blank -%}
+      <p class="rg-pdp-eyebrow rg-pfaq__eyebrow">{{ s.eyebrow | escape }}</p>
+    {%- endif -%}
     <h2 class="rg-pdp-h2 rg-pfaq__title">{{ s.heading | escape }}</h2>
 
     <rg-tabs class="rg-pfaq__root">
       {%- if group_list.size > 1 -%}
+        {%- if s.topic_label != blank -%}
+          <p class="rg-pfaq__topic">{{ s.topic_label | escape }}</p>
+        {%- endif -%}
         <div class="rg-pfaq__tabs-row">
           <div class="rg-pfaq__tabs" role="tablist" aria-label="{{ s.heading | escape }}">
             {%- for group in group_list -%}
@@ -52,7 +59,20 @@
                 tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
                 data-rg-tab="{{ forloop.index0 }}"
               >
-                {{- group | escape -}}
+                {%- liquid
+                  assign group_size = 0
+                  for block in section.blocks
+                    assign block_label = block.settings.group | strip
+                    if block_label == blank
+                      assign block_label = 'FAQ'
+                    endif
+                    if block_label == group
+                      assign group_size = group_size | plus: 1
+                    endif
+                  endfor
+                -%}
+                <span>{{ group | escape }}</span>
+                <span class="rg-pfaq__count" aria-hidden="true">{{ group_size }}</span>
               </button>
             {%- endfor -%}
           </div>
@@ -107,20 +127,29 @@
         {%- if s.more_text != blank -%}
           <p class="rg-pfaq__more-text">{{ s.more_text | escape }}</p>
         {%- endif -%}
-        <a class="rg-pfaq__button" id="{{ s.button_anchor | default: 'contact-us' | handle }}" href="{{ button_link }}">{{ s.button_label | escape }}</a>
+        <a class="rg-pdp-cta rg-pfaq__button" id="{{ s.button_anchor | default: 'contact-us' | handle }}" href="{{ button_link }}">{{ s.button_label | escape }}</a>
       </div>
     {%- endif -%}
   </div>
 </section>
 
 {% stylesheet %}
+  /* ---------- Mobile ---------- */
   .rg-pfaq {
     background: var(--rg-bg-2);
   }
 
+  .rg-pfaq .rg-pfaq__eyebrow,
   .rg-pfaq .rg-pfaq__title {
-    margin-bottom: 20px;
     text-align: center;
+  }
+
+  .rg-pfaq .rg-pfaq__title {
+    margin-bottom: 16px;
+  }
+
+  .rg-pfaq__topic {
+    display: none;
   }
 
   .rg-pfaq__tabs {
@@ -133,25 +162,35 @@
   }
 
   .rg-pfaq__tab {
+    display: flex;
     flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     height: 44px;
     padding: 0 8px;
     border: 0;
     border-radius: 10px;
-    background: transparent;
+    background: var(--rg-white);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
     color: var(--rg-graphite);
     font: 700 14px/1.2 var(--rg-font-body);
     cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
   }
 
   .rg-pfaq__tab[aria-selected='true'] {
-    background: var(--rg-white);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    background: var(--rg-accent);
+    box-shadow: 0 0 18px rgba(28, 203, 245, 0.5), 0 6px 20px rgba(28, 203, 245, 0.3);
   }
 
   .rg-pfaq__tab:focus-visible {
-    outline: 2px solid var(--rg-accent);
+    outline: 2px solid var(--rg-ink);
     outline-offset: 2px;
+  }
+
+  .rg-pfaq__count {
+    display: none;
   }
 
   .rg-pfaq__list:not([hidden]) {
@@ -240,31 +279,11 @@
     font-weight: 700;
   }
 
-  .rg-pfaq__button {
-    display: flex;
-    align-items: center;
-    height: 52px;
-    padding: 0 40px;
-    border-radius: var(--rg-radius-btn);
-    background: var(--rg-accent);
-    box-shadow: var(--rg-shadow-btn);
-    color: var(--rg-ink);
-    font: 800 14px/1 var(--rg-font-body);
-    letter-spacing: 0.1em;
-    text-decoration: none;
-    transition: background 0.2s, color 0.2s;
+  .rg-pfaq .rg-pfaq__button {
+    box-shadow: 0 8px 24px rgba(28, 203, 245, 0.3);
   }
 
-  .rg-pfaq__button:hover {
-    filter: brightness(1.05);
-    color: var(--rg-ink);
-  }
-
-  .rg-pfaq__button:focus-visible {
-    outline: 2px solid var(--rg-ink);
-    outline-offset: 3px;
-  }
-
+  /* ---------- Desktop (rendered through .rg-z) ---------- */
   @media screen and (min-width: 990px) {
     .rg-pfaq .rg-pfaq__wrap {
       max-width: 920px;
@@ -274,6 +293,15 @@
       margin-bottom: 28px;
     }
 
+    .rg-pfaq__topic {
+      display: block;
+      margin: 0 0 14px;
+      color: var(--rg-text-3);
+      font-size: 17px;
+      font-weight: 600;
+      text-align: center;
+    }
+
     .rg-pfaq__tabs-row {
       display: flex;
       justify-content: center;
@@ -281,15 +309,52 @@
     }
 
     .rg-pfaq__tabs {
+      gap: 12px;
       margin: 0;
-      padding: 6px;
+      padding: 0;
+      border-radius: 0;
+      background: none;
     }
 
     .rg-pfaq__tab {
       flex: none;
-      height: 48px;
-      padding: 0 28px;
-      font-size: 16px;
+      height: 52px;
+      padding: 0 26px;
+      border: 1.5px solid rgba(28, 203, 245, 0.5);
+      border-radius: 999px;
+      color: var(--rg-ink);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .rg-pfaq__tab:hover {
+      border-color: var(--rg-accent);
+    }
+
+    .rg-pfaq__tab[aria-selected='true'] {
+      border-color: var(--rg-accent);
+    }
+
+    .rg-pfaq__count {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      height: 24px;
+      padding: 0 7px;
+      border-radius: 12px;
+      background: rgba(28, 203, 245, 0.15);
+      color: var(--rg-accent-dark);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .rg-pfaq__tab[aria-selected='true'] .rg-pfaq__count {
+      background: var(--rg-ink);
+      color: var(--rg-white);
     }
 
     .rg-pfaq__list:not([hidden]) {
@@ -302,8 +367,10 @@
 
     .rg-pfaq__q {
       gap: 20px;
+      min-height: 0;
       padding: 22px 26px;
       font-size: 18px;
+      line-height: normal;
     }
 
     .rg-pfaq__chev {
@@ -313,8 +380,7 @@
 
     .rg-pfaq__a {
       padding: 0 26px 24px;
-      font-size: 16px;
-      line-height: 1.65;
+      font-size: 17px;
     }
 
     .rg-pfaq__more {
@@ -326,13 +392,12 @@
       font-size: 22px;
     }
 
-    .rg-pfaq__button {
-      height: 56px;
-      padding: 0 44px;
-      font-size: 16px;
+    .rg-pfaq .rg-pfaq__button {
+      box-shadow: 0 0 18px rgba(28, 203, 245, 0.55), 0 6px 20px rgba(28, 203, 245, 0.35);
+      transition: background 0.2s, color 0.2s;
     }
 
-    .rg-pfaq__button:hover {
+    .rg-pfaq .rg-pfaq__button:hover {
       filter: none;
       background: var(--rg-ink);
       color: var(--rg-white);
@@ -353,9 +418,21 @@
     },
     {
       "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "QUESTIONS & ANSWERS"
+    },
+    {
+      "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Questions & Answers"
+      "default": "FREQUENTLY ASKED QUESTIONS"
+    },
+    {
+      "type": "text",
+      "id": "topic_label",
+      "label": "Label above the tabs (desktop)",
+      "default": "Choose a topic"
     },
     {
       "type": "checkbox",
