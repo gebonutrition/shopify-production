@@ -153,10 +153,12 @@
     background: var(--rg-white);
   }
 
+  /* left: design value -30px, moved further left when the jar would run under the heading
+     (jar's right edge ≈ 230px into the image; first heading line "WHAT MAKES" ≈ 7 × font-size wide; 10px gap) */
   .rg-diff .rg-diff__image {
     position: absolute;
     bottom: -10px;
-    left: -30px;
+    left: min(-30px, calc(100vw - 260px - 7 * clamp(24px, 3.199svh, 31px)));
     display: block;
     width: auto;
     max-width: none;
