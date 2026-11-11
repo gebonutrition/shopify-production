@@ -26,12 +26,21 @@
   endfor
 
   comment
-    Product pages can use the compact footer of the product page design:
-    the newsletter becomes a card in the last column (mobile: on top).
+    Compact footer (product page design; main landing v2 on other pages):
+    the newsletter becomes a card in the last column (mobile: on top on product pages,
+    after the link columns elsewhere). rg-footer--compact carries the shared layout,
+    rg-footer--pdp / rg-footer--home the page-specific values.
   endcomment
-  assign pdp_compact = false
-  if template.name == 'product' and s.pdp_compact
-    assign pdp_compact = true
+  assign compact = false
+  assign compact_class = ''
+  if template.name == 'product'
+    if s.pdp_compact
+      assign compact = true
+      assign compact_class = 'rg-footer--pdp'
+    endif
+  elsif s.home_compact
+    assign compact = true
+    assign compact_class = 'rg-footer--home'
   endif
 -%}
 
@@ -69,8 +78,8 @@
 {%- endform -%}
 {%- endcapture -%}
 
-<div class="rg rg-footer{% if pdp_compact %} rg-z rg-footer--pdp{% endif %}">
-  {%- if s.show_newsletter and pdp_compact == false -%}
+<div class="rg rg-footer{% if compact %} rg-z rg-footer--compact {{ compact_class }}{% endif %}">
+  {%- if s.show_newsletter and compact == false -%}
     <div class="rg-container rg-footer__top">
       <div class="rg-footer__club">
         <div class="rg-footer__club-copy">
@@ -179,7 +188,7 @@
         {%- endif -%}
       {%- endfor -%}
 
-      {%- if s.show_newsletter and pdp_compact -%}
+      {%- if s.show_newsletter and compact -%}
         <div class="rg-footer__club-card">
           <p class="rg-footer__club-label">{{ s.pdp_club_title | escape }}</p>
           {%- if s.pdp_club_text != blank -%}
@@ -633,46 +642,46 @@
     }
   }
 
-  /* Compact product-page footer (Raw Coffee Product Page v2 + Mobile v2); desktop through .rg-z */
+  /* Compact footer (Raw Coffee Product Page v2 + Mobile v2; also main landing v2); desktop through .rg-z */
   .rg-footer__club-card {
     display: none;
   }
 
-  .rg-footer--pdp .rg-footer__main {
+  .rg-footer--compact .rg-footer__main {
     padding-top: 44px;
   }
 
-  .rg-footer--pdp .rg-footer__grid {
+  .rg-footer--compact .rg-footer__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
     padding-bottom: 28px;
   }
 
-  .rg-footer--pdp .rg-footer__brand {
+  .rg-footer--compact .rg-footer__brand {
     grid-column: 1 / -1;
     gap: 14px;
     padding: 20px 0 16px;
   }
 
-  .rg-footer--pdp .rg-footer__col {
+  .rg-footer--compact .rg-footer__col {
     gap: 12px;
   }
 
-  .rg-footer--pdp .rg-footer__col-title {
+  .rg-footer--compact .rg-footer__col-title {
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.16em;
   }
 
-  .rg-footer--pdp .rg-footer__links {
+  .rg-footer--compact .rg-footer__links {
     gap: 12px;
   }
 
-  .rg-footer--pdp .rg-footer__link {
+  .rg-footer--compact .rg-footer__link {
     font-size: 14px;
   }
 
-  .rg-footer--pdp .rg-footer__club-card {
+  .rg-footer--compact .rg-footer__club-card {
     display: flex;
     flex-direction: column;
     grid-column: 1 / -1;
@@ -684,33 +693,33 @@
     background: rgba(28, 203, 245, 0.06);
   }
 
-  .rg-footer--pdp .rg-footer__club-label {
+  .rg-footer--compact .rg-footer__club-label {
     color: var(--rg-accent);
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.3em;
   }
 
-  .rg-footer--pdp .rg-footer__club-note {
+  .rg-footer--compact .rg-footer__club-note {
     margin-top: -5px;
     color: var(--rg-on-dark-2);
     font-size: 11px;
   }
 
-  .rg-footer--pdp .rg-footer__club-note--desktop {
+  .rg-footer--compact .rg-footer__club-note--desktop {
     display: none;
   }
 
-  .rg-footer--pdp .rg-footer__club-card .rg-footer__form {
+  .rg-footer--compact .rg-footer__club-card .rg-footer__form {
     gap: 6px;
   }
 
-  .rg-footer--pdp .rg-footer__club-card .rg-footer__form-row {
+  .rg-footer--compact .rg-footer__club-card .rg-footer__form-row {
     flex-direction: row;
     gap: 6px;
   }
 
-  .rg-footer--pdp .rg-footer__club-card .rg-footer__input {
+  .rg-footer--compact .rg-footer__club-card .rg-footer__input {
     flex: 1;
     width: auto;
     min-width: 0;
@@ -722,7 +731,7 @@
     font-size: 13px;
   }
 
-  .rg-footer--pdp .rg-footer__club-card .rg-footer__submit {
+  .rg-footer--compact .rg-footer__club-card .rg-footer__submit {
     flex: none;
     width: auto;
     height: 36px;
@@ -782,54 +791,54 @@
   }
 
   @media screen and (min-width: 990px) {
-    .rg-footer--pdp .rg-footer__main {
+    .rg-footer--compact .rg-footer__main {
       padding-top: 40px;
     }
 
-    .rg-footer--pdp .rg-footer__grid {
+    .rg-footer--compact .rg-footer__grid {
       grid-template-columns: 1.1fr 0.8fr 0.9fr 0.8fr 1.6fr;
       gap: 40px;
       padding: 8px 0 36px;
     }
 
-    .rg-footer--pdp .rg-footer__brand {
+    .rg-footer--compact .rg-footer__brand {
       grid-column: auto;
       gap: 18px;
       padding: 0;
     }
 
-    .rg-footer--pdp .rg-footer__logo-img {
+    .rg-footer--compact .rg-footer__logo-img {
       height: 25px;
     }
 
-    .rg-footer--pdp .rg-footer__social {
+    .rg-footer--compact .rg-footer__social {
       width: 40px;
       height: 40px;
       border-color: rgba(28, 203, 245, 0.45);
       background: rgba(28, 203, 245, 0.08);
     }
 
-    .rg-footer--pdp .rg-footer__social svg {
+    .rg-footer--compact .rg-footer__social svg {
       width: 19px;
       height: 19px;
     }
 
-    .rg-footer--pdp .rg-footer__col,
-    .rg-footer--pdp .rg-footer__links {
+    .rg-footer--compact .rg-footer__col,
+    .rg-footer--compact .rg-footer__links {
       gap: 14px;
     }
 
-    .rg-footer--pdp .rg-footer__col-title {
+    .rg-footer--compact .rg-footer__col-title {
       font-size: 13px;
       font-weight: 700;
       letter-spacing: 0.3em;
     }
 
-    .rg-footer--pdp .rg-footer__link {
+    .rg-footer--compact .rg-footer__link {
       font-size: 17px;
     }
 
-    .rg-footer--pdp .rg-footer__club-card {
+    .rg-footer--compact .rg-footer__club-card {
       grid-column: auto;
       order: 0;
       align-self: start;
@@ -842,40 +851,40 @@
       box-shadow: 0 0 30px rgba(28, 203, 245, 0.1) inset;
     }
 
-    .rg-footer--pdp .rg-footer__club-label {
+    .rg-footer--compact .rg-footer__club-label {
       font-size: 13px;
     }
 
-    .rg-footer--pdp .rg-footer__club-note {
+    .rg-footer--compact .rg-footer__club-note {
       margin-top: 0;
       font-size: 17px;
       line-height: 1.5;
     }
 
-    .rg-footer--pdp .rg-footer__club-note--desktop {
+    .rg-footer--compact .rg-footer__club-note--desktop {
       display: block;
     }
 
-    .rg-footer--pdp .rg-footer__club-note--mobile {
+    .rg-footer--compact .rg-footer__club-note--mobile {
       display: none;
     }
 
-    .rg-footer--pdp .rg-footer__club-card .rg-footer__form {
+    .rg-footer--compact .rg-footer__club-card .rg-footer__form {
       margin-top: 4px;
     }
 
-    .rg-footer--pdp .rg-footer__club-card .rg-footer__form-row {
+    .rg-footer--compact .rg-footer__club-card .rg-footer__form-row {
       gap: 8px;
     }
 
-    .rg-footer--pdp .rg-footer__club-card .rg-footer__input {
+    .rg-footer--compact .rg-footer__club-card .rg-footer__input {
       height: 44px;
       padding: 0 16px;
       border-radius: 22px;
       font-size: 17px;
     }
 
-    .rg-footer--pdp .rg-footer__club-card .rg-footer__submit {
+    .rg-footer--compact .rg-footer__club-card .rg-footer__submit {
       height: 44px;
       padding: 0 18px;
       border-radius: 12px;
@@ -883,14 +892,278 @@
       font-size: 14px;
     }
 
-    .rg-footer--pdp .rg-footer__secure,
-    .rg-footer--pdp .rg-footer__legal,
-    .rg-footer--pdp .rg-footer__disclaimer {
+    .rg-footer--compact .rg-footer__secure,
+    .rg-footer--compact .rg-footer__legal,
+    .rg-footer--compact .rg-footer__disclaimer {
       font-size: 17px;
     }
 
-    .rg-footer--pdp .rg-footer__legal {
+    .rg-footer--compact .rg-footer__legal {
       padding: 20px 0;
+    }
+  }
+
+  /* Compact footer on other pages (main landing v2: Raw Gravity Landing + Mobile, footer#footer).
+     Same grid as the product page; the club card follows the link columns on mobile. */
+  .rg-footer--home .rg-footer__main {
+    padding-top: 40px;
+  }
+
+  .rg-footer--home .rg-footer__grid {
+    gap: 28px 14px;
+    padding-bottom: 36px;
+  }
+
+  .rg-footer--home .rg-footer__brand {
+    gap: 18px;
+    padding: 0;
+  }
+
+  .rg-footer--home .rg-footer__social {
+    width: 40px;
+    height: 40px;
+    border-color: rgba(28, 203, 245, 0.45);
+    background: transparent;
+  }
+
+  .rg-footer--home .rg-footer__col,
+  .rg-footer--home .rg-footer__links {
+    gap: 16px;
+  }
+
+  .rg-footer--home .rg-footer__col-title {
+    margin-bottom: 4px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.32em;
+  }
+
+  .rg-footer--home .rg-footer__link {
+    font-size: clamp(12px, 1.659svh, 16px);
+    line-height: 1.3;
+    color: #e6e6e6;
+  }
+
+  .rg-footer--home .rg-footer__club-card {
+    order: 0;
+    gap: 8px;
+    padding: 14px 14px 12px;
+    border-color: rgba(28, 203, 245, 0.35);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .rg-footer--home .rg-footer__club-label {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.32em;
+  }
+
+  .rg-footer--home .rg-footer__club-note {
+    margin-top: 0;
+    font-size: 12px;
+    line-height: 1.45;
+    color: #e6e6e6;
+    text-wrap: pretty;
+  }
+
+  .rg-footer--home .rg-footer__club-note--desktop {
+    display: block;
+  }
+
+  .rg-footer--home .rg-footer__club-note--mobile {
+    display: none;
+  }
+
+  .rg-footer--home .rg-footer__club-card .rg-footer__form-row {
+    gap: 8px;
+    margin-top: 2px;
+  }
+
+  .rg-footer--home .rg-footer__club-card .rg-footer__input {
+    height: 40px;
+    padding: 0 14px;
+    border-color: var(--rg-on-dark);
+    border-radius: 999px;
+    background: rgba(26, 26, 26, 0.35);
+    font-size: 13px;
+  }
+
+  .rg-footer--home .rg-footer__club-card .rg-footer__submit {
+    height: 40px;
+    min-height: 0;
+    padding: 0 14px;
+    border-radius: 10px;
+    box-shadow: 0 0 18px rgba(28, 203, 245, 0.55), 0 6px 20px rgba(28, 203, 245, 0.35);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+
+  .rg-footer--home .rg-footer__msg {
+    padding-left: 14px;
+    font-size: 11px;
+    line-height: 1.3;
+  }
+
+  .rg-footer--home .rg-footer__pay-row {
+    gap: 16px;
+    padding: 22px 0;
+    border-top-color: rgba(28, 203, 245, 0.2);
+  }
+
+  .rg-footer--home .rg-footer__pay {
+    gap: 12px;
+  }
+
+  .rg-footer--home .rg-footer__pay-icon {
+    height: 34px;
+  }
+
+  .rg-footer--home .rg-footer__secure {
+    font-size: 13px;
+    font-weight: 700;
+    color: #e6e6e6;
+  }
+
+  .rg-footer--home .rg-footer__legal {
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px 0 14px;
+    border-top-color: rgba(28, 203, 245, 0.2);
+    font-size: 12px;
+    color: #bdbdbd;
+  }
+
+  .rg-footer--home .rg-footer__policies {
+    gap: 8px 18px;
+  }
+
+  .rg-footer--home .rg-footer__policies a {
+    color: #bdbdbd;
+  }
+
+  .rg-footer--home .rg-footer__policies a:hover {
+    color: var(--rg-accent);
+  }
+
+  .rg-footer--home .rg-footer__disclaimer {
+    padding-bottom: 32px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #8a8a8a;
+    text-wrap: pretty;
+  }
+
+  @media screen and (min-width: 990px) {
+    .rg-footer--home .rg-footer__main {
+      max-width: 1320px;
+      padding: 48px 48px 0;
+    }
+
+    .rg-footer--home .rg-footer__grid {
+      grid-template-columns: auto minmax(0, 0.8fr) minmax(0, 0.9fr) minmax(0, 0.7fr) minmax(440px, 1.6fr);
+      gap: 40px;
+      padding: 0 0 56px;
+    }
+
+    .rg-footer--home .rg-footer__brand {
+      gap: 24px;
+      padding-top: 4px;
+    }
+
+    .rg-footer--home .rg-footer__socials {
+      gap: 12px;
+    }
+
+    .rg-footer--home .rg-footer__social {
+      background: transparent;
+    }
+
+    .rg-footer--home .rg-footer__col-title {
+      font-size: 13px;
+    }
+
+    .rg-footer--home .rg-footer__link {
+      font-size: 17px;
+    }
+
+    .rg-footer--home .rg-footer__club-card {
+      gap: 14px;
+      margin-top: -27px;
+      padding: 26px 26px 28px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      box-shadow: none;
+    }
+
+    .rg-footer--home .rg-footer__club-label {
+      font-size: 13px;
+    }
+
+    .rg-footer--home .rg-footer__club-note {
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    .rg-footer--home .rg-footer__club-card .rg-footer__form {
+      margin-top: 6px;
+    }
+
+    .rg-footer--home .rg-footer__club-card .rg-footer__form-row {
+      gap: 10px;
+      margin-top: 0;
+    }
+
+    .rg-footer--home .rg-footer__club-card .rg-footer__input {
+      height: 52px;
+      padding: 0 20px;
+      font-size: 17px;
+    }
+
+    .rg-footer--home .rg-footer__club-card .rg-footer__submit {
+      height: 52px;
+      padding: 0 22px;
+      border-radius: 12px;
+      font-size: 15px;
+    }
+
+    .rg-footer--home .rg-footer__msg {
+      padding-left: 20px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .rg-footer--home .rg-footer__pay-row {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 28px 0;
+    }
+
+    .rg-footer--home .rg-footer__secure {
+      font-size: 17px;
+    }
+
+    .rg-footer--home .rg-footer__secure svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .rg-footer--home .rg-footer__legal {
+      flex-direction: row;
+      gap: 24px;
+      padding: 26px 0 18px;
+      font-size: 17px;
+    }
+
+    .rg-footer--home .rg-footer__policies {
+      gap: 24px;
+    }
+
+    .rg-footer--home .rg-footer__disclaimer {
+      padding-bottom: 40px;
+      font-size: 16px;
     }
   }
 {% endstylesheet %}
@@ -921,15 +1194,23 @@
       "info": "Newsletter as a card in the last column (product page design)."
     },
     {
+      "type": "checkbox",
+      "id": "home_compact",
+      "label": "Other pages: compact footer",
+      "default": true,
+      "info": "Main landing v2: the same card layout. Off = large newsletter card on top."
+    },
+    {
       "type": "text",
       "id": "pdp_club_title",
-      "label": "Product pages: club title",
+      "label": "Compact footer: club title",
       "default": "JOIN THE CLUB"
     },
     {
       "type": "text",
       "id": "pdp_club_text",
-      "label": "Product pages: club text (desktop)",
+      "label": "Compact footer: club text",
+      "info": "Other pages show this text on mobile too.",
       "default": "Exclusive offers, giveaways, new recipes and wellness tips."
     },
     {

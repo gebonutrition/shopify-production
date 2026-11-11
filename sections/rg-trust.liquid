@@ -1,17 +1,18 @@
 {%- comment -%}
-  RAW GRAVITY · Trust badges ("Uncompromising Standards")
-  Desktop: 6 in a row; mobile: 3 per row.
-  Reference: Raw Gravity Landing(.dc.html) + Mobile, section[data-screen-label=Trust].
+  RAW GRAVITY · Trust badges ("Uncompromising Standards"), v2.
+  Outline icons (snippets/rg-line-icon.liquid) in a glowing circle; a custom image is the fallback.
+  Desktop: 6 in a row (zoomed through .rg-z); mobile: 3 per row.
+  Reference: Raw Gravity Landing(.dc.html) + Mobile, section[data-screen-label=Trust] (2026-11 update).
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 
 <section
-  class="rg rg-trust"
+  class="rg rg-z rg-trust"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}
 >
-  <div class="rg-container">
+  <div class="rg-trust__wrap">
     <div class="rg-trust__head">
       {%- if s.eyebrow != blank -%}
         <p class="rg-trust__eyebrow">{{ s.eyebrow | escape }}</p>
@@ -24,12 +25,14 @@
     <ul class="rg-trust__grid" role="list">
       {%- for block in section.blocks -%}
         <li class="rg-trust__item" {{ block.shopify_attributes }}>
-          <span class="rg-trust__badge">
-            {%- if block.settings.image != blank -%}
+          <span class="rg-trust__badge" aria-hidden="true">
+            {%- if block.settings.line_icon != blank and block.settings.line_icon != 'none' -%}
+              {%- render 'rg-line-icon', name: block.settings.line_icon, size: 86, stroke: 3 -%}
+            {%- elsif block.settings.image != blank -%}
               {{
                 block.settings.image
-                | image_url: width: 360
-                | image_tag: widths: '144, 240, 360', sizes: '(min-width: 990px) 120px, 72px', loading: 'lazy', alt: ''
+                | image_url: width: 240
+                | image_tag: widths: '120, 240', sizes: '(min-width: 990px) 86px, 38px', loading: 'lazy', alt: ''
               }}
             {%- endif -%}
           </span>
@@ -41,9 +44,9 @@
 </section>
 
 {% stylesheet %}
+  /* ---------- Mobile (Raw Gravity Landing Mobile, "Trust") ---------- */
   .rg-trust {
-    padding-block: 44px;
-    background: var(--rg-dark-bg);
+    background: radial-gradient(ellipse at 15% 0%, #26464f 0%, #323232 45%, #2e2e2e 100%);
     color: var(--rg-on-dark);
   }
 
@@ -52,27 +55,26 @@
     margin: 0;
   }
 
+  .rg-trust__wrap {
+    padding: 28px 20px;
+  }
+
   .rg-trust__head {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 10px;
     text-align: center;
   }
 
-  .rg-trust__eyebrow {
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1;
+  .rg-trust .rg-trust__eyebrow {
+    font: 700 9px/1 var(--rg-font-body);
     letter-spacing: 0.32em;
     color: var(--rg-accent);
   }
 
-  .rg-trust__title {
-    font-family: var(--rg-font-display);
-    font-size: 29px;
-    font-weight: 900;
-    line-height: 1.04;
+  .rg-trust .rg-trust__title {
+    font: 900 clamp(26px, 3.436svh, 33px) / 1.04 var(--rg-font-body);
     letter-spacing: -0.02em;
     text-transform: uppercase;
     text-wrap: balance;
@@ -82,8 +84,8 @@
   .rg-trust__grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px 12px;
-    margin: 24px 0 0;
+    gap: 12px 10px;
+    margin: 16px 0 0;
     padding: 0;
     list-style: none;
   }
@@ -92,49 +94,64 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
     text-align: center;
   }
 
   .rg-trust__badge {
     position: relative;
-    width: min(100%, 72px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(100%, 52px);
     aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(28, 203, 245, 0.26) 0%, rgba(28, 203, 245, 0.1) 50%, rgba(28, 203, 245, 0) 72%);
+    box-shadow: 0 0 16px rgba(28, 203, 245, 0.3);
+    color: #00b7e8;
   }
 
+  .rg-trust__badge svg,
   .rg-trust__badge img {
-    position: absolute;
-    inset: 0;
     display: block;
-    width: 100%;
-    height: 100%;
+    width: 72%;
+    height: 72%;
     object-fit: contain;
-    filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.35));
+    filter: drop-shadow(0 0 4px rgba(0, 183, 232, 0.65));
   }
 
   .rg-trust__label {
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1.3;
+    font: 700 11px/1.25 var(--rg-font-body);
     text-wrap: balance;
   }
 
+  /* ---------- Desktop (Raw Gravity Landing, "Trust"; zoomed through .rg-z) ---------- */
   @media screen and (min-width: 990px) {
     .rg-trust {
-      padding-block: 56px;
+      --rg-trust-vh: calc(100vh / var(--rg-z, 1));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .rg-trust__wrap {
+      width: 100%;
+      max-width: calc(1280px + 96px);
+      margin: 0 auto;
+      padding: clamp(45px, calc(var(--rg-trust-vh) * 0.0622), 67px) 48px;
     }
 
     .rg-trust__head {
       gap: 24px;
     }
 
-    .rg-trust__eyebrow {
+    .rg-trust .rg-trust__eyebrow {
       font-size: 13px;
       letter-spacing: 0.38em;
     }
 
-    .rg-trust__title {
-      font-size: 46px;
+    .rg-trust .rg-trust__title {
+      font-size: clamp(37px, calc(var(--rg-trust-vh) * 0.0511), 55px);
     }
 
     .rg-trust__grid {
@@ -149,10 +166,17 @@
 
     .rg-trust__badge {
       width: min(100%, 120px);
+      box-shadow: 0 0 34px rgba(28, 203, 245, 0.3);
+    }
+
+    .rg-trust__badge svg,
+    .rg-trust__badge img {
+      filter: drop-shadow(0 0 7px rgba(0, 183, 232, 0.65));
     }
 
     .rg-trust__label {
       font-size: 16px;
+      line-height: 1.3;
     }
   }
 {% endstylesheet %}
@@ -187,9 +211,24 @@
       "name": "Badge",
       "settings": [
         {
+          "type": "select",
+          "id": "line_icon",
+          "label": "Icon",
+          "options": [
+            { "value": "lab", "label": "Lab tested (flask)" },
+            { "value": "vegan", "label": "Vegan (leaves)" },
+            { "value": "non-gmo", "label": "Non-GMO (DNA)" },
+            { "value": "gmp", "label": "Made in USA (flag)" },
+            { "value": "no-blends", "label": "No proprietary blends" },
+            { "value": "guarantee", "label": "60-day guarantee" },
+            { "value": "none", "label": "Custom image below" }
+          ],
+          "default": "lab"
+        },
+        {
           "type": "image_picker",
           "id": "image",
-          "label": "Badge image"
+          "label": "Custom badge image"
         },
         {
           "type": "text",

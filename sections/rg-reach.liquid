@@ -2,12 +2,13 @@
   RAW GRAVITY · Reach ("Raw Gravity Across the USA")
   US map: states from assets/rg-us-states.svg (cached file) + inline animated
   overlay (snippets/rg-us-map.liquid). Stats come from blocks.
-  Reference: Raw Gravity Landing(.dc.html) + Mobile, section[data-screen-label=Reach].
+  Desktop is zoomed through .rg-z (assets/rg-base.css) and fills one screen.
+  Reference: Raw Gravity Landing(.dc.html) + Mobile, section[data-screen-label=Reach] (2026-11 update).
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 
 <section
-  class="rg rg-reach"
+  class="rg rg-z rg-reach"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}
@@ -72,7 +73,7 @@
   }
 
   .rg-reach__eyebrow {
-    font-size: 12px;
+    font-size: 9px;
     font-weight: 700;
     line-height: 1;
     letter-spacing: 0.32em;
@@ -80,8 +81,8 @@
   }
 
   .rg-reach__title {
-    font-family: var(--rg-font-display);
-    font-size: 29px;
+    font-family: var(--rg-font-body);
+    font-size: clamp(26px, 3.436svh, 33px);
     font-weight: 900;
     line-height: 1.04;
     letter-spacing: -0.02em;
@@ -218,7 +219,7 @@
   }
 
   .rg-reach__number {
-    font-size: 34px;
+    font-size: clamp(30px, 4.028svh, 39px);
     font-weight: 800;
     line-height: 1;
     letter-spacing: -0.04em;
@@ -235,7 +236,17 @@
 
   @media screen and (min-width: 990px) {
     .rg-reach {
-      padding-block: 56px;
+      --rg-reach-vh: calc(100vh / var(--rg-z, 1));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: calc((100vh - var(--header-height, 60px)) / var(--rg-z, 1));
+      padding-block: clamp(38px, calc(var(--rg-reach-vh) * 0.0533), 58px);
+    }
+
+    .rg-reach > .rg-container {
+      max-width: calc(1280px + 96px);
+      padding-inline: 48px;
     }
 
     .rg-reach__head {
@@ -248,18 +259,18 @@
     }
 
     .rg-reach__title {
-      font-size: 46px;
+      font-size: clamp(37px, calc(var(--rg-reach-vh) * 0.0511), 55px);
     }
 
     .rg-reach__map {
-      max-width: min(1280px, calc((100vh - 230px) * 1.6), 100%);
+      max-width: min(980px, calc((var(--rg-reach-vh) - 330px) * 1.6), 100%);
       margin: 16px auto 0;
     }
 
     .rg-reach__stats {
       gap: 40px;
       max-width: 960px;
-      margin: 32px auto 0;
+      margin: 24px auto 0;
     }
 
     .rg-reach__stat {
@@ -267,7 +278,7 @@
     }
 
     .rg-reach__number {
-      font-size: 52px;
+      font-size: clamp(42px, calc(var(--rg-reach-vh) * 0.0578), 62px);
       letter-spacing: -0.05em;
     }
 

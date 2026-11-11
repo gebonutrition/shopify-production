@@ -1,14 +1,21 @@
 {%- comment -%}
   RAW GRAVITY · Product page "Join the community" (customer videos, dark).
   Desktop: 5 cards visible, arrows on the sides. Mobile: 2 cards visible, swipe, dots + hint.
-  Playback, arrows (data-rg-step) and dots: <rg-video-reviews> from sections/rg-video-reviews.liquid.
+  Playback, arrows (data-rg-step) and dots: <rg-video-reviews> from assets/rg-video-reviews.js.
   Names and quotes must belong to the people in the videos.
-  Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "09 Join the movement".
+  Layout "Home page" (rg-comm--home): main landing card and type sizes.
+  Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "09 Join the movement";
+  Raw Gravity Landing(.dc.html) + Mobile, section "Reviews" (layout "Home page").
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 
 <script src="{{ 'rg-video-reviews.js' | asset_url }}" type="module"></script>
-<section class="rg rg-z rg-comm rg-pdp-dark">
+<section
+  class="rg rg-z rg-comm rg-pdp-dark rg-comm--{{ s.layout | default: 'product' }}"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
   <div class="rg-comm__inner">
     {%- if s.eyebrow != blank -%}
       <p class="rg-pdp-eyebrow rg-comm__eyebrow">{{ s.eyebrow | escape }}</p>
@@ -549,6 +556,189 @@
       scroll-behavior: auto;
     }
   }
+
+  /* ---------- Layout "Home page" (Raw Gravity Landing + Mobile, "Reviews") ---------- */
+  @media screen and (max-width: 989px) {
+    .rg-comm--home .rg-comm__inner {
+      padding: 44px 0;
+    }
+
+    .rg-comm--home .rg-comm__eyebrow {
+      margin-bottom: 14px;
+      padding-inline: 16px;
+      font-size: 9px;
+      letter-spacing: 0.32em;
+    }
+
+    .rg-comm--home .rg-comm__title {
+      margin-bottom: 0;
+      font-size: clamp(26px, 3.436svh, 33px);
+      line-height: 1.04;
+    }
+
+    .rg-comm--home .rg-comm__track {
+      gap: 12px;
+      margin-top: 12px;
+      padding: 12px 16px 4px;
+    }
+
+    .rg-comm--home .rg-comm__card {
+      width: auto;
+      flex: 0 0 44%;
+      aspect-ratio: 9 / 14;
+      border-color: rgba(28, 203, 245, 0.35);
+      border-radius: 20px;
+      background: #2e2e2e;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+    }
+
+    .rg-comm--home .rg-comm__shade {
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(14, 14, 14, 0.85));
+    }
+
+    .rg-comm--home .rg-comm__dur {
+      top: 10px;
+      left: 10px;
+      gap: 5px;
+      height: 24px;
+      padding: 0 9px;
+      border-radius: 13px;
+      font-size: 11px;
+    }
+
+    .rg-comm--home .rg-comm__tri {
+      border-top-width: 4.5px;
+      border-bottom-width: 4.5px;
+      border-left-width: 7px;
+    }
+
+    .rg-comm--home .rg-comm__big-play {
+      width: 46px;
+      height: 46px;
+    }
+
+    .rg-comm--home .rg-comm__big-play span {
+      margin-left: 4px;
+      border-top-width: 9px;
+      border-bottom-width: 9px;
+      border-left-width: 14px;
+    }
+
+    .rg-comm--home .rg-comm__badge {
+      width: 34px;
+      height: 34px;
+      box-shadow: 0 0 0 5px rgba(28, 203, 245, 0.22), 0 0 18px rgba(28, 203, 245, 0.5);
+    }
+
+    .rg-comm--home .rg-comm__badge svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .rg-comm--home .rg-comm__meta {
+      right: 12px;
+      bottom: 12px;
+      left: 12px;
+      gap: 4px;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .rg-comm--home .rg-comm__stars {
+      font-size: 11px;
+      letter-spacing: 2px;
+    }
+
+    .rg-comm--home .rg-comm__name {
+      overflow: visible;
+      font-size: clamp(12px, 1.659svh, 16px);
+      white-space: normal;
+    }
+
+    .rg-comm--home .rg-comm__quote {
+      display: block;
+      height: auto;
+      font-size: 12px;
+      line-height: 1.35;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .rg-comm--home .rg-comm__swipe {
+      margin-top: 18px;
+    }
+
+    .rg-comm--home .rg-comm__hint {
+      margin-left: 10px;
+      color: #8a8a8a;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+    }
+
+    .rg-comm--home .rg-comm__hint-arrow {
+      margin-left: 2px;
+      font-size: 14px;
+    }
+
+    .rg-comm--home .rg-comm__cta {
+      margin-top: 22px;
+    }
+
+    .rg-comm--home .rg-pdp-cta {
+      width: fit-content;
+      min-width: 50%;
+      height: auto;
+      min-height: 50px;
+      border-radius: 12px;
+      font-size: clamp(13px, 1.777svh, 17px);
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .rg-comm--home {
+      min-height: calc((100vh - var(--header-height, 60px)) / var(--rg-z, 1));
+    }
+
+    .rg-comm--home .rg-comm__eyebrow {
+      letter-spacing: 0.38em;
+    }
+
+    .rg-comm--home .rg-comm__title {
+      font-size: clamp(37px, calc(100vh / var(--rg-z, 1) * 0.0511), 55px);
+      line-height: 1.04;
+    }
+
+    .rg-comm--home .rg-comm__shade {
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 55%, rgba(14, 14, 14, 0.85));
+    }
+
+    .rg-comm--home .rg-comm__meta {
+      right: 16px;
+      bottom: 16px;
+      left: 16px;
+      gap: 6px;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .rg-comm--home .rg-comm__stars {
+      font-size: 14px;
+    }
+
+    .rg-comm--home .rg-comm__name {
+      overflow: visible;
+      font-size: 18px;
+      white-space: normal;
+    }
+
+    .rg-comm--home .rg-comm__quote {
+      display: block;
+      height: auto;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .rg-comm--home .rg-pdp-cta {
+      font-size: 17px;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -556,6 +746,21 @@
   "name": "RG · Community videos",
   "class": "rg-comm-section",
   "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "product", "label": "Product page" },
+        { "value": "home", "label": "Home page" }
+      ],
+      "default": "product"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID"
+    },
     {
       "type": "text",
       "id": "eyebrow",

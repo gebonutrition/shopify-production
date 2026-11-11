@@ -4,8 +4,11 @@
   Every ingredient block has a detail panel in a native <dialog> (prev/next through all blocks, in block order).
   The lists show the blocks named in "Left column" / "Right column" (block numbers, e.g. 2,3,1,4).
   Buy-box ingredient tiles open the same dialog (data-rg-ing-host, see sections/rg-pdp-main.liquid).
-  Dialog behaviour: <rg-ingredients> from sections/rg-ingredients.liquid.
-  Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "08 Ingredients" + modal.
+  Dialog behaviour: <rg-ingredients> from assets/rg-ingredients.js.
+  Layout "Home page" (rg-ingp--home): main landing typography; on mobile the heading is centred
+  with the glass below it, and the dialog is a bottom sheet.
+  Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "08 Ingredients" + modal;
+  Raw Gravity Landing(.dc.html) + Mobile, section "Nootropics" (layout "Home page").
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
@@ -30,7 +33,7 @@
 
 <script src="{{ 'rg-ingredients.js' | asset_url }}" type="module"></script>
 <section
-  class="rg rg-z rg-ingp"
+  class="rg rg-z rg-ingp rg-ingp--{{ s.layout | default: 'product' }}"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}
@@ -745,13 +748,215 @@
       font-size: 22px;
     }
   }
+
+  /* ---------- Layout "Home page" (Raw Gravity Landing + Mobile, "Nootropics") ---------- */
+  @media screen and (max-width: 989px) {
+    .rg-ingp--home .rg-ingp__inner {
+      padding: 40px 16px 36px;
+    }
+
+    .rg-ingp--home .rg-ingp__head {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .rg-ingp--home .rg-ingp__glass--mobile {
+      order: 2;
+      height: 260px;
+      margin: 8px 0 4px;
+      aspect-ratio: auto;
+    }
+
+    .rg-ingp--home .rg-ingp__intro {
+      display: block;
+    }
+
+    .rg-ingp--home .rg-ingp__eyebrow {
+      margin: 0 0 10px;
+      font-size: 9px;
+    }
+
+    .rg-ingp--home .rg-ingp__title {
+      font-size: clamp(26px, 3.436svh, 33px);
+      line-height: 1.04;
+    }
+
+    .rg-ingp--home .rg-ingp__grid {
+      gap: 14px 18px;
+      margin-top: 0;
+    }
+
+    .rg-ingp--home .rg-ingp__item {
+      padding: 8px 0;
+    }
+
+    .rg-ingp--home .rg-ingp__item-copy {
+      gap: 5px;
+    }
+
+    .rg-ingp--home .rg-ingp__name {
+      padding-right: 28px;
+      line-height: 1.15;
+      text-wrap: balance;
+    }
+
+    .rg-ingp--home .rg-ingp__dose {
+      font-size: 12px;
+    }
+
+    .rg-ingp--home .rg-ingp__desc {
+      font-size: 11px;
+      line-height: 1.4;
+      text-wrap: pretty;
+    }
+
+    .rg-ingp--home .rg-ingp__plus {
+      top: 6px;
+      right: 0;
+      width: 26px;
+      height: 26px;
+      font-size: clamp(16px, 2.133svh, 21px);
+    }
+
+    .rg-ingp--home .rg-pdp-cta {
+      width: fit-content;
+      min-width: 50%;
+      height: auto;
+      min-height: 50px;
+      border-radius: 12px;
+      font-size: clamp(13px, 1.777svh, 17px);
+    }
+
+    /* Dialog: bottom sheet */
+    .rg-ingp--home .rg-ingp__dialog {
+      width: 100%;
+      max-width: 430px;
+      height: 88dvh;
+      margin: auto auto 0;
+      border-bottom: 0;
+      border-radius: 24px 24px 0 0;
+      box-shadow: none;
+    }
+
+    .rg-ingp--home .rg-ingp__dialog::backdrop {
+      background: rgba(20, 20, 20, 0.55);
+      backdrop-filter: blur(4px);
+    }
+
+    .rg-ingp--home .rg-ingp__panel-media {
+      height: 34%;
+    }
+
+    .rg-ingp--home .rg-ingp__panel-media::after {
+      display: none;
+    }
+
+    .rg-ingp--home .rg-ingp__panel-scroll {
+      padding: 20px 20px 0;
+      gap: 10px;
+    }
+
+    .rg-ingp--home .rg-ingp__panel-tag {
+      font-size: 11px;
+    }
+
+    .rg-ingp--home .rg-ingp__panel-title {
+      font-size: clamp(21px, 2.844svh, 27px);
+      line-height: 1.1;
+    }
+
+    .rg-ingp--home .rg-ingp__panel-dose {
+      padding: 6px 12px;
+      font-size: clamp(12px, 1.659svh, 16px);
+    }
+
+    .rg-ingp--home .rg-ingp__panel-text,
+    .rg-ingp--home .rg-ingp__points li {
+      font-size: clamp(13px, 1.777svh, 17px);
+      line-height: 1.55;
+    }
+
+    .rg-ingp--home .rg-ingp__points {
+      gap: 8px;
+    }
+
+    .rg-ingp--home .rg-ingp__points li {
+      gap: 10px;
+    }
+
+    .rg-ingp--home .rg-ingp__panel-nav {
+      margin: 12px 20px 0;
+      padding: 12px 0 16px;
+      border-top-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .rg-ingp--home .rg-ingp__nav-btn,
+    .rg-ingp--home .rg-ingp__nav-btn--next {
+      height: 44px;
+      padding: 0 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      background: transparent;
+      box-shadow: none;
+      color: var(--rg-on-dark);
+      font-size: clamp(13px, 1.777svh, 17px);
+      font-weight: 700;
+    }
+
+    .rg-ingp--home .rg-ingp__counter {
+      font-size: clamp(13px, 1.777svh, 17px);
+      color: var(--rg-on-dark-2);
+    }
+
+    .rg-ingp--home .rg-ingp__close {
+      top: 12px;
+      right: 12px;
+      width: 44px;
+      height: 44px;
+      border-color: rgba(255, 255, 255, 0.3);
+      background: rgba(26, 26, 26, 0.55);
+      font-size: clamp(19px, 2.607svh, 25px);
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .rg-ingp--home {
+      min-height: calc((100vh - var(--header-height, 60px)) / var(--rg-z, 1));
+    }
+
+    .rg-ingp--home .rg-ingp__eyebrow {
+      font-size: 13px;
+      letter-spacing: 0.38em;
+      color: var(--rg-accent);
+    }
+
+    .rg-ingp--home .rg-ingp__title {
+      font-size: clamp(37px, calc(100vh / var(--rg-z, 1) * 0.0511), 55px);
+      line-height: 1.04;
+    }
+
+    .rg-ingp--home .rg-pdp-cta {
+      font-size: 17px;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "RG · Ingredients (PDP)",
+  "name": "RG · Ingredients v3",
   "class": "rg-ingp-section",
   "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "product", "label": "Product page" },
+        { "value": "home", "label": "Home page" }
+      ],
+      "default": "product"
+    },
     {
       "type": "text",
       "id": "anchor",
@@ -864,7 +1069,7 @@
   "max_blocks": 16,
   "presets": [
     {
-      "name": "RG · Ingredients (PDP)",
+      "name": "RG · Ingredients v3",
       "blocks": [{ "type": "ingredient" }, { "type": "ingredient" }, { "type": "ingredient" }, { "type": "ingredient" }]
     }
   ]

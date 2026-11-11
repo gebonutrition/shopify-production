@@ -1,7 +1,8 @@
 {%- comment -%}
-  RAW GRAVITY · Differentiators ("What Makes It Different")
-  Photo + dark accordion (exclusive <details>, no JS) + 4 benefit cards.
-  Reference: Raw Gravity Landing(.dc.html) + Mobile, section#benefits.
+  RAW GRAVITY · Differentiators ("What Makes It Different") + benefit band.
+  Light part: photo (left half on desktop, top strip on mobile) and a dark accordion
+  (exclusive <details>, no JS). Dark band below: 4 benefit cards with outline icons.
+  Reference: Raw Gravity Landing(.dc.html) + Mobile, sections "Differentiators" and "Benefits" (2026-11 update).
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
@@ -15,30 +16,30 @@
   endfor
 -%}
 
-<section
-  class="rg rg-diff"
+<div
+  class="rg rg-z rg-diff"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}
 >
-  <div class="rg-container rg-diff__wrap">
-    <div class="rg-diff__top">
-      <div class="rg-diff__media" aria-hidden="true">
-        {%- if s.image != blank -%}
-          {{
-            s.image
-            | image_url: width: 1400
-            | image_tag:
-              widths: '600, 900, 1100, 1400',
-              sizes: '(min-width: 990px) 55vw, 120vw',
-              loading: 'lazy',
-              alt: '',
-              class: 'rg-diff__image'
-          }}
-        {%- endif -%}
-        <span class="rg-diff__shade"></span>
-      </div>
+  <section class="rg-diff__main">
+    <div class="rg-diff__media" aria-hidden="true">
+      {%- if s.image != blank -%}
+        {{
+          s.image
+          | image_url: width: 1400
+          | image_tag:
+            widths: '600, 900, 1100, 1400',
+            sizes: '(min-width: 990px) 50vw, 110vw',
+            loading: 'lazy',
+            alt: '',
+            class: 'rg-diff__image'
+        }}
+      {%- endif -%}
+    </div>
 
+    <div class="rg-diff__wrap">
+      <div class="rg-diff__spacer" aria-hidden="true"></div>
       <div class="rg-diff__body">
         <div class="rg-diff__head">
           {%- if s.eyebrow != blank -%}
@@ -52,72 +53,74 @@
           </h2>
         </div>
 
-        <div class="rg-diff__list">
-          {%- assign accordion_index = 0 -%}
-          {%- for block in section.blocks -%}
-            {%- case block.type -%}
-              {%- when 'item', 'facts' -%}
-                <details
-                  class="rg-diff__item"
-                  name="{{ accordion_name }}"
-                  {% if accordion_index == 0 and s.open_first %}
-                    open
-                  {% endif %}
-                  {{ block.shopify_attributes }}
-                >
-                  <summary class="rg-diff__summary">
-                    <span class="rg-diff__item-title">{{ block.settings.title | escape }}</span>
-                    <span class="rg-diff__chevron" aria-hidden="true">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
-                    </span>
-                  </summary>
-                  {%- if block.type == 'item' -%}
-                    {%- if block.settings.text != blank -%}
-                      <p class="rg-diff__item-text">{{ block.settings.text | escape | newline_to_br }}</p>
-                    {%- endif -%}
-                  {%- else -%}
-                    <div class="rg-diff__facts">
-                      {%- if block.settings.serving != blank -%}
-                        <p class="rg-diff__facts-head">{{ block.settings.serving | escape }}</p>
-                      {%- endif -%}
-                      <dl class="rg-diff__facts-list">
-                        {%- assign rows = block.settings.rows | newline_to_br | split: '<br />' -%}
-                        {%- for row in rows -%}
-                          {%- assign parts = row | split: '|' -%}
-                          {%- assign fact_name = parts[0] | strip -%}
-                          {%- assign fact_dose = parts[1] | strip -%}
-                          {%- if fact_name != blank -%}
-                            <div class="rg-diff__fact">
-                              <dt>{{ fact_name | escape }}</dt>
-                              <dd>{{ fact_dose | escape }}</dd>
-                            </div>
-                          {%- endif -%}
-                        {%- endfor -%}
-                      </dl>
-                    </div>
+        {%- assign accordion_index = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'item', 'facts' -%}
+              <details
+                class="rg-diff__item"
+                name="{{ accordion_name }}"
+                {% if accordion_index == 0 and s.open_first %}
+                  open
+                {% endif %}
+                {{ block.shopify_attributes }}
+              >
+                <summary class="rg-diff__summary">
+                  <span class="rg-diff__item-title">{{ block.settings.title | escape }}</span>
+                  <span class="rg-diff__chevron" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+                  </span>
+                </summary>
+                {%- if block.type == 'item' -%}
+                  {%- if block.settings.text != blank -%}
+                    <p class="rg-diff__item-text">{{ block.settings.text | escape | newline_to_br }}</p>
                   {%- endif -%}
-                </details>
-                {%- assign accordion_index = accordion_index | plus: 1 -%}
-            {%- endcase -%}
-          {%- endfor -%}
-        </div>
+                {%- else -%}
+                  <div class="rg-diff__facts">
+                    {%- if block.settings.serving != blank -%}
+                      <p class="rg-diff__facts-head">{{ block.settings.serving | escape }}</p>
+                    {%- endif -%}
+                    <dl class="rg-diff__facts-list">
+                      {%- assign rows = block.settings.rows | newline_to_br | split: '<br />' -%}
+                      {%- for row in rows -%}
+                        {%- assign parts = row | split: '|' -%}
+                        {%- assign fact_name = parts[0] | strip -%}
+                        {%- assign fact_dose = parts[1] | strip -%}
+                        {%- if fact_name != blank -%}
+                          <div class="rg-diff__fact">
+                            <dt>{{ fact_name | escape }}</dt>
+                            <dd>{{ fact_dose | escape }}</dd>
+                          </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </dl>
+                  </div>
+                {%- endif -%}
+              </details>
+              {%- assign accordion_index = accordion_index | plus: 1 -%}
+          {%- endcase -%}
+        {%- endfor -%}
       </div>
     </div>
+  </section>
 
-    {%- if has_cards -%}
+  {%- if has_cards -%}
+    <section class="rg-diff__band">
       <ul class="rg-diff__cards" role="list">
         {%- for block in section.blocks -%}
           {%- if block.type == 'card' -%}
             <li class="rg-diff__card" {{ block.shopify_attributes }}>
-              <div class="rg-diff__card-icon">
-                {%- if block.settings.image != blank -%}
+              <span class="rg-diff__card-icon" aria-hidden="true">
+                {%- if block.settings.line_icon != 'none' -%}
+                  {%- render 'rg-line-icon', name: block.settings.line_icon, size: 66, stroke: 3 -%}
+                {%- elsif block.settings.image != blank -%}
                   {{
                     block.settings.image
-                    | image_url: width: 240
-                    | image_tag: width: 84, height: 84, loading: 'lazy', alt: ''
+                    | image_url: width: 200
+                    | image_tag: width: 66, height: 66, loading: 'lazy', alt: ''
                   }}
                 {%- endif -%}
-              </div>
+              </span>
               <h3 class="rg-diff__card-title">{{ block.settings.title | escape }}</h3>
               {%- if block.settings.text != blank -%}
                 <p class="rg-diff__card-text">{{ block.settings.text | escape }}</p>
@@ -126,63 +129,34 @@
           {%- endif -%}
         {%- endfor -%}
       </ul>
-    {%- endif -%}
-  </div>
-</section>
+    </section>
+  {%- endif -%}
+</div>
 
 {% stylesheet %}
-  /* ---------- Mobile ---------- */
-  .rg-diff {
+  /* ---------- Mobile (Raw Gravity Landing Mobile) ---------- */
+  .rg-diff__main {
     position: relative;
-    overflow: hidden;
-    background: var(--rg-bg);
-    padding-bottom: 32px;
-  }
-
-  .rg-diff p,
-  .rg-diff h2,
-  .rg-diff h3,
-  .rg-diff dl,
-  .rg-diff dd {
-    margin: 0;
-  }
-
-  .rg-diff__wrap {
     display: flex;
     flex-direction: column;
     gap: 12px;
-  }
-
-  .rg-diff__top {
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      'media'
-      'list';
-    row-gap: 12px;
-  }
-
-  /* On mobile the heading overlays the photo: flatten the body wrapper */
-  .rg-diff__body {
-    display: contents;
+    overflow: hidden;
+    padding: 0 20px 32px;
+    background: var(--rg-bg);
   }
 
   .rg-diff__media {
-    grid-area: media;
     position: relative;
     height: 400px;
-    margin-inline: calc(var(--rg-gutter) * -1);
+    margin: 0 -20px;
     overflow: hidden;
     background: var(--rg-white);
   }
 
-  .rg-diff__image {
+  .rg-diff .rg-diff__image {
     position: absolute;
-    /* Design frame is 430px wide; on narrower phones shift the photo left so the
-       jars stay clear of the right-aligned heading. */
-    left: min(-30px, calc(100vw - 460px));
     bottom: -10px;
+    left: -30px;
     display: block;
     width: auto;
     max-width: none;
@@ -192,42 +166,40 @@
     mask-image: linear-gradient(to right, #000 78%, transparent 100%);
   }
 
-  .rg-diff__shade {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(180deg, rgba(247, 247, 245, 0) 78%, var(--rg-bg) 100%);
+  .rg-diff__spacer {
+    display: none;
   }
 
+  .rg-diff__body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Mobile: the heading sits on the photo strip, top right (relative to .rg-diff__main) */
   .rg-diff__head {
-    grid-area: media;
-    position: relative;
+    position: absolute;
+    top: 32px;
+    right: 20px;
     z-index: 1;
-    align-self: start;
-    justify-self: end;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     gap: 12px;
-    width: 60%;
-    margin-top: 32px;
+    width: 56%;
     text-align: right;
   }
 
-  .rg-diff__eyebrow {
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1;
+  .rg-diff .rg-diff__eyebrow {
+    margin: 0;
+    font: 700 9px/1 var(--rg-font-body);
     letter-spacing: 0.32em;
     color: var(--rg-accent);
-    text-transform: uppercase;
   }
 
-  .rg-diff__title {
-    font-family: var(--rg-font-display);
-    font-size: clamp(22px, 6.4vw, 27px);
-    font-weight: 900;
-    line-height: 1.04;
+  .rg-diff .rg-diff__title {
+    margin: 0;
+    font: 900 clamp(24px, 3.199svh, 31px) / 1.04 var(--rg-font-body);
     letter-spacing: -0.02em;
     text-transform: uppercase;
     text-wrap: balance;
@@ -238,21 +210,12 @@
     color: var(--rg-accent);
   }
 
-  .rg-diff__list {
-    grid-area: list;
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
   .rg-diff__item {
     overflow: hidden;
-    border-radius: 18px;
-    background: #323232;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    color: var(--rg-on-dark);
+    border: 1px solid rgba(28, 203, 245, 0.28);
+    border-radius: 16px;
+    background: radial-gradient(ellipse at 0% 0%, #26464f 0%, #323232 60%, #2e2e2e 100%);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
   }
 
   .rg-diff__summary {
@@ -260,7 +223,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 14px;
-    padding: 9px 12px 9px 16px;
+    padding: 12px 12px 12px 16px;
     cursor: pointer;
     list-style: none;
   }
@@ -272,14 +235,13 @@
   .rg-diff__summary:focus-visible {
     outline: 2px solid var(--rg-accent);
     outline-offset: -2px;
-    border-radius: 18px;
   }
 
   .rg-diff__item-title {
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.3;
+    font: 700 13px/1.3 var(--rg-font-body);
     letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--rg-on-dark);
   }
 
   .rg-diff__chevron {
@@ -287,10 +249,12 @@
     flex: none;
     align-items: center;
     justify-content: center;
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(28, 203, 245, 0.35);
     border-radius: 50%;
-    background: #464646;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 12px rgba(28, 203, 245, 0.25);
     color: var(--rg-accent);
     transition: transform 0.3s var(--rg-ease);
   }
@@ -304,11 +268,11 @@
     transform: rotate(90deg);
   }
 
-  .rg-diff__item-text {
+  .rg-diff .rg-diff__item-text {
+    margin: 0;
     padding: 0 18px 16px;
-    font-size: 14px;
-    line-height: 1.55;
-    color: var(--rg-on-dark-2);
+    font: 400 clamp(13px, 1.777svh, 16px) / 1.55 var(--rg-font-body);
+    color: #bdbdbd;
     text-wrap: pretty;
   }
 
@@ -316,16 +280,19 @@
     margin: 0 14px 16px;
     padding: 16px 16px 6px;
     border-radius: 14px;
-    background: #3b3b3b;
+    background: rgba(255, 255, 255, 0.05);
   }
 
-  .rg-diff__facts-head {
+  .rg-diff .rg-diff__facts-head {
+    margin: 0;
     padding-bottom: 12px;
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 1.4;
+    font: 700 10px/1.4 var(--rg-font-body);
     letter-spacing: 0.32em;
     color: var(--rg-accent);
+  }
+
+  .rg-diff__facts-list {
+    margin: 0;
   }
 
   .rg-diff__fact {
@@ -334,25 +301,32 @@
     gap: 16px;
     padding: 10px 0;
     border-top: 1px solid #464646;
-    font-size: 13px;
-    line-height: 1.4;
-    color: var(--rg-on-dark-2);
+    font: 400 13px/1.4 var(--rg-font-body);
+    color: #bdbdbd;
+  }
+
+  .rg-diff__fact dt,
+  .rg-diff__fact dd {
+    margin: 0;
   }
 
   .rg-diff__fact dd {
-    flex: none;
     font-weight: 700;
     white-space: nowrap;
     color: var(--rg-on-dark);
   }
 
+  .rg-diff__band {
+    padding: 24px 16px;
+    background: radial-gradient(ellipse at 15% 0%, #26464f 0%, #323232 50%, #2e2e2e 100%);
+    color: var(--rg-on-dark);
+  }
+
   .rg-diff__cards {
-    position: relative;
-    z-index: 1;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-    margin: 4px 0 0;
+    gap: 10px;
+    margin: 0;
     padding: 0;
     list-style: none;
   }
@@ -362,12 +336,12 @@
     flex-direction: column;
     align-items: center;
     gap: 4px;
-    padding: 10px 10px 12px;
+    padding: 14px 10px 16px;
+    border: 1px solid rgba(28, 203, 245, 0.28);
     border-radius: 18px;
-    background: var(--rg-white);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
     text-align: center;
-    box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04), 0 24px 60px -28px rgba(26, 26, 26, 0.14);
-    transition: transform 0.25s var(--rg-ease), box-shadow 0.25s var(--rg-ease);
   }
 
   .rg-diff__card-icon {
@@ -377,108 +351,113 @@
     width: 48px;
     height: 48px;
     margin-bottom: 2px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(28, 203, 245, 0.22) 0%, rgba(28, 203, 245, 0.08) 55%, rgba(28, 203, 245, 0) 72%);
+    box-shadow: 0 0 17px rgba(28, 203, 245, 0.28);
+    color: #00b7e8;
   }
 
+  .rg-diff__card-icon svg,
   .rg-diff__card-icon img {
     display: block;
-    width: 100%;
-    height: 100%;
+    width: 37px;
+    height: 37px;
     object-fit: contain;
-    mix-blend-mode: multiply;
+    filter: drop-shadow(0 0 4px rgba(0, 183, 232, 0.55));
   }
 
-  .rg-diff__card-title {
-    font-family: var(--rg-font-body);
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1.25;
+  .rg-diff .rg-diff__card-title {
+    margin: 0;
+    font: 700 11px/1.25 var(--rg-font-body);
     letter-spacing: 0.04em;
-    color: var(--rg-ink);
+    text-transform: uppercase;
+    color: var(--rg-on-dark);
   }
 
-  .rg-diff__card-text {
-    font-size: 12px;
-    line-height: 1.4;
-    color: var(--rg-text-2);
+  .rg-diff .rg-diff__card-text {
+    margin: 0;
+    font: 400 12px/1.4 var(--rg-font-body);
+    color: #bdbdbd;
   }
 
-  /* ---------- Desktop ---------- */
+  /* ---------- Desktop (Raw Gravity Landing; zoomed through .rg-z) ---------- */
   @media screen and (min-width: 990px) {
     .rg-diff {
-      padding-block: 56px;
+      --rg-diff-vh: calc(100vh / var(--rg-z, 1));
     }
 
-    .rg-diff__wrap {
-      gap: 24px;
-    }
-
-    .rg-diff__top {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      grid-template-areas: 'spacer body';
-      gap: 24px;
-      align-items: center;
-      min-height: max(380px, min(520px, calc(100vh - 330px)));
-      padding-bottom: 20px;
-    }
-
-    .rg-diff__body {
-      grid-area: body;
+    .rg-diff__main {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      position: relative;
-      z-index: 1;
+      justify-content: center;
+      gap: 0;
+      min-height: calc((100vh - var(--header-height, 60px)) / var(--rg-z, 1));
+      padding: clamp(58px, calc(var(--rg-diff-vh) * 0.08), 86px) 48px;
     }
 
-    /* Photo fills the left half and bleeds to the section edges */
     .rg-diff__media {
       position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
       z-index: 0;
-      top: -56px;
-      bottom: -8px;
-      left: calc(var(--rg-gutter) * -1);
-      width: calc(50% + 72px);
+      width: 50%;
       height: auto;
       margin: 0;
-      background: transparent;
+      background: none;
+      pointer-events: none;
     }
 
-    .rg-diff__image {
+    .rg-diff .rg-diff__image {
       inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: 50% 62%;
-      -webkit-mask-image: none;
-      mask-image: none;
+      object-position: 50% 55%;
+      -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 93%, transparent 100%);
+      mask-image: linear-gradient(90deg, #000 0%, #000 93%, transparent 100%);
     }
 
-    .rg-diff__shade {
-      background:
-        linear-gradient(90deg, rgba(247, 247, 245, 0) 55%, var(--rg-bg) 100%),
-        linear-gradient(270deg, rgba(247, 247, 245, 0) 88%, var(--rg-bg) 100%),
-        linear-gradient(180deg, var(--rg-bg) 0%, rgba(247, 247, 245, 0) 22%, rgba(247, 247, 245, 0) 85%, var(--rg-bg) 100%);
+    .rg-diff__wrap {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 24px;
+      align-items: stretch;
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .rg-diff__spacer {
+      display: block;
+      height: 739px;
+      min-height: 380px;
+    }
+
+    .rg-diff__body {
+      justify-content: space-between;
+      gap: 16px;
+      padding-left: 24px;
     }
 
     .rg-diff__head {
-      grid-area: auto;
-      align-self: auto;
-      justify-self: auto;
+      position: static;
       align-items: flex-start;
-      gap: 18px;
+      gap: 20px;
       width: auto;
-      margin: 0 0 12px;
+      margin-bottom: 12px;
       text-align: left;
     }
 
-    .rg-diff__eyebrow {
+    .rg-diff .rg-diff__eyebrow {
       font-size: 13px;
       letter-spacing: 0.38em;
     }
 
-    .rg-diff__title {
-      font-size: 44px;
+    .rg-diff .rg-diff__title {
+      font-size: clamp(37px, calc(var(--rg-diff-vh) * 0.0511), 55px);
     }
 
     .rg-diff__item {
@@ -487,21 +466,18 @@
 
     .rg-diff__summary {
       gap: 16px;
-      padding: 14px 22px;
-    }
-
-    .rg-diff__summary:focus-visible {
-      border-radius: 20px;
+      padding: 32px;
     }
 
     .rg-diff__item-title {
-      font-size: 16px;
-      letter-spacing: 0.01em;
+      font: 800 19px/1.15 var(--rg-font-body);
+      letter-spacing: 0;
     }
 
     .rg-diff__chevron {
-      width: 32px;
-      height: 32px;
+      width: 38px;
+      height: 38px;
+      box-shadow: 0 0 14px rgba(28, 203, 245, 0.25);
     }
 
     .rg-diff__chevron svg {
@@ -509,17 +485,18 @@
       height: 15px;
     }
 
-    .rg-diff__item-text {
-      padding: 0 22px 18px;
-      font-size: 15px;
+    .rg-diff .rg-diff__item-text {
+      padding: 0 28px 24px;
+      font-size: 17px;
+      line-height: 1.6;
     }
 
     .rg-diff__facts {
-      margin: 0 22px 18px;
+      margin: 0 28px 24px;
       padding: 14px 18px;
     }
 
-    .rg-diff__facts-head {
+    .rg-diff .rg-diff__facts-head {
       padding-bottom: 10px;
       font-size: 12px;
       line-height: 1;
@@ -533,41 +510,54 @@
       line-height: 1.35;
     }
 
+    .rg-diff__band {
+      padding: 28px 48px;
+    }
+
     .rg-diff__cards {
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 20px;
-      margin: 0;
+      max-width: 1280px;
+      margin: 0 auto;
     }
 
     .rg-diff__card {
       gap: 6px;
       padding: 18px 18px 22px;
       border-radius: 24px;
+      transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+        border-color 0.6s;
+    }
+
+    .rg-diff__card:hover {
+      transform: translateY(-8px);
+      border-color: var(--rg-accent);
+      box-shadow: 0 0 34px rgba(28, 203, 245, 0.35);
     }
 
     .rg-diff__card-icon {
       width: 84px;
       height: 84px;
+      box-shadow: 0 0 29px rgba(28, 203, 245, 0.28);
     }
 
-    .rg-diff__card-title {
+    .rg-diff__card-icon svg,
+    .rg-diff__card-icon img {
+      width: 66px;
+      height: 66px;
+      filter: drop-shadow(0 0 6px rgba(0, 183, 232, 0.55));
+    }
+
+    .rg-diff .rg-diff__card-title {
       padding: 0 8px;
-      font-size: 17px;
-      line-height: 1.3;
-      letter-spacing: 0.01em;
+      font: 800 17px/1.15 var(--rg-font-body);
+      letter-spacing: 0;
     }
 
-    .rg-diff__card-text {
+    .rg-diff .rg-diff__card-text {
       padding: 0 12px;
       font-size: 14px;
       line-height: 1.5;
-    }
-  }
-
-  @media (hover: hover) and (min-width: 990px) {
-    .rg-diff__card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04), 0 40px 80px -30px rgba(26, 26, 26, 0.22);
     }
   }
 
@@ -619,7 +609,7 @@
       "type": "checkbox",
       "id": "open_first",
       "label": "Open the first accordion item",
-      "default": true
+      "default": false
     }
   ],
   "blocks": [
@@ -670,9 +660,22 @@
       "name": "Benefit card",
       "settings": [
         {
+          "type": "select",
+          "id": "line_icon",
+          "label": "Icon",
+          "options": [
+            { "value": "focus", "label": "Focus" },
+            { "value": "stress", "label": "Stress support" },
+            { "value": "resilience", "label": "Resilience" },
+            { "value": "immune", "label": "Immune support" },
+            { "value": "none", "label": "Custom image below" }
+          ],
+          "default": "focus"
+        },
+        {
           "type": "image_picker",
           "id": "image",
-          "label": "Icon image"
+          "label": "Custom icon image"
         },
         {
           "type": "text",

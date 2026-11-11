@@ -1,19 +1,20 @@
 {%- comment -%}
-  RAW GRAVITY · Shop ("Find Your Blend")
+  RAW GRAVITY · Shop ("Find Your Blend"), light v2.
   Product cards: pick a product (link + image come from it) and override any text.
   Works before the catalog is final: without a product, the card uses its own
   image and link (or All products).
-  Reference: Raw Gravity Landing(.dc.html) + Mobile, section#shop.
+  Desktop: 3 cards (image on top). Mobile: one row per card (image left), no badge.
+  Reference: Raw Gravity Landing(.dc.html) + Mobile, section#shop (2026-11 update).
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 
 <section
-  class="rg rg-shop"
+  class="rg rg-z rg-shop"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}
 >
-  <div class="rg-container">
+  <div class="rg-shop__wrap">
     <div class="rg-shop__head">
       {%- if s.eyebrow != blank -%}
         <p class="rg-shop__eyebrow">{{ s.eyebrow | escape }}</p>
@@ -47,7 +48,7 @@
                 | image_url: width: 900
                 | image_tag:
                   widths: '300, 450, 600, 900',
-                  sizes: '(min-width: 990px) 400px, 38vw',
+                  sizes: '(min-width: 990px) 420px, 36vw',
                   loading: 'lazy',
                   alt: '',
                   class: 'rg-shop__image'
@@ -64,6 +65,12 @@
                 <p class="rg-shop__pre">{{ b.pre | escape }}</p>
               {%- endif -%}
               <h3 class="rg-shop__name">{{ card_title | escape }}</h3>
+              {%- if b.rating != blank -%}
+                <p class="rg-shop__rating">
+                  <span class="rg-shop__stars" aria-hidden="true">★★★★★</span>
+                  <span>{{ b.rating | escape }}<span class="rg-visually-hidden"> out of 5 stars</span></span>
+                </p>
+              {%- endif -%}
             </div>
             {%- if b.description != blank -%}
               <p class="rg-shop__desc">{{ b.description | escape }}</p>
@@ -74,14 +81,14 @@
                   {%- assign item_text = item | strip -%}
                   {%- if item_text != blank -%}
                     <li>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
                       {{- item_text | escape -}}
                     </li>
                   {%- endif -%}
                 {%- endfor -%}
               </ul>
             {%- endif -%}
-            <a class="rg-btn rg-shop__button" href="{{ card_link }}">
+            <a class="rg-shop__button" href="{{ card_link }}">
               {{- b.button_label | default: 'TRY NOW' | escape }}
               <span class="rg-visually-hidden">: {{ card_title | escape }}</span>
             </a>
@@ -93,11 +100,10 @@
 </section>
 
 {% stylesheet %}
-  /* ---------- Mobile ---------- */
+  /* ---------- Mobile (Raw Gravity Landing Mobile, section#shop) ---------- */
   .rg-shop {
-    padding-block: 44px;
-    background: var(--rg-dark-bg);
-    color: var(--rg-on-dark);
+    background: var(--rg-bg);
+    color: var(--rg-ink);
   }
 
   .rg-shop p,
@@ -112,49 +118,47 @@
     list-style: none;
   }
 
+  .rg-shop__wrap {
+    padding: 18px 16px 20px;
+  }
+
   .rg-shop__head {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 6px;
     text-align: center;
   }
 
-  .rg-shop__eyebrow {
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1;
+  .rg-shop .rg-shop__eyebrow {
+    font: 700 9px/1 var(--rg-font-body);
     letter-spacing: 0.32em;
     color: var(--rg-accent);
   }
 
-  .rg-shop__title {
-    font-family: var(--rg-font-display);
-    font-size: 29px;
-    font-weight: 900;
-    line-height: 1.04;
+  .rg-shop .rg-shop__title {
+    font: 900 clamp(26px, 3.436svh, 33px) / 1.04 var(--rg-font-body);
     letter-spacing: -0.02em;
     text-transform: uppercase;
     text-wrap: balance;
-    color: var(--rg-on-dark);
   }
 
   .rg-shop__grid {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 20px;
-    scroll-margin-top: 80px;
+    gap: 8px;
+    margin-top: 12px;
+    scroll-margin-top: 76px;
   }
 
   .rg-shop__card {
     display: grid;
-    grid-template-columns: 38% minmax(0, 1fr);
+    grid-template-columns: 36% minmax(0, 1fr);
+    height: clamp(186px, calc((100svh - 190px) / 3), 224px);
     overflow: hidden;
     border-radius: 18px;
     background: var(--rg-white);
-    color: var(--rg-ink);
-    box-shadow: 0 30px 60px -36px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04), 0 20px 44px -26px rgba(26, 26, 26, 0.22);
   }
 
   .rg-shop__media {
@@ -164,85 +168,88 @@
     background: var(--rg-white);
   }
 
-  .rg-shop__image {
+  .rg-shop .rg-shop__image {
     position: absolute;
     inset: 0;
-    display: block;
     width: 100%;
     height: 100%;
     object-fit: contain;
   }
 
   .rg-shop__badge {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    padding: 5px 8px;
-    border-radius: 999px;
-    background: rgba(26, 26, 26, 0.85);
-    color: var(--rg-on-dark);
-    font-size: 8px;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: 0.14em;
-    pointer-events: none;
+    display: none;
   }
 
   .rg-shop__body {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
     min-width: 0;
-    padding: 12px 12px 12px 6px;
+    min-height: 0;
+    padding: 9px 12px 12px 4px;
   }
 
   .rg-shop__names {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 3px;
   }
 
-  .rg-shop__pre {
-    font-size: 9px;
-    font-weight: 600;
-    line-height: 1;
+  .rg-shop .rg-shop__pre {
+    font: 600 8px/1 var(--rg-font-body);
     letter-spacing: 0.26em;
     text-transform: uppercase;
     color: var(--rg-accent);
   }
 
-  .rg-shop__name {
-    font-family: var(--rg-font-display);
-    font-size: 18px;
-    font-weight: 900;
-    line-height: 1.05;
+  .rg-shop .rg-shop__name {
+    font: 900 clamp(14px, 1.9svh, 18px) / 1.05 var(--rg-font-body);
     letter-spacing: -0.01em;
     text-transform: uppercase;
     color: var(--rg-ink);
   }
 
-  .rg-shop__desc {
-    font-size: 12px;
-    line-height: 1.4;
-    color: var(--rg-text-2);
+  .rg-shop .rg-shop__rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font: 600 10px/1 var(--rg-font-body);
+    color: #555555;
   }
 
-  .rg-shop__why {
+  .rg-shop__stars {
+    color: #ff8a1f;
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 1.5px;
+  }
+
+  .rg-shop .rg-shop__desc {
+    display: -webkit-box;
+    overflow: hidden;
+    font: 400 11px/1.35 var(--rg-font-body);
+    color: #555555;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .rg-shop .rg-shop__why {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    gap: 5px;
-    padding-top: 8px;
-    border-top: 1px solid var(--rg-line);
+    gap: 2px;
+    min-height: 0;
+    padding-top: 5px;
+    overflow: hidden;
+    border-top: 1px solid #e4e4e4;
   }
 
   .rg-shop__why li {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 9px;
-    font-weight: 600;
-    line-height: 1.3;
-    letter-spacing: 0.12em;
+    font: 600 8.5px/1.3 var(--rg-font-body);
+    letter-spacing: 0.1em;
     color: var(--rg-ink);
   }
 
@@ -253,49 +260,84 @@
     color: var(--rg-accent);
   }
 
-  .rg-shop .rg-shop__button {
+  .rg-shop__button {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     width: 100%;
-    min-height: 42px;
-    margin-top: 4px;
+    min-height: 36px;
+    margin-top: 2px;
     padding: 0 12px;
     border-radius: 10px;
-    font-size: 13px;
+    background: var(--rg-accent);
+    box-shadow: 0 0 10px rgba(28, 203, 245, 0.5);
+    color: var(--rg-ink);
+    font: 800 12px/1 var(--rg-font-body);
     letter-spacing: 0.08em;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+      filter 0.2s;
   }
 
-  /* ---------- Desktop ---------- */
+  .rg-shop__button:hover {
+    color: var(--rg-ink);
+    filter: brightness(1.05);
+  }
+
+  .rg-shop__button:focus-visible {
+    outline: 2px solid var(--rg-ink);
+    outline-offset: 3px;
+  }
+
+  /* ---------- Desktop (Raw Gravity Landing, section#shop; zoomed through .rg-z) ---------- */
   @media screen and (min-width: 990px) {
     .rg-shop {
-      padding-block: 56px;
+      --rg-shop-vh: calc(100vh / var(--rg-z, 1));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: calc((100vh - var(--header-height, 60px)) / var(--rg-z, 1));
+    }
+
+    .rg-shop__wrap {
+      width: 100%;
+      max-width: calc(1280px + 96px);
+      margin: 0 auto;
+      padding: clamp(35px, calc(var(--rg-shop-vh) * 0.0489), 53px) 48px clamp(77px, calc(var(--rg-shop-vh) * 0.1067), 115px);
     }
 
     .rg-shop__head {
       gap: 24px;
     }
 
-    .rg-shop__eyebrow {
+    .rg-shop .rg-shop__eyebrow {
       font-size: 13px;
       letter-spacing: 0.38em;
     }
 
-    .rg-shop__title {
-      font-size: 46px;
+    .rg-shop .rg-shop__title {
+      font-size: clamp(37px, calc(var(--rg-shop-vh) * 0.0511), 55px);
     }
 
     .rg-shop__grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      align-items: stretch;
       gap: 24px;
+      align-items: stretch;
       margin-top: 28px;
+      scroll-margin-top: 86px;
     }
 
     .rg-shop__card {
       display: flex;
       flex-direction: column;
+      height: auto;
       border-radius: 24px;
       box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.6);
-      transition: box-shadow 0.3s var(--rg-ease);
+      transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
 
     .rg-shop__card:hover {
@@ -303,22 +345,29 @@
     }
 
     .rg-shop__media {
-      aspect-ratio: 16 / 10;
-      min-height: 180px;
-      max-height: max(180px, calc(100vh - 560px));
+      aspect-ratio: 4 / 3;
+      max-height: calc(var(--rg-shop-vh) - 400px);
+      min-height: 360px;
     }
 
-    .rg-shop__image {
-      top: 14px;
-      height: calc(100% - 14px);
+    .rg-shop .rg-shop__image {
+      top: 44px;
+      height: calc(100% - 44px);
     }
 
     .rg-shop__badge {
-      top: 18px;
-      left: 18px;
-      padding: 10px 16px;
-      font-size: 12px;
-      letter-spacing: 0.16em;
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      z-index: 2;
+      display: block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(26, 26, 26, 0.85);
+      color: var(--rg-white);
+      font: 700 9px/1 var(--rg-font-body);
+      letter-spacing: 0.14em;
+      pointer-events: none;
     }
 
     .rg-shop__body {
@@ -331,24 +380,37 @@
       gap: 8px;
     }
 
-    .rg-shop__pre {
+    .rg-shop .rg-shop__pre {
       font-size: 12px;
       letter-spacing: 0.28em;
     }
 
-    .rg-shop__name {
-      font-size: 30px;
+    .rg-shop .rg-shop__name {
+      font-size: clamp(24px, calc(var(--rg-shop-vh) * 0.0333), 36px);
     }
 
-    .rg-shop__desc {
+    .rg-shop .rg-shop__rating {
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .rg-shop__stars {
+      font-size: 16px;
+      letter-spacing: 2px;
+    }
+
+    .rg-shop .rg-shop__desc {
+      display: block;
       flex: 1;
       font-size: 16px;
       line-height: 1.5;
     }
 
-    .rg-shop__why {
+    .rg-shop .rg-shop__why {
+      flex: none;
       gap: 8px;
       padding: 14px 0 2px;
+      overflow: visible;
     }
 
     .rg-shop__why li {
@@ -362,13 +424,27 @@
       height: 16px;
     }
 
-    .rg-shop .rg-shop__button {
+    .rg-shop__button {
+      gap: 12px;
       min-height: 66px;
       margin-top: 8px;
       padding: 0 48px;
       border-radius: 12px;
+      box-shadow: 0 0 18px rgba(28, 203, 245, 0.55), 0 6px 20px rgba(28, 203, 245, 0.35);
       font-size: 17px;
       letter-spacing: 0.1em;
+    }
+
+    .rg-shop__button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(28, 203, 245, 0.42);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rg-shop__card,
+    .rg-shop__button {
+      transition: none;
     }
   }
 {% endstylesheet %}
@@ -437,6 +513,13 @@
           "id": "title",
           "label": "Title",
           "default": "Signature Jar"
+        },
+        {
+          "type": "text",
+          "id": "rating",
+          "label": "Rating",
+          "info": "Shown next to 5 stars, e.g. 4.9. Empty = no rating row.",
+          "default": "4.9"
         },
         {
           "type": "text",

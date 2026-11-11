@@ -2,9 +2,11 @@
   RAW GRAVITY · Product page "Read Our Reviews" (dark).
   Reviews are grouped into tabs by their "Tab" label; each tab is one page of 2 cards.
   Desktop: arrows flank the 2-up page, dots below. Mobile: stacked cards, arrows + dots below.
-  Tab/page switching: <rg-tabs> from sections/rg-reviews.liquid (dots need .rg-reviews__dot).
+  Tab/page switching: <rg-tabs> from assets/rg-tabs.js (dots need .rg-reviews__dot).
   Desktop is rendered through .rg-z (assets/rg-base.css).
-  Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "09.2 Read our reviews".
+  Layout "Home page" (rg-prev--home): main landing type sizes; on mobile the cards grow with the text.
+  Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "09.2 Read our reviews";
+  Raw Gravity Landing(.dc.html) + Mobile, section "Reviews List" (layout "Home page").
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
@@ -28,7 +30,7 @@
 
 <script src="{{ 'rg-tabs.js' | asset_url }}" type="module"></script>
 <section
-  class="rg rg-z rg-prev"
+  class="rg rg-z rg-prev rg-prev--{{ s.layout | default: 'product' }}"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}
@@ -583,13 +585,199 @@
       transition: none;
     }
   }
+
+  /* ---------- Layout "Home page" (Raw Gravity Landing + Mobile, "Reviews List") ---------- */
+  @media screen and (max-width: 989px) {
+    .rg-prev--home .rg-prev__inner {
+      padding: 28px 0;
+    }
+
+    .rg-prev--home .rg-prev__eyebrow {
+      margin-bottom: 10px;
+      padding-inline: 16px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+    }
+
+    .rg-prev--home .rg-prev__stars {
+      font-size: clamp(13px, 1.777svh, 17px);
+      letter-spacing: 0.06em;
+    }
+
+    .rg-prev--home .rg-prev__title {
+      margin: 0;
+      font-size: clamp(26px, 3.436svh, 33px);
+      line-height: 1.04;
+      text-transform: none;
+    }
+
+    .rg-prev--home .rg-prev__tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin: 16px 0 12px;
+      padding: 0 16px;
+    }
+
+    .rg-prev--home .rg-prev__tab {
+      height: auto;
+      padding: 11px 13px;
+      border-radius: 999px;
+      background: rgba(38, 70, 79, 0.9);
+      letter-spacing: 0.14em;
+    }
+
+    .rg-prev--home .rg-prev__tab[aria-selected='true'] {
+      background: var(--rg-accent);
+    }
+
+    .rg-prev--home .rg-prev__stage {
+      gap: 14px 16px;
+    }
+
+    .rg-prev--home .rg-prev__panel:not([hidden]) {
+      gap: 8px;
+    }
+
+    .rg-prev--home .rg-prev__card {
+      grid-template-columns: 27% minmax(0, 1fr);
+      height: auto;
+      border-radius: 18px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    .rg-prev--home .rg-prev__photo {
+      background: #2b2b2b;
+    }
+
+    .rg-prev--home .rg-prev__photo img {
+      object-position: 50% 35%;
+    }
+
+    .rg-prev--home .rg-prev__body {
+      height: auto;
+      overflow: visible;
+    }
+
+    .rg-prev--home .rg-prev__card-stars {
+      letter-spacing: 0.08em;
+    }
+
+    .rg-prev--home .rg-prev__card-title {
+      font-size: clamp(12px, 1.659svh, 16px);
+      line-height: 1.25;
+    }
+
+    .rg-prev--home .rg-prev__text {
+      overflow: visible;
+      color: #bdbdbd;
+      font-size: 10.5px;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+
+    .rg-prev--home .rg-prev__meta {
+      flex-wrap: nowrap;
+      gap: 8px;
+      margin-top: 0;
+      padding-top: 4px;
+    }
+
+    .rg-prev--home .rg-prev__name {
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .rg-prev--home .rg-prev__avatar {
+      width: 20px;
+      height: 20px;
+      border-width: 1px;
+      border-color: rgba(28, 203, 245, 0.45);
+      background: rgba(28, 203, 245, 0.1);
+    }
+
+    .rg-prev--home .rg-prev__avatar svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .rg-prev--home .rg-prev__badge {
+      padding: 5px 8px;
+      border-color: rgba(28, 203, 245, 0.45);
+      border-radius: 999px;
+      background: rgba(28, 203, 245, 0.1);
+      font-size: 9.5px;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .rg-prev--home .rg-prev__arrow {
+      border-color: rgba(28, 203, 245, 0.25);
+      box-shadow: 0 0 20px rgba(28, 203, 245, 0.25);
+    }
+
+    .rg-prev--home .rg-prev__arrow svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .rg-prev--home .rg-prev__dot {
+      width: 8px;
+    }
+
+    .rg-prev--home .rg-prev__cta {
+      margin-top: 18px;
+    }
+
+    .rg-prev--home .rg-pdp-cta {
+      width: fit-content;
+      min-width: 50%;
+      height: auto;
+      min-height: 50px;
+      border-radius: 12px;
+      font-size: clamp(13px, 1.777svh, 17px);
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .rg-prev--home {
+      min-height: calc((100vh - var(--header-height, 60px)) / var(--rg-z, 1));
+    }
+
+    .rg-prev--home .rg-prev__eyebrow {
+      letter-spacing: 0.38em;
+    }
+
+    .rg-prev--home .rg-prev__title {
+      font-size: clamp(37px, calc(100vh / var(--rg-z, 1) * 0.0511), 55px);
+      line-height: 1.04;
+    }
+
+    .rg-prev--home .rg-pdp-cta {
+      font-size: 17px;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "RG · Reviews (product)",
+  "name": "RG · Reviews v3",
   "class": "rg-prev-section",
   "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "product", "label": "Product page" },
+        { "value": "home", "label": "Home page" }
+      ],
+      "default": "product"
+    },
     {
       "type": "text",
       "id": "anchor",
@@ -667,7 +855,7 @@
   "max_blocks": 16,
   "presets": [
     {
-      "name": "RG · Reviews (product)",
+      "name": "RG · Reviews v3",
       "blocks": [{ "type": "review" }, { "type": "review" }]
     }
   ]
