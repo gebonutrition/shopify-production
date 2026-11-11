@@ -114,6 +114,34 @@
     overflow: visible;
   }
 
+  /* Mobile overlay (main landing v2 mobile): solid dots, 8 large labels. Desktop overlay is shown from 990px. */
+  .rg-map__overlay--d {
+    display: none;
+  }
+
+  .rg-map__mdot {
+    fill: var(--rg-accent);
+    fill-opacity: 0.85;
+    stroke: #1a6f82;
+    stroke-width: 1.5;
+  }
+
+  .rg-map__mcity {
+    fill: var(--rg-accent);
+  }
+
+  .rg-map__mlabel {
+    fill: var(--rg-accent);
+    stroke: #323232;
+    stroke-width: 9;
+    stroke-linejoin: round;
+    paint-order: stroke;
+    font-family: var(--rg-font-body);
+    font-size: 27px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
   .rg-map__ring {
     fill: none;
     stroke: var(--rg-accent);
@@ -235,6 +263,14 @@
   }
 
   @media screen and (min-width: 990px) {
+    .rg-map__overlay--d {
+      display: block;
+    }
+
+    .rg-map__overlay--m {
+      display: none;
+    }
+
     .rg-reach {
       --rg-reach-vh: calc(100vh / var(--rg-z, 1));
       display: flex;

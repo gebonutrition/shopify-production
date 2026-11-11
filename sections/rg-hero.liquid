@@ -358,7 +358,8 @@
       min-width: 0;
     }
 
-    .rg-hero__rating {
+    /* .rg-hero prefix: must beat `.rg-hero p { margin: 0 }` */
+    .rg-hero .rg-hero__rating {
       gap: 12px;
       margin-top: clamp(28px, calc(var(--rg-hero-vh) * 0.06), 72px);
       font-size: clamp(13px, 0.9cqw, 22px);
