@@ -31,3 +31,216 @@
   }
 </style>
 {{ 'rg-base.css' | asset_url | stylesheet_tag }}
+{%- if template.name == 'index' -%}
+  <script>
+    /* RAW GRAVITY · home page: one block = one screen (2026-11-18), see rg-base.css §5.
+       Desktop (>= 990px): the design canvas (1800 x 1050 CSS px) is scaled to fit the screen (--rg-z),
+       so a 13-17" laptop and a 27" monitor show the same composition.
+       Tablet (750-989px): the phone layout is laid out 480px wide and scaled up (--rg-tz).
+       Phone (< 750px): natural heights, nothing set.
+       Each section root with [data-rg-screen] fills one screen below the sticky header (the first one:
+       below the whole header group); [data-rg-screen="join"] shares the previous section's screen.
+       A screen whose content is taller is scaled down (--rg-fit); on tablets not below the phone size.
+       Desktop and tablet: html.rg-snap turns on scroll snapping (each wheel step / Space / swipe = one screen). */
+    (function () {
+      var root = document.documentElement;
+      var CANVAS_W = 1800;
+      var CANVAS_H = 1050;
+      var TABLET_W = 480;
+      var frame = 0;
+
+      function measure() {
+        var wrap = document.querySelector('.page-wrapper');
+        var header = document.getElementById('header-component');
+        var main = document.getElementById('MainContent');
+        var width = (wrap && wrap.clientWidth) || root.clientWidth;
+        var height = window.innerHeight;
+        var headerHeight = header ? header.offsetHeight : 76;
+        /* Header group (announcement bar + header) = where <main> starts on the page */
+        var groupHeight = main
+          ? main.getBoundingClientRect().top + (wrap ? wrap.scrollTop : 0) + window.scrollY
+          : headerHeight + 37;
+        var mode = width >= 990 ? 'desktop' : width >= 750 ? 'tablet' : 'phone';
+        var screen = height - headerHeight;
+        var first = height - groupHeight;
+        var zoom = Math.min(width / CANVAS_W, screen / CANVAS_H);
+
+        if (mode === 'desktop' && height > width) {
+          /* Portrait screen >= 990px (13" tablets): a screen is one canvas tall */
+          screen = Math.min(screen, CANVAS_H * zoom);
+          first = Math.min(first, screen);
+        }
+        if (mode === 'desktop') root.style.setProperty('--rg-z', zoom.toFixed(4));
+        else root.style.removeProperty('--rg-z');
+        if (mode === 'tablet') root.style.setProperty('--rg-tz', (width / TABLET_W).toFixed(4));
+        else root.style.removeProperty('--rg-tz');
+        root.style.setProperty('--rg-screen', screen + 'px');
+        root.style.setProperty('--rg-first', first + 'px');
+        root.style.setProperty('--rg-hh', headerHeight + 'px');
+        root.style.setProperty('--rg-bar', Math.max(0, groupHeight - headerHeight) + 'px');
+        root.classList.toggle('rg-snap', mode !== 'phone');
+        return { mode: mode, screen: screen, first: first, tabletZoom: width / TABLET_W };
+      }
+
+      function layout() {
+        frame = 0;
+        var view = measure();
+        var main = document.getElementById('MainContent');
+        if (!main) return;
+        var sections = Array.prototype.slice.call(main.querySelectorAll('[data-rg-screen]'));
+        sections.forEach(function (el) {
+          el.style.removeProperty('--rg-fit');
+          el.style.removeProperty('min-height');
+          el.style.removeProperty('height');
+        });
+        if (view.mode === 'phone' || !sections.length) return;
+
+        /* Natural heights: .rg-measure drops the sections' own one-screen heights */
+        sections.forEach(function (el) {
+          el.classList.add('rg-measure');
+        });
+        var groups = [];
+        sections.forEach(function (el) {
+          var height = el.getBoundingClientRect().height;
+          var item = { el: el, height: height, ratio: el.offsetHeight ? height / el.offsetHeight : 1 };
+          if (el.getAttribute('data-rg-screen') === 'join' && groups.length) groups[groups.length - 1].push(item);
+          else groups.push([item]);
+        });
+        sections.forEach(function (el) {
+          el.classList.remove('rg-measure');
+        });
+
+        var firstSection = main.querySelector('.shopify-section');
+        groups.forEach(function (group) {
+          var available = firstSection && firstSection.contains(group[0].el) ? view.first : view.screen;
+          var total = group.reduce(function (sum, item) {
+            return sum + item.height;
+          }, 0);
+
+          if (total > available + 1) {
+            /* Viewport-based sizes inside do not scale with zoom, so refine the factor a few times */
+            var fit = 1;
+            var floor = view.mode === 'tablet' ? 1 / view.tabletZoom : 0;
+            for (var pass = 0; pass < 8 && Math.abs(total - available) > 1; pass++) {
+              fit = Math.max(floor, (fit * available) / total);
+              group.forEach(function (item) {
+                item.el.style.setProperty('--rg-fit', fit.toFixed(4));
+                item.el.style.minHeight = '0px';
+                item.el.style.height = 'auto';
+              });
+              if (fit === floor) break;
+              total = group.reduce(function (sum, item) {
+                return sum + item.el.getBoundingClientRect().height;
+              }, 0);
+            }
+          } else {
+            /* Shorter: the first section of the screen takes the free space (its content is centred) */
+            var lead = group[0];
+            lead.el.style.minHeight = ((available - (total - lead.height)) / lead.ratio).toFixed(2) + 'px';
+            group.slice(1).forEach(function (item) {
+              item.el.style.minHeight = '0px';
+            });
+          }
+        });
+      }
+
+      function schedule() {
+        if (!frame) frame = requestAnimationFrame(layout);
+      }
+
+      measure();
+      document.addEventListener('DOMContentLoaded', function () {
+        layout();
+        var group = document.getElementById('header-group');
+        if (group && 'ResizeObserver' in window) {
+          var observer = new ResizeObserver(schedule);
+          Array.prototype.forEach.call(group.children, function (child) {
+            observer.observe(child);
+          });
+        }
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule);
+      });
+      window.addEventListener('load', schedule);
+      /* Phones/tablets: ignore the browser bars showing and hiding while scrolling */
+      var lastWidth = window.innerWidth;
+      var lastHeight = window.innerHeight;
+      window.addEventListener('resize', function () {
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        var desktop = root.style.getPropertyValue('--rg-z') !== '';
+        if (!desktop && width === lastWidth && Math.abs(height - lastHeight) < 120) return;
+        lastWidth = width;
+        lastHeight = height;
+        schedule();
+      });
+      document.addEventListener('shopify:section:load', schedule);
+
+      /* Space / Shift+Space / Page Down / Page Up: exactly one screen (the browser's own step is 87.5% of the
+         window and depends on which element it treats as the scroller). Inside a screen taller than the
+         window the step is one window. */
+      document.addEventListener('keydown', function (event) {
+        if (!root.classList.contains('rg-snap') || event.defaultPrevented) return;
+        if (event.altKey || event.ctrlKey || event.metaKey || root.hasAttribute('scroll-lock')) return;
+        var space = event.key === ' ' || event.key === 'Spacebar';
+        var down = event.key === 'PageDown' || (space && !event.shiftKey);
+        var up = event.key === 'PageUp' || (space && event.shiftKey);
+        if (!down && !up) return;
+        var target = event.target;
+        if (
+          target &&
+          (target.isContentEditable ||
+            (space && target.closest && target.closest('a, button, input, textarea, select, summary, [role="button"]')))
+        )
+          return;
+
+        var wrap = document.querySelector('.page-wrapper');
+        var scroller = window.innerWidth >= 990 && wrap ? wrap : document.scrollingElement || root;
+        var current = scroller.scrollTop;
+        var max = scroller.scrollHeight - scroller.clientHeight;
+        var view = scroller === wrap ? wrap.getBoundingClientRect().top : 0;
+        var padding = parseFloat(getComputedStyle(scroller).scrollPaddingTop) || 0;
+        var page = scroller.clientHeight - padding;
+        /* Stops: every screen's start and, when a screen is taller than the window (tablets), its end,
+           so no part of the page is skipped */
+        var stops = [0, max];
+        var screens = Array.prototype.filter.call(
+          document.querySelectorAll('#MainContent > .shopify-section'),
+          function (section) {
+            return section.querySelector(':scope > [data-rg-screen]');
+          }
+        );
+        var start = 0;
+        screens.forEach(function (section, index) {
+          var box = section.getBoundingClientRect();
+          if (section.querySelector(':scope > [data-rg-screen]').getAttribute('data-rg-screen') !== 'join') {
+            start = box.top - view + current - padding - (parseFloat(getComputedStyle(section).scrollMarginTop) || 0);
+            stops.push(start);
+          }
+          var following = screens[index + 1];
+          var last = !following || following.querySelector(':scope > [data-rg-screen]').getAttribute('data-rg-screen') !== 'join';
+          var end = box.bottom - view + current - scroller.clientHeight;
+          if (last && end > start + 2) stops.push(end);
+        });
+        stops = stops
+          .map(function (stop) {
+            return Math.round(Math.min(max, Math.max(0, stop)));
+          })
+          .sort(function (a, b) {
+            return a - b;
+          });
+
+        var next = current;
+        if (down) {
+          for (var i = 0; i < stops.length; i++) if (stops[i] > current + 2) { next = stops[i]; break; }
+          next = Math.min(next, current + page);
+        } else {
+          for (var j = stops.length - 1; j >= 0; j--) if (stops[j] < current - 2) { next = stops[j]; break; }
+          next = Math.max(next, current - page);
+        }
+        if (next === current) return;
+        event.preventDefault();
+        scroller.scrollTo({ top: next, behavior: 'smooth' });
+      });
+    })();
+  </script>
+{%- endif -%}

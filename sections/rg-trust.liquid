@@ -3,11 +3,14 @@
   Outline icons (snippets/rg-line-icon.liquid) in a glowing circle; a custom image is the fallback.
   Desktop: 6 in a row (zoomed through .rg-z); mobile: 3 per row.
   Reference: Raw Gravity Landing(.dc.html) + Mobile, section[data-screen-label=Trust] (2026-11 update).
+  Home screens (2026-11-18): data-rg-screen="join" = shares the screen of the section above (Ambassador),
+  see rg-base.css §5.
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 
 <section
   class="rg rg-z rg-trust"
+  data-rg-screen="join"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}

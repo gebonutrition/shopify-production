@@ -3,7 +3,8 @@
   Light part: photo (left half on desktop, top strip on mobile) and a dark accordion
   (exclusive <details>, no JS). Dark band below: 4 benefit cards with outline icons.
   Reference: Raw Gravity Landing(.dc.html) + Mobile, sections "Differentiators" and "Benefits" (2026-11 update).
-  "Show photo and accordion" off = only the dark band (the home page uses rg-feel above it since 2026-11-18).
+  "Show photo and accordion" off = only the dark band (the home page uses rg-feel above it since 2026-11-18);
+  the band then shares rg-feel's screen (data-rg-screen="join", rg-base.css §5).
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
@@ -19,6 +20,7 @@
 
 <div
   class="rg rg-z rg-diff"
+  data-rg-screen{% unless s.show_main %}="join"{% endunless %}
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}
@@ -396,7 +398,7 @@
       flex-direction: column;
       justify-content: center;
       gap: 0;
-      min-height: calc((100vh - var(--header-height, 60px)) / var(--rg-z, 1));
+      min-height: calc(var(--rg-screen, calc(100vh - var(--header-height, 60px))) / var(--rg-z, 1));
       padding: clamp(58px, calc(var(--rg-diff-vh) * 0.08), 86px) 48px;
     }
 

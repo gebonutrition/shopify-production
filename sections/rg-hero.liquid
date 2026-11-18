@@ -7,6 +7,7 @@
   Copy block (2026-11-18, client screenshot "The last coffee you'll switch to"): on desktop the copy is centred
   vertically and every size is a ratio of the heading size (--rg-hero-h), measured on the screenshot;
   flat button, guarantee + shipping row. Line breaks typed in Heading are kept.
+  Home screens (2026-11-18): desktop height = the first screen (--rg-first), see rg-base.css §5.
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
@@ -23,6 +24,7 @@
 
 <section
   class="rg rg-z rg-hero"
+  data-rg-screen
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}
@@ -349,7 +351,7 @@
     .rg-hero {
       --rg-hero-vh: calc(100vh / var(--rg-z, 1));
       container-type: inline-size;
-      height: calc((100vh - var(--header-height, 60px)) / var(--rg-z, 1));
+      height: calc(var(--rg-first, calc(100vh - var(--header-height, 60px))) / var(--rg-z, 1));
       min-height: 560px;
       background: #121213;
     }

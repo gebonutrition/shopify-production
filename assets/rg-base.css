@@ -306,8 +306,9 @@ body {
     --rg-z: 0.6;
   }
 
+  /* --rg-fit: home screens whose content is taller than the screen (§5) */
   .rg-z {
-    zoom: var(--rg-z);
+    zoom: calc(var(--rg-z) * var(--rg-fit, 1));
     scroll-margin-top: calc((var(--header-group-height, 94px) + 8px) / var(--rg-z));
   }
 }
@@ -658,5 +659,63 @@ body {
 
   .rg-pay--responsive .rg-pay__g {
     font-size: 14px;
+  }
+}
+
+/* 5. Home page: one block = one screen (2026-11-18) ------------------------
+   The script in snippets/rg-head.liquid (home only) sets on :root
+   --rg-z      desktop >= 990px: min(width / 1800, (height - header) / 1050), the design canvas fitted to the
+               screen (overrides the ladder above, which stays as the no-JS fallback);
+   --rg-tz     tablet 750-989px: width / 480, the phone layout scaled up;
+   --rg-screen / --rg-first  visible height below the sticky header / below the whole header group;
+   and on each [data-rg-screen] section --rg-fit (< 1 when the screen's content is taller) or a min-height. */
+.rg-measure {
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+/* Scroll snapping (desktop and tablet, html.rg-snap from the script): a wheel step, Space / Page Down or a
+   swipe moves exactly one screen. Screens stop right under the sticky header (--rg-hh); the first one at the
+   top of the page, with the announcement bar (--rg-bar). The scroll container is .page-wrapper from 990px
+   (base.css) and the document below. A screen taller than the window scrolls freely inside. */
+@media screen and (min-width: 990px) {
+  html.rg-snap .page-wrapper {
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: var(--rg-hh, 76px);
+  }
+}
+
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  html.rg-snap {
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: var(--rg-hh, 60px);
+  }
+}
+
+html.rg-snap #MainContent > .shopify-section:has(> [data-rg-screen]:not([data-rg-screen='join'])) {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* A section sharing the previous screen: its end is a stop too (matters when the screen is taller than the window) */
+html.rg-snap #MainContent > .shopify-section:has(> [data-rg-screen='join']) {
+  scroll-snap-align: end;
+}
+
+html.rg-snap #MainContent > .shopify-section:first-child {
+  scroll-margin-top: var(--rg-bar, 0px);
+}
+
+html.rg-snap .page-wrapper > footer {
+  scroll-snap-align: end;
+}
+
+/* Tablet: the phone layout, scaled up, centred vertically in its screen */
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  main[data-template='index'] [data-rg-screen] {
+    zoom: calc(var(--rg-tz, 1) * var(--rg-fit, 1));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }

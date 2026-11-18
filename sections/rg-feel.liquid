@@ -10,6 +10,7 @@
   Phones and tablets (< 990px): one column (600px on tablets); the reference's mobile rules apply up to 520px.
   Images: photo and label from the image pickers, otherwise the theme assets rg-feel-photo(.jpg/-720.jpg)
   and rg-supplement-facts.jpg.
+  Home screens (2026-11-18): [data-rg-screen] + desktop zoom --rg-z x 1.25, see rg-base.css §5.
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
@@ -20,6 +21,7 @@
 
 <rg-feel
   class="rg rg-feel"
+  data-rg-screen
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}
@@ -745,10 +747,21 @@
     }
   }
 
-  /* Desktop: reference values 1:1 */
+  /* Desktop: reference values 1:1 at a 1440px screen. The home page's design canvas is 1800px wide
+     (rg-base.css: .rg-z, --rg-z), so the section is zoomed by --rg-z x 1.25 and scales with the other
+     screens; --rg-fit shrinks it when its screen (with the dark band below) is taller than the window. */
   @media screen and (min-width: 990px) {
+    .rg-feel {
+      zoom: calc(var(--rg-z, 0.8) * 1.25 * var(--rg-fit, 1));
+      scroll-margin-top: calc((var(--header-group-height, 94px) + 8px) / (var(--rg-z, 0.8) * 1.25));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
     .rg-feel__wrap {
-      padding: 64px 48px 48px;
+      width: 100%;
+      padding: 40px 48px 32px;
     }
 
     .rg-feel__grid {

@@ -35,6 +35,7 @@
 <script src="{{ 'rg-ingredients.js' | asset_url }}" type="module"></script>
 <section
   class="rg rg-z rg-ingp rg-ingp--{{ s.layout | default: 'product' }}"
+  data-rg-screen
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}
@@ -876,7 +877,7 @@
      The handoff modal is in fixed pixels, so the section zoom (.rg-z) is cancelled on the dialog. */
   @media screen and (min-width: 990px) {
     .rg-ingp--product .rg-ingp__dialog {
-      zoom: calc(1 / var(--rg-z, 1));
+      zoom: calc(1 / (var(--rg-z, 1) * var(--rg-fit, 1)));
       width: min(780px, calc(100vw - 48px));
       height: fit-content;
       min-height: 480px;
@@ -1185,7 +1186,7 @@
 
   @media screen and (min-width: 990px) {
     .rg-ingp--home {
-      min-height: calc((100vh - var(--header-height, 60px)) / var(--rg-z, 1));
+      min-height: calc(var(--rg-screen, calc(100vh - var(--header-height, 60px))) / var(--rg-z, 1));
     }
 
     .rg-ingp--home .rg-ingp__eyebrow {

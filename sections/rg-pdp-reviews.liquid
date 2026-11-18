@@ -31,6 +31,7 @@
 <script src="{{ 'rg-tabs.js' | asset_url }}" type="module"></script>
 <section
   class="rg rg-z rg-prev rg-prev--{{ s.layout | default: 'product' }}"
+  data-rg-screen
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}
@@ -745,7 +746,7 @@
 
   @media screen and (min-width: 990px) {
     .rg-prev--home {
-      min-height: calc((100vh - var(--header-height, 60px)) / var(--rg-z, 1));
+      min-height: calc(var(--rg-screen, calc(100vh - var(--header-height, 60px))) / var(--rg-z, 1));
     }
 
     .rg-prev--home .rg-prev__eyebrow {
