@@ -24,7 +24,7 @@
         "button_label": "GET 25% OFF →",
         "button_link": "shopify://products/raw-coffee-signature-jar",
         "note_title": "On your first order",
-        "note_text": "60-day money-back guarantee"
+        "note_text": "30-day money-back guarantee"
       }
     },
     "rg_benefits_band": {
@@ -741,7 +741,7 @@
           "type": "question",
           "settings": {
             "question": "Do you offer a money-back guarantee?",
-            "answer": "<p>Yes. If you're not happy for any reason, contact us within 60 days and we'll give you a full refund, no questions asked.</p>"
+            "answer": "<p>Yes. If you're not happy for any reason, contact us within 30 days and we'll give you a full refund, no questions asked.</p>"
           }
         },
         "rg_faq_6": {
@@ -849,7 +849,7 @@
           "type": "badge",
           "settings": {
             "image": "shopify://shop_images/rg-trust-6.png",
-            "label": "60-Day Money-Back Guarantee",
+            "label": "30-Day Money-Back Guarantee",
             "line_icon": "guarantee"
           }
         }
