@@ -61,7 +61,7 @@
         "tile_amino": {
           "type": "tile",
           "settings": {
-            "image": "shopify://shop_images/rg-pdp-ing-l-tyrosine.jpg",
+            "image": "shopify://shop_images/rg-pdp-ing-l-theanine.jpg",
             "name": "Amino acids",
             "dose": "400 mg",
             "ingredient": 5
@@ -109,7 +109,7 @@
           "settings": {
             "title": "What does it help with?",
             "use_description": false,
-            "content": "<p>Raw Coffee+ gives you calm, steady energy without jitters or the afternoon crash. Lion's Mane, Bacopa and Ginkgo support focus and memory, Holy Basil helps you handle stress, and 3,000 mg of creatine supports your body's natural energy.</p>"
+            "content": "<p>Steady energy: low caffeine plus 3,000 mg of creatine, L-Theanine and Taurine give you smooth energy that lasts all day, with no jitters and no 3 p.m. crash. Sharper focus: 1,000 mg of Lion's Mane, L-Tyrosine, Bacopa and Ginkgo support concentration, motivation and memory. Less stress: Holy Basil and L-Theanine help you stay calm and clear-headed when the day gets busy. A happier gut: low-caffeine Arabica with no added sugar or fillers is gentler on your stomach than regular coffee.</p>"
           }
         },
         "tab_2": {
@@ -125,15 +125,15 @@
           "settings": {
             "title": "How are results for people with sensitive stomachs?",
             "use_description": false,
-            "content": "<p>Our low-acid, low-caffeine Arabica is much gentler than regular coffee. L-Theanine slows caffeine absorption, so most customers with sensitive stomachs report no acid reflux, bloating or jitters.</p>"
+            "content": "<p>Most customers with sensitive stomachs tolerate it well. Raw Coffee+ uses low-acid, low-caffeine Arabica with no added sugar or fillers, so it's much gentler than regular coffee.</p>"
           }
         },
         "tab_4": {
           "type": "tab",
           "settings": {
-            "title": "What does it taste like?",
+            "title": "Does it taste like real coffee?",
             "use_description": false,
-            "content": "<p>Bold Arabica flavor with a deep, full-bodied mushroom note from our 10:1 Lion’s Mane extract, the highest amount among functional coffees on the market. No artificial flavors or maskers, just the real taste of a quality mushroom coffee that works.</p>"
+            "content": "<p>Yes. It's made from 100% Arabica, so it tastes like a smooth, rich cup of coffee — no artificial flavors or maskers.</p>"
           }
         },
         "tab_5": {
@@ -141,7 +141,7 @@
           "settings": {
             "title": "Description",
             "use_description": false,
-            "content": "<p>Low-caffeine 100% Arabica blended with Lion's Mane 10:1 extract, creatine, L-Theanine, Taurine, L-Tyrosine, Bacopa, Ginkgo and Holy Basil. 30 servings per bag. Vegan, non-GMO, no added sugar, made in the USA and third-party lab tested.</p>"
+            "content": "<p>Raw Coffee+ is low-caffeine 100% Arabica blended with Lion's Mane and creatine, plus L-Theanine and Taurine for calm, steady energy, L-Tyrosine for motivation, Bacopa and Ginkgo for memory and alertness, and Holy Basil to help you handle stress. You keep the taste and ritual of real coffee, and the energy builds gently and stays. 30 servings per bag.</p><p>Regular coffee lifts you fast and drops you just as fast. Raw Coffee+ has about 23 mg of caffeine per serving — roughly a quarter of a regular coffee — plus L-Theanine and adaptogens, so your energy stays smooth from morning to evening.</p>"
           }
         }
       },
@@ -167,11 +167,11 @@
       "settings": {
         "anchor": "buy",
         "edition_label": "LIMITED EDITION",
-        "rating_text": "4.8 · Rated on Amazon",
+        "rating_text": "4.8 · 12,480 reviews",
         "heading": "Raw Gravity® & Take My Muffin®\nMushroom Coffee",
-        "subtitle": "Instant Half Caff Arabica Coffee with Creatine 3,000mg, Lion’s Mane\n1,000mg, Nootropics & Adaptogens for Memory & Brain Health, Made in USA",
+        "subtitle": "Instant Half Caff Arabica Coffee with Creatine 3,000mg, Lion’s Mane\n10,000mg, Nootropics & Adaptogens for Memory & Brain Health, Made in USA",
         "card_brand": "RAW COFFEE+",
-        "card_text": "60-Day Money-Back Guarantee · Free US Shipping",
+        "card_text": "30-Day Money-Back Guarantee · Free US Shipping",
         "offer_title": "30-Day Supply",
         "offer_text": "1 bag · 30 servings",
         "offer_badge": "BEST VALUE · SAVE [percent]%",
@@ -183,7 +183,7 @@
         "tap_text": "Tap any item to see what’s inside",
         "cta_label": "START NOW RISK FREE",
         "checks": "Free US Shipping\n30-Day Money-Back Guarantee\n[recurring_price] Refill Ships in 30 Days\nAdjust Shipments or Cancel Anytime",
-        "open_first_tab": true
+        "open_first_tab": false
       }
     },
     "rg_as_seen": {

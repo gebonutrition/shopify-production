@@ -116,7 +116,7 @@
         "rg_ann_guarantee_pdp": {
           "type": "text",
           "settings": {
-            "text": "60-DAY MONEY-BACK GUARANTEE",
+            "text": "30-DAY MONEY-BACK GUARANTEE",
             "link": "",
             "icon": "none",
             "show_on": "product"

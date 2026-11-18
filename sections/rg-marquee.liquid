@@ -5,6 +5,9 @@
   "Home page: main landing v2 bar" (header group only): on the home page the bar moves above the
   header (flex order in .page-wrapper), uses the v2 sizes (desktop through .rg-z) and the header
   gets the v2 frosted background. Reference: Raw Gravity Landing(.dc.html) + Mobile (2026-11 update).
+  "Product pages: bar above the header" (header group only): on product pages the bar moves above the
+  header; on desktop the bar and the header stay on screen together (sticky), the bar uses the sizes of the
+  client handoff "PDP Raw Coffee+" (2026-11-18) and the header is 56px high on a 1320px content width.
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
@@ -54,6 +57,12 @@
     assign home_v2 = true
     assign rg_mq_classes = rg_mq_classes | append: ' rg-z rg-marquee--home'
   endif
+
+  assign pdp_v4 = false
+  if s.product_v4 and template.name == 'product' and section.id contains 'sections--'
+    assign pdp_v4 = true
+    assign rg_mq_classes = rg_mq_classes | remove: ' rg-marquee--gradient' | append: ' rg-marquee--pdp'
+  endif
 -%}
 
 {%- if home_v2 and has_items -%}
@@ -68,6 +77,63 @@
       box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 8px 24px -12px rgba(26, 26, 26, 0.18);
       -webkit-backdrop-filter: saturate(180%) blur(18px);
       backdrop-filter: saturate(180%) blur(18px);
+    }
+  </style>
+{%- endif -%}
+
+{%- if pdp_v4 and has_items -%}
+  <style>
+    #shopify-section-{{ section.id }} {
+      order: -1;
+    }
+
+    @media screen and (min-width: 990px) {
+      #shopify-section-{{ section.id }} {
+        position: sticky;
+        top: 0;
+        z-index: var(--layer-menu-drawer);
+      }
+
+      /* The sticky header sits under the 40px bar (-1px keeps Horizon's sticky-state observer working) */
+      body .header-section:has(> #header-component[sticky]) {
+        top: 39px;
+      }
+
+      body #header-component {
+        border-bottom: 1px solid #e8e8e4;
+      }
+
+      body #header-component .header__row--top {
+        --page-content-width: 1320px;
+        --page-width: 1400px;
+        min-height: 56px;
+      }
+
+      body #header-component .header__columns {
+        min-height: 56px;
+        padding-block: 0;
+      }
+
+      body #header-component .menu-list__link {
+        letter-spacing: 3px;
+      }
+
+      body #header-component .menu-list__link-title {
+        padding-inline: 18px;
+      }
+
+      body #header-component .header-menu {
+        margin-inline-start: -8px;
+      }
+
+      body #header-component .search-action {
+        margin-inline-end: 8px;
+      }
+
+      body #header-component header-actions {
+        gap: 14px;
+        margin-inline-end: -11px;
+      }
     }
   </style>
 {%- endif -%}
@@ -320,6 +386,40 @@
     }
   }
 
+  /* Product pages (client handoff "PDP Raw Coffee+"): 40px bar, 13px/700/3px, "•" with 36px on both sides,
+     no pause on hover. 20s per copy of the items, as in the reference (40s for two copies). */
+  @media screen and (min-width: 990px) {
+    .rg-marquee.rg-marquee--pdp {
+      height: 40px;
+      background: #2b2b2b;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3px;
+    }
+
+    .rg-marquee--pdp .rg-marquee__item {
+      gap: 0;
+      padding-inline-end: 0;
+    }
+
+    .rg-marquee--pdp .rg-marquee__dot {
+      width: auto;
+      height: auto;
+      margin: 0 36px;
+      border-radius: 0;
+      background: none;
+    }
+
+    .rg-marquee--pdp .rg-marquee__dot::before {
+      content: '•';
+      color: var(--rg-mq-accent);
+    }
+
+    .rg-marquee--pdp.rg-marquee--pausable:hover .rg-marquee__track {
+      animation-play-state: running;
+    }
+  }
+
   /* Product page design: dark teal-to-graphite band */
   .rg-marquee.rg-marquee--gradient {
     background: linear-gradient(90deg, #26464f 0%, #2f3a3d 35%, #323232 70%, #2e2e2e 100%);
@@ -428,6 +528,13 @@
       "id": "home_v2",
       "label": "Home page: main landing v2 bar",
       "info": "Header group only: on the home page the bar sits above the header, with the v2 sizes and a frosted header.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "product_v4",
+      "label": "Product pages: bar above the header",
+      "info": "Header group only: on product pages the bar sits above the header and both stay on screen on desktop (client handoff 2026-11-18). Replaces the product gradient.",
       "default": true
     },
     {

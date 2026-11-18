@@ -8,8 +8,8 @@
   Without a selling plan the button adds a one-time purchase (a notice shows in the theme editor).
   Add to cart runs through Horizon's <product-form-component> (cart drawer, events).
   Ingredient tiles open the dialog of the "RG · Ingredients (PDP)" section.
-  Desktop is rendered through .rg-z (assets/rg-base.css), so sizes below are design values.
-  Reference: Raw Coffee Product Page v2(.dc.html) + Mobile v2, section "03 First screen".
+  Desktop: client handoff "PDP Raw Coffee+" (2026-11-18), fixed pixel values, own zoom below 1400px.
+  Mobile: Raw Coffee Product Page Mobile v2, section "03 First screen".
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
@@ -53,7 +53,7 @@
 -%}
 
 <script src="{{ 'rg-video-reviews.js' | asset_url }}" type="module"></script>
-<section class="rg rg-z rg-pdp" id="{{ s.anchor | default: 'buy' | handle }}">
+<section class="rg rg-pdp" id="{{ s.anchor | default: 'buy' | handle }}">
   <div class="rg-pdp__grid">
     {%- comment -%} Gallery {%- endcomment -%}
     <div class="rg-pdp__media">
@@ -199,6 +199,7 @@
                       | replace: '[recurring_price]', recurring_money
                       | replace: '[compare_price]', compare_money
                       | newline_to_br
+                      | replace: '<br />', '<br class="rg-br-m">'
                     -}}
                   </span>
                 {%- endif -%}
@@ -229,7 +230,7 @@
                   {%- if block.type == 'perk' -%}
                     <li class="rg-pdp__perk" {{ block.shopify_attributes }}>
                       <span class="rg-pdp__perk-icon" aria-hidden="true">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                        <svg class="rg-pdp__perk-svg--m" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
                           {%- case block.settings.icon -%}
                             {%- when 'energy' -%}
                               <path d="M13 2L4 14h7l-1 8 9-12h-7z"/>
@@ -241,8 +242,20 @@
                               <path d="M12 3a6 6 0 0 0-6 6c0 2 1 3.5 2.5 4.5V17h7v-3.5C17 12.5 18 11 18 9a6 6 0 0 0-6-6z"/><path d="M9.5 20h5"/>
                           {%- endcase -%}
                         </svg>
+                        <svg class="rg-pdp__perk-svg--d" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                          {%- case block.settings.icon -%}
+                            {%- when 'energy' -%}
+                              <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/>
+                            {%- when 'gut' -%}
+                              <path d="M9 3v4c0 2 3 2 3 5s-5 2-5 6c0 2 2 3 4 3"/><path d="M14 3v3"/>
+                            {%- when 'dose' -%}
+                              <circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="9" r="2.5"/><circle cx="9" cy="18" r="2.5"/><path d="M8.3 7.2l7.4 1.2M16.6 11l-6 5.2M6.6 8.4l1.8 7.2"/>
+                            {%- else -%}
+                              <path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a2 2 0 0 0-3-1z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1"/>
+                          {%- endcase -%}
+                        </svg>
                       </span>
-                      <span class="rg-pdp__perk-text">{{ block.settings.text | escape | newline_to_br }}</span>
+                      <span class="rg-pdp__perk-text">{{ block.settings.text | escape | newline_to_br | replace: '<br />', '<br class="rg-br-m">' }}</span>
                     </li>
                   {%- endif -%}
                 {%- endfor -%}
@@ -322,7 +335,8 @@
                 {%- assign line_text = line | strip -%}
                 {%- if line_text != blank -%}
                   <li>
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
+                    <svg class="rg-pdp__check-svg--m" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
+                    <svg class="rg-pdp__check-svg--d" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.1V12a9 9 0 1 1-5.3-8.2"/><path d="M21 4L12 13.01l-3-3"/></svg>
                     {{- line_text | escape | replace: '[first_price]', first_money | replace: '[recurring_price]', recurring_money -}}
                   </li>
                 {%- endif -%}
@@ -853,6 +867,11 @@
     white-space: nowrap;
   }
 
+  .rg-pdp__perk-svg--d,
+  .rg-pdp__check-svg--d {
+    display: none;
+  }
+
   .rg-pdp__serving-head {
     margin-top: 2px;
     font-size: 10px;
@@ -1190,7 +1209,7 @@
   }
 
   .rg-pdp__acc-item[open] .rg-pdp__acc-icon::before {
-    content: '−';
+    content: '–';
   }
 
   .rg-pdp__acc-a {
@@ -1209,32 +1228,39 @@
     margin-top: 8px;
   }
 
-  /* ---------- Desktop (Raw Coffee Product Page v2, rendered through .rg-z) ---------- */
+  /* ---------- Desktop (client handoff "PDP Raw Coffee+", 2026-11-18) ----------
+     The reference is a fixed-pixel layout: 1400px container, two 584px columns, 70px gap.
+     From 1400px the values below are used 1:1; narrower desktops scale the section with zoom. */
   @media screen and (min-width: 990px) {
     .rg-pdp {
-      background: linear-gradient(100deg, #f1ecfb 0%, #f8f8f8 22%, #f8f8f8 75%, #e6f6fb 100%);
+      --rg-pdp-z: 0.78;
+      zoom: var(--rg-pdp-z);
+      scroll-margin-top: calc((var(--header-group-height, 97px) + 8px) / var(--rg-pdp-z));
+      background: #f6f6f4;
+      line-height: normal;
     }
 
     .rg-pdp__grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 585px);
-      gap: 56px;
-      align-items: start;
-      max-width: none;
-      padding: 8px max(40px, calc((100% - 1240px) / 2)) 80px 24px;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 70px;
+      align-items: flex-start;
+      justify-content: center;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 40px 64px;
     }
 
+    /* Gallery */
     .rg-pdp__media {
       position: sticky;
-      top: calc((var(--header-group-height, 94px) + 10px) / var(--rg-z, 1));
-      justify-self: center;
-      width: min(
-        calc(100% - 152px),
-        max(260px, calc(((100vh - var(--header-group-height, 94px)) / var(--rg-z, 1) - 52px) * 0.889))
-      );
+      top: calc((var(--header-group-height, 97px) + 24px) / var(--rg-pdp-z));
+      flex: 0 1 584px;
+      min-width: 0;
     }
 
     .rg-pdp__gallery {
+      align-items: stretch;
       gap: 10px;
     }
 
@@ -1245,25 +1271,25 @@
 
     .rg-pdp__stage {
       width: 100%;
+      border: 0;
       border-radius: 16px;
-    }
-
-    .rg-pdp__image {
-      object-fit: contain;
+      background: #ffffff;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.06);
     }
 
     .rg-pdp__arrow {
       position: absolute;
       top: 50%;
       z-index: 3;
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       padding: 0;
       border: 0;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.92);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      font-size: 22px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      color: #2b2b2b;
+      font: 400 20px/1 var(--rg-font-body);
       transform: translateY(-50%);
     }
 
@@ -1276,124 +1302,383 @@
     }
 
     .rg-pdp__counter {
-      right: 16px;
-      bottom: 16px;
-      padding: 6px 12px;
-      font-size: 13px;
+      display: none;
     }
 
     .rg-pdp__thumbs {
-      gap: 10px;
-      margin-top: 0;
+      display: flex;
+      gap: 8px;
+      margin: -4px -4px -12px;
+      padding: 4px 4px 12px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .rg-pdp__thumbs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .rg-pdp__thumbs.is-dragging {
+      cursor: grabbing;
     }
 
     .rg-pdp__thumb {
-      border-radius: 12px;
+      flex: 0 0 96px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.06);
+      cursor: inherit;
+    }
+
+    .rg-pdp__thumb[aria-current='true'] {
+      border-color: #3a3a3a;
+    }
+
+    .rg-pdp__thumb img {
+      -webkit-user-drag: none;
+    }
+
+    /* Info column */
+    .rg-pdp__info {
+      flex: 0 1 584px;
+      gap: 16px;
+      max-width: 584px;
     }
 
     .rg-pdp__meta {
-      margin-top: 0;
+      flex-wrap: nowrap;
+      gap: 10px;
+      margin: 0;
+      font-size: 13px;
+      color: #555555;
     }
 
     .rg-pdp__edition {
-      font-size: 13px;
+      padding: 4px 10px;
+      border-radius: 14px;
+      background: #2b2b2b;
+      box-shadow: none;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: normal;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
     .rg-pdp__stars {
+      color: #ff9f1a;
+      font-size: 17px;
+      line-height: 1;
+      letter-spacing: 1px;
+    }
+
+    .rg-pdp__rating {
       font-size: 13px;
+      color: #555555;
     }
 
     .rg-pdp__title {
-      margin-top: 14px;
-      font-size: 29px;
-      letter-spacing: -0.01em;
+      margin: 0;
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.6px;
+      text-transform: none;
+      white-space: normal;
+      color: #2b2b2b;
     }
 
+    .rg-pdp__title sup {
+      margin-left: 1px;
+      font-size: 0.5em;
+      font-weight: 900;
+      line-height: 0;
+      vertical-align: 0.85em;
+    }
+
+    /* Title and subtitle are one block in the reference (10px apart, not the 16px column gap) */
     .rg-pdp__subtitle {
-      margin-top: 12px;
-      font-size: 16px;
-      line-height: 1.6;
+      margin: -6px 0 0;
+      font-size: 14px;
+      line-height: 1.5;
       letter-spacing: 0;
       white-space: normal;
-      text-wrap: pretty;
+      color: #555555;
     }
 
+    /* Card */
     .rg-pdp__card {
-      margin-top: 18px;
+      margin: 0;
+      border: 1px solid #cfeef8;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 8px 28px rgba(30, 203, 245, 0.1);
     }
 
     .rg-pdp__card-head {
-      font-size: 17px;
+      display: block;
+      padding: 10px 16px;
+      background: #2b2b2b;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: normal;
+      letter-spacing: 0.5px;
     }
 
-    .rg-pdp__offer-title,
+    .rg-pdp__brand {
+      color: #1ecbf5;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+    }
+
+    .rg-pdp__card-text::before {
+      content: '· ';
+    }
+
+    .rg-pdp__form {
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .rg-pdp__offer {
+      gap: 0;
+      padding: 16px 16px 12px;
+      border: 2px solid #1ecbf5;
+      border-radius: 14px;
+      background: #f0fbfe;
+    }
+
+    .rg-pdp__offer-top,
+    .rg-pdp__offer-name {
+      gap: 10px;
+    }
+
+    .rg-pdp__radio {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      border-color: #1ecbf5;
+    }
+
+    .rg-pdp__radio::after {
+      width: 8px;
+      height: 8px;
+      background: #1ecbf5;
+    }
+
+    .rg-pdp__offer-copy {
+      gap: 0;
+    }
+
+    .rg-pdp__offer-title {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: normal;
+      color: #2b2b2b;
+    }
+
     .rg-pdp__offer-text {
-      font-size: 15px;
+      font-size: 13px;
+      line-height: normal;
+      color: #555555;
     }
 
     .rg-pdp__offer-badge {
-      font-size: 13px;
+      padding: 4px 10px;
+      border-radius: 14px;
+      background: #1ecbf5;
+      box-shadow: none;
+      color: #2b2b2b;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: normal;
+      letter-spacing: 0.5px;
     }
 
     .rg-pdp__offer-price {
-      gap: 12px;
+      gap: 10px;
+      margin-top: 12px;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .rg-pdp__price-col {
+      gap: 4px;
+    }
+
+    .rg-pdp__price-row {
+      gap: 4px;
     }
 
     .rg-pdp__price {
-      font-size: 30px;
+      font-size: 26px;
+      font-weight: 800;
+      line-height: normal;
+      color: #2b2b2b;
     }
 
     .rg-pdp__price-old {
-      font-size: 17px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #888888;
     }
 
     .rg-pdp__price-note {
-      font-size: 15px;
+      font-size: 11px;
       line-height: normal;
       white-space: normal;
+      color: #8a8a8a;
+    }
+
+    .rg-pdp__serving {
+      gap: 0;
     }
 
     .rg-pdp__serving-price {
-      font-size: 15px;
-      line-height: 1;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: normal;
+      color: #2b2b2b;
     }
 
     .rg-pdp__serving-label {
-      font-size: 15px;
+      font-size: 11px;
       line-height: normal;
+      color: #666666;
     }
 
     .rg-pdp__perks {
-      gap: 12px 20px;
-      font-size: 15px;
+      grid-template-columns: auto auto;
+      justify-content: space-between;
+      gap: 10px 6px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #d6f1fa;
+      font-size: 12px;
+      line-height: normal;
+      letter-spacing: -0.15px;
+      white-space: nowrap;
+      color: #2b2b2b;
     }
 
-    .rg-pdp__perk-text {
-      white-space: normal;
-      text-wrap: balance;
+    .rg-pdp__perk {
+      gap: 8px;
+      min-height: 0;
+    }
+
+    .rg-pdp__perk-icon {
+      width: auto;
+      height: auto;
+      border-radius: 0;
+      background: none;
+      box-shadow: none;
+      color: #2b2b2b;
+    }
+
+    .rg-pdp__perk-svg--m {
+      display: none;
+    }
+
+    .rg-pdp__perk-svg--d {
+      display: block;
     }
 
     .rg-pdp__serving-head {
-      font-size: 13px;
+      display: block;
+      margin-top: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: normal;
+      letter-spacing: 2px;
+      color: #12a8cf;
     }
 
-    .rg-pdp__tile-name,
-    .rg-pdp__tile-dose,
+    .rg-pdp__tiles {
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .rg-pdp__tile {
+      gap: 0;
+      font-size: 12px;
+    }
+
+    .rg-pdp__tile:hover {
+      opacity: 1;
+    }
+
+    .rg-pdp__tile-img {
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .rg-pdp__tile-i {
+      top: 6px;
+      right: 6px;
+      width: 16px;
+      height: 16px;
+      border: 1px solid #1ecbf5;
+      color: #12a8cf;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 15px;
+    }
+
+    .rg-pdp__tile-name {
+      margin-top: 6px;
+      font-size: 12px;
+      line-height: normal;
+      color: #2b2b2b;
+    }
+
+    .rg-pdp__tile-dose {
+      font-size: 11px;
+      font-weight: 800;
+      line-height: normal;
+      color: #12a8cf;
+    }
+
     .rg-pdp__tap {
-      font-size: 15px;
+      display: block;
+      margin-top: 10px;
+      font-size: 11px;
+      line-height: normal;
+      color: #777777;
     }
 
     .rg-pdp__cta {
-      height: 60px;
-      border-radius: 12px;
-      font-size: 19px;
+      height: 54px;
+      border-radius: 10px;
+      background: #1ecbf5;
+      box-shadow: 0 8px 24px rgba(30, 203, 245, 0.35);
+      color: #2b2b2b;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      transition: none;
+    }
+
+    .rg-pdp__cta:hover {
+      background: #12b3dc;
+      box-shadow: 0 8px 24px rgba(30, 203, 245, 0.35);
+      filter: none;
+    }
+
+    .rg-pdp__cta:active {
+      transform: none;
     }
 
     .rg-pdp__checks {
-      grid-template-columns: max-content max-content;
-      gap: 10px 24px;
-      padding: 4px 8px 0;
-      font-size: 15px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px 10px;
+      padding: 2px 18px 4px;
+      font-size: 11px;
+      line-height: normal;
+      color: #8a8a8a;
     }
 
     .rg-pdp__checks li {
@@ -1401,43 +1686,65 @@
     }
 
     .rg-pdp__checks svg {
-      width: 17px;
-      height: 17px;
+      width: 13px;
+      height: 13px;
+      color: #8a8a8a;
     }
 
+    .rg-pdp__check-svg--m {
+      display: none;
+    }
+
+    .rg-pdp__check-svg--d {
+      display: block;
+    }
+
+    /* Customer videos: 3 visible cards, 9:16, the 4th is reached with the arrows */
     .rg-pdp__vids {
-      margin-top: 40px;
+      margin: 0;
     }
 
     .rg-pdp__vids-track {
-      gap: 12px;
+      gap: 10px;
       scroll-behavior: smooth;
     }
 
     .rg-pdp__vid {
-      flex-basis: calc((100% - 24px) / 3);
+      flex-basis: calc((100% - 20px) / 3);
       border-radius: 12px;
+      background: #2b2b2b;
+    }
+
+    .rg-pdp__vid-shade {
+      display: none;
     }
 
     .rg-pdp__vid-badge {
-      top: 8px;
-      right: 8px;
-      left: auto;
-      width: 30px;
-      height: 30px;
-      box-shadow: 0 0 18px rgba(28, 203, 245, 0.55), 0 6px 20px rgba(28, 203, 245, 0.35);
-      transform: none;
+      top: 50%;
+      left: 50%;
+      width: 40px;
+      height: 40px;
+      background: #1ecbf5;
+      box-shadow: none;
+      color: #2b2b2b;
+      transform: translate(-50%, -50%);
     }
 
     .rg-pdp__vid-badge svg {
-      width: 11px;
-      height: 11px;
+      width: 14px;
+      height: 14px;
+      margin-left: 2px;
     }
 
     .rg-pdp__vid-name {
       bottom: 8px;
       left: 8px;
-      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 10px;
+      color: #2b2b2b;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: normal;
     }
 
     .rg-pdp__vids-arrow {
@@ -1452,16 +1759,12 @@
       padding: 0;
       border: 0;
       border-radius: 50%;
-      background: var(--rg-white);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-      color: var(--rg-graphite);
+      background: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      color: #2b2b2b;
       font: 400 20px/1 var(--rg-font-body);
       transform: translateY(-50%);
       cursor: pointer;
-    }
-
-    .rg-pdp__vids-arrow:hover {
-      background: var(--rg-accent);
     }
 
     .rg-pdp__vids-arrow--prev {
@@ -1472,17 +1775,55 @@
       right: -16px;
     }
 
+    /* Accordion */
     .rg-pdp__acc {
-      margin-top: 8px;
+      margin: 0;
+      border-bottom: 1px solid #e2e2de;
+    }
+
+    .rg-pdp__acc-item {
+      border-top: 1px solid #e2e2de;
+      border-bottom: 0;
     }
 
     .rg-pdp__acc-q {
       padding: 14px 0;
-      font-size: 17px;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: normal;
+      color: #2b2b2b;
+    }
+
+    .rg-pdp__acc-icon {
+      width: auto;
+      color: #1ecbf5;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1;
     }
 
     .rg-pdp__acc-a {
-      font-size: 17px;
+      padding: 0 0 16px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: #555555;
+    }
+
+    .rg-pdp__acc-a p + p {
+      margin-top: 1.6em;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    .rg-pdp {
+      --rg-pdp-z: 0.9;
+    }
+  }
+
+  @media screen and (min-width: 1400px) {
+    .rg-pdp {
+      --rg-pdp-z: 1;
     }
   }
 
@@ -1533,6 +1874,44 @@
             if (event.key === 'ArrowLeft') this.show(this.index - 1);
             if (event.key === 'ArrowRight') this.show(this.index + 1);
           });
+
+          /* Thumbnail strip: drag with the mouse to scroll (desktop); a drag does not select a thumbnail */
+          const strip = this.querySelector('.rg-pdp__thumbs');
+          if (strip) {
+            let down = false;
+            let moved = false;
+            let fromX = 0;
+            let fromLeft = 0;
+            strip.addEventListener('mousedown', (event) => {
+              if (event.button !== 0) return;
+              down = true;
+              moved = false;
+              fromX = event.pageX;
+              fromLeft = strip.scrollLeft;
+              strip.classList.add('is-dragging');
+            });
+            window.addEventListener('mousemove', (event) => {
+              if (!down) return;
+              const dx = event.pageX - fromX;
+              if (Math.abs(dx) > 4) moved = true;
+              strip.scrollLeft = fromLeft - dx;
+            });
+            window.addEventListener('mouseup', () => {
+              if (!down) return;
+              down = false;
+              strip.classList.remove('is-dragging');
+            });
+            strip.addEventListener(
+              'click',
+              (event) => {
+                if (!moved) return;
+                event.stopPropagation();
+                event.preventDefault();
+                moved = false;
+              },
+              true
+            );
+          }
 
           let startX = null;
           const stage = this.querySelector('.rg-pdp__stage');
@@ -1593,7 +1972,7 @@
       "type": "text",
       "id": "rating_text",
       "label": "Rating text",
-      "default": "4.8 · Rated on Amazon",
+      "default": "4.8 · 12,480 reviews",
       "info": "Must match the current Amazon rating."
     },
     {
@@ -1622,7 +2001,7 @@
       "type": "text",
       "id": "card_text",
       "label": "Card subtitle",
-      "default": "60-Day Money-Back Guarantee · Free US Shipping"
+      "default": "30-Day Money-Back Guarantee · Free US Shipping"
     },
     {
       "type": "text",
