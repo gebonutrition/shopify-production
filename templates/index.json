@@ -16,15 +16,13 @@
         "image": "shopify://shop_images/hero-dark-v2.png",
         "rating_value": "4.8",
         "rating_text": "on Amazon",
-        "heading": "Nootropic coffee for clean jitter-free energy",
-        "heading_nowrap": "jitter-free",
-        "lead": "Mushroom coffee with 10:1 Lion’s Mane and ¼ the caffeine of regular coffee.",
-        "text": "9 functional ingredients for focus, calm energy and memory, all day long.",
-        "tagline": "Upgrade your morning ritual",
-        "button_label": "GET 25% OFF →",
+        "heading": "The last\ncoffee you’ll\nswitch to",
+        "lead": "Lion’s Mane for focus. Creatine for strength. Adaptogens for stress support.",
+        "tagline": "Black Friday sale up to 50% off",
+        "button_label": "GET 50% OFF →",
         "button_link": "shopify://products/raw-coffee-signature-jar",
-        "note_title": "On your first order",
-        "note_text": "30-day money-back guarantee"
+        "note_text": "30-day money-back guarantee.",
+        "note_text_2": "Free US shipping."
       }
     },
     "rg_benefits_band": {

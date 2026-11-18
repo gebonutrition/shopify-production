@@ -4,13 +4,16 @@
   Mobile: rating, heading, photo strip, copy, button.
   The photo is one <img>: on desktop it moves to the right column (grid row span).
   Reference: Raw Gravity Landing(.dc.html) + Mobile, section#top (2026-11 update).
+  Copy block (2026-11-18, client screenshot "The last coffee you'll switch to"): on desktop the copy is centred
+  vertically and every size is a ratio of the heading size (--rg-hero-h), measured on the screenshot;
+  flat button, guarantee + shipping row. Line breaks typed in Heading are kept.
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
   assign button_link = s.button_link | default: routes.all_products_collection_url
-  assign image_alt = s.image.alt | default: s.heading | escape
+  assign image_alt = s.image.alt | default: s.heading | newline_to_br | replace: '<br />', ' ' | strip_newlines | escape
 
-  assign heading = s.heading | escape
+  assign heading = s.heading | escape | newline_to_br
   if s.heading_nowrap != blank
     assign nowrap = s.heading_nowrap | escape
     assign nowrap_span = '<span class="rg-hero__nowrap">' | append: nowrap | append: '</span>'
@@ -64,7 +67,9 @@
       {%- endif -%}
       {%- if s.tagline != blank -%}
         <p class="rg-hero__tagline rg-hero__rise">
-          <span class="rg-hero__tagline-line" aria-hidden="true"></span>
+          {%- if s.tagline_line -%}
+            <span class="rg-hero__tagline-line" aria-hidden="true"></span>
+          {%- endif -%}
           {{- s.tagline | escape -}}
         </p>
       {%- endif -%}
@@ -74,16 +79,26 @@
       {%- if s.button_label != blank -%}
         <a class="rg-hero__button" href="{{ button_link }}">{{ s.button_label | escape }}</a>
       {%- endif -%}
-      {%- if s.note_title != blank or s.note_text != blank -%}
+      {%- if s.note_title != blank or s.note_text != blank or s.note_text_2 != blank -%}
         <div class="rg-hero__note">
           {%- if s.note_title != blank -%}
             <p class="rg-hero__note-title">{{ s.note_title | escape }}</p>
           {%- endif -%}
-          {%- if s.note_text != blank -%}
-            <p class="rg-hero__note-text">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
-              {{- s.note_text | escape -}}
-            </p>
+          {%- if s.note_text != blank or s.note_text_2 != blank -%}
+            <ul class="rg-hero__note-list" role="list">
+              {%- if s.note_text != blank -%}
+                <li class="rg-hero__note-text">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg>
+                  {{- s.note_text | escape -}}
+                </li>
+              {%- endif -%}
+              {%- if s.note_text_2 != blank -%}
+                <li class="rg-hero__note-text">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+                  {{- s.note_text_2 | escape -}}
+                </li>
+              {%- endif -%}
+            </ul>
           {%- endif -%}
         </div>
       {%- endif -%}
@@ -120,7 +135,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font: 600 12px/1 var(--rg-font-body);
+    font: 700 12px/1 var(--rg-font-body);
     white-space: nowrap;
   }
 
@@ -130,11 +145,7 @@
   }
 
   .rg-hero__rating b {
-    font-weight: 800;
-  }
-
-  .rg-hero__rating-text {
-    color: #a8a8a8;
+    font-weight: 700;
   }
 
   .rg-hero .rg-hero__title {
@@ -206,8 +217,8 @@
     align-items: center;
     gap: 10px;
     margin-top: 2px;
-    font: 700 10px/1 var(--rg-font-body);
-    letter-spacing: 0.32em;
+    font: 700 12px/1 var(--rg-font-body);
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--rg-accent);
   }
@@ -232,14 +243,13 @@
     justify-content: center;
     gap: 10px;
     width: 100%;
-    min-height: 58px;
+    min-height: 52px;
     padding: 0 24px;
-    border-radius: 14px;
+    border-radius: 8px;
     background: var(--rg-accent);
-    box-shadow: 0 0 18px rgba(28, 203, 245, 0.55), 0 6px 20px rgba(28, 203, 245, 0.35);
-    color: var(--rg-ink);
-    font: 800 17px/1 var(--rg-font-body);
-    letter-spacing: 0.1em;
+    color: #111111;
+    font: 600 16px/1 var(--rg-font-body);
+    letter-spacing: 0.02em;
     text-align: center;
     text-decoration: none;
     white-space: nowrap;
@@ -247,7 +257,7 @@
   }
 
   .rg-hero__button:hover {
-    color: var(--rg-ink);
+    color: #111111;
   }
 
   .rg-hero__button:focus-visible {
@@ -268,17 +278,31 @@
     color: var(--rg-on-dark);
   }
 
+  .rg-hero__note-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 1.55em;
+    margin: 0;
+    padding: 0;
+    font: 700 12px/1.2 var(--rg-font-body);
+    list-style: none;
+  }
+
   .rg-hero .rg-hero__note-text {
     display: flex;
     align-items: center;
-    gap: 7px;
-    font: 500 12px/1 var(--rg-font-body);
-    color: #d4d4d4;
+    gap: 0.5em;
+    margin: 0;
+    font: inherit;
+    color: var(--rg-on-dark);
     white-space: nowrap;
   }
 
   .rg-hero__note-text svg {
     flex: none;
+    width: 1.1em;
+    height: 1.1em;
     color: var(--rg-accent);
   }
 
@@ -338,11 +362,14 @@
       pointer-events: none;
     }
 
-    /* The content column's children and the photo share one grid: copy in column 1, photo spans column 2 */
+    /* The content column's children and the photo share one grid: copy in column 1 (rows 2-5, centred
+       vertically by the two 1fr rows), photo spans column 2. --rg-hero-h = heading size; the copy block's
+       sizes are ratios of it, measured on the client screenshot (heading 59.7px there). */
     .rg-hero__inner {
+      --rg-hero-h: clamp(32px, min(4.7cqw, calc(var(--rg-hero-vh) * 0.074)), 124px);
       display: grid;
       grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
-      grid-template-rows: auto auto auto auto minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr) auto auto auto auto minmax(0, 1fr);
       column-gap: clamp(16px, 2cqw, 40px);
       align-items: start;
       max-width: 2200px;
@@ -358,22 +385,40 @@
       min-width: 0;
     }
 
+    .rg-hero__rating {
+      grid-row: 2;
+    }
+
+    .rg-hero__title {
+      grid-row: 3;
+    }
+
+    .rg-hero__copy {
+      grid-row: 4;
+    }
+
+    .rg-hero__actions {
+      grid-row: 5;
+    }
+
     /* .rg-hero prefix: must beat `.rg-hero p { margin: 0 }` */
     .rg-hero .rg-hero__rating {
-      gap: 12px;
-      margin-top: clamp(28px, calc(var(--rg-hero-vh) * 0.06), 72px);
-      font-size: clamp(13px, 0.9cqw, 22px);
+      gap: calc(var(--rg-hero-h) * 0.143);
+      margin-top: 0;
+      font-size: max(13px, calc(var(--rg-hero-h) * 0.218));
     }
 
     .rg-hero__stars {
-      letter-spacing: 0.1em;
+      font-size: 0.85em;
+      letter-spacing: 0.05em;
     }
 
     .rg-hero .rg-hero__title {
-      margin-top: clamp(12px, calc(var(--rg-hero-vh) * 0.022), 26px);
-      font-size: clamp(32px, min(4.7cqw, calc(var(--rg-hero-vh) * 0.074)), 124px);
+      margin-top: calc(var(--rg-hero-h) * 0.074);
+      font-size: var(--rg-hero-h);
       line-height: 0.94;
       letter-spacing: -0.035em;
+      text-wrap: wrap;
     }
 
     .rg-hero__media {
@@ -409,13 +454,16 @@
     }
 
     .rg-hero__copy {
-      gap: clamp(8px, calc(var(--rg-hero-vh) * 0.014), 16px);
-      max-width: 46em;
-      margin-top: clamp(12px, calc(var(--rg-hero-vh) * 0.02), 22px);
+      gap: calc(var(--rg-hero-h) * 0.226);
+      width: min(100%, calc(var(--rg-hero-h) * 7.64));
+      max-width: none;
+      margin-top: calc(var(--rg-hero-h) * 0.139);
     }
 
     .rg-hero .rg-hero__lead {
-      font-size: clamp(16px, min(1.2cqw, calc(var(--rg-hero-vh) * 0.022)), 31px);
+      font-size: max(16px, calc(var(--rg-hero-h) * 0.335));
+      line-height: 1.3;
+      text-wrap: wrap;
     }
 
     .rg-hero .rg-hero__text {
@@ -424,7 +472,7 @@
     }
 
     .rg-hero .rg-hero__tagline {
-      font-size: clamp(11px, 0.75cqw, 19px);
+      font-size: max(12px, calc(var(--rg-hero-h) * 0.254));
     }
 
     .rg-hero__tagline-line {
@@ -432,35 +480,36 @@
     }
 
     .rg-hero__actions {
-      gap: clamp(12px, calc(var(--rg-hero-vh) * 0.016), 18px);
-      width: min(100%, clamp(420px, 30cqw, 640px));
-      margin-top: clamp(16px, calc(var(--rg-hero-vh) * 0.032), 32px);
-      margin-bottom: clamp(20px, calc(var(--rg-hero-vh) * 0.04), 48px);
+      gap: calc(var(--rg-hero-h) * 0.246);
+      width: min(100%, calc(var(--rg-hero-h) * 7.64));
+      margin-top: calc(var(--rg-hero-h) * 0.276);
+      margin-bottom: 0;
     }
 
     .rg-hero__button {
-      gap: 12px;
-      min-height: clamp(72px, min(4.8cqw, calc(var(--rg-hero-vh) * 0.095)), 100px);
-      padding: 0 clamp(52px, 3.2cqw, 72px);
-      border-radius: 16px;
-      font-size: clamp(20px, 1.45cqw, 30px);
+      gap: 0.5em;
+      min-height: max(46px, calc(var(--rg-hero-h) * 0.77));
+      padding: 0 24px;
+      border-radius: max(6px, calc(var(--rg-hero-h) * 0.1));
+      font-size: max(14px, calc(var(--rg-hero-h) * 0.251));
     }
 
     .rg-hero__button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 26px rgba(28, 203, 245, 0.7), 0 12px 30px rgba(28, 203, 245, 0.42);
     }
 
     .rg-hero__note {
+      align-items: flex-start;
       gap: 7px;
     }
 
     .rg-hero .rg-hero__note-title {
-      font-size: clamp(13px, 0.9cqw, 22px);
+      font-size: max(13px, calc(var(--rg-hero-h) * 0.218));
     }
 
-    .rg-hero .rg-hero__note-text {
-      font-size: clamp(12px, 0.8cqw, 20px);
+    .rg-hero__note-list {
+      justify-content: flex-start;
+      font-size: max(12px, calc(var(--rg-hero-h) * 0.218));
     }
   }
 
@@ -512,32 +561,37 @@
       "type": "textarea",
       "id": "heading",
       "label": "Heading",
-      "default": "Nootropic coffee for clean jitter-free energy"
+      "info": "Line breaks are kept.",
+      "default": "The last\ncoffee you’ll\nswitch to"
     },
     {
       "type": "text",
       "id": "heading_nowrap",
       "label": "Phrase kept on one line",
-      "info": "Part of the heading that must not break, e.g. jitter-free.",
-      "default": "jitter-free"
+      "info": "Part of the heading that must not break, e.g. jitter-free."
     },
     {
       "type": "textarea",
       "id": "lead",
       "label": "Lead",
-      "default": "Mushroom coffee with 10:1 Lion’s Mane and ¼ the caffeine of regular coffee."
+      "default": "Lion’s Mane for focus. Creatine for strength. Adaptogens for stress support."
     },
     {
       "type": "textarea",
       "id": "text",
-      "label": "Text",
-      "default": "9 functional ingredients for focus, calm energy and memory, all day long."
+      "label": "Text"
     },
     {
       "type": "text",
       "id": "tagline",
       "label": "Tagline",
-      "default": "Upgrade your morning ritual"
+      "default": "Black Friday sale up to 50% off"
+    },
+    {
+      "type": "checkbox",
+      "id": "tagline_line",
+      "label": "Line before the tagline",
+      "default": false
     },
     {
       "type": "header",
@@ -547,7 +601,7 @@
       "type": "text",
       "id": "button_label",
       "label": "Button label",
-      "default": "GET 25% OFF →"
+      "default": "GET 50% OFF →"
     },
     {
       "type": "url",
@@ -557,14 +611,19 @@
     {
       "type": "text",
       "id": "note_title",
-      "label": "Note under the button",
-      "default": "On your first order"
+      "label": "Note under the button"
     },
     {
       "type": "text",
       "id": "note_text",
-      "label": "Guarantee line",
-      "default": "30-day money-back guarantee"
+      "label": "Guarantee line (shield icon)",
+      "default": "30-day money-back guarantee."
+    },
+    {
+      "type": "text",
+      "id": "note_text_2",
+      "label": "Shipping line (truck icon)",
+      "default": "Free US shipping."
     }
   ],
   "presets": [
