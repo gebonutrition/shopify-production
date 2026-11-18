@@ -4,6 +4,9 @@
   artifact LXDwt8v4K1k42tZRGZZKe1), 2026-11-18.
   Desktop: the reference pixel values 1:1 (no .rg-z). As in the reference script, the photo column is fitted to
   the card: photo (square) + 16px + button = card height, at most 52% of the row; without JS the columns are 50/50.
+  Opened FAQ answers are left out of that height, so the photo stays still and only the card grows (client, 2026-11-18).
+  Compare text box: 73px instead of the reference's 110px (client: 1.5x lower); the boxes share one grid cell,
+  so the box is as tall as the longest text and switching tabs never changes the card height.
   Phones and tablets (< 990px): one column (600px on tablets); the reference's mobile rules apply up to 520px.
   Images: photo and label from the image pickers, otherwise the theme assets rg-feel-photo(.jpg/-720.jpg)
   and rg-supplement-facts.jpg.
@@ -561,8 +564,13 @@
     color: #1a1a1a;
   }
 
+  .rg-feel__panels {
+    display: grid;
+  }
+
   .rg-feel__panel {
-    height: 110px;
+    grid-area: 1 / 1;
+    min-height: 73px;
     padding: 9px 14px;
     border-radius: 9px;
     background: #ffffff;
@@ -571,8 +579,10 @@
     line-height: 1.55;
   }
 
+  /* Hidden boxes keep their place so the cell fits the longest text */
   .rg-feel__panel[hidden] {
-    display: none;
+    display: block;
+    visibility: hidden;
   }
 
   .rg-feel__panel p {
@@ -721,11 +731,6 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
       row-gap: 16px;
     }
-
-    .rg-feel__panel {
-      height: auto;
-      min-height: 110px;
-    }
   }
 
   /* Tablets: one 600px column */
@@ -795,7 +800,12 @@
           }
           const gap = 48;
           const width = this.grid.clientWidth - gap;
-          const side = this.card.offsetHeight - (this.button ? this.button.offsetHeight + 16 : 0);
+          /* Card height with every FAQ answer closed: opening one must not move the photo */
+          let answers = 0;
+          this.querySelectorAll('.rg-feel__faq-a:not([hidden])').forEach((answer) => {
+            answers += answer.offsetHeight + parseFloat(getComputedStyle(answer).marginTop || 0);
+          });
+          const side = this.card.offsetHeight - answers - (this.button ? this.button.offsetHeight + 16 : 0);
           if (width <= 0 || side <= 200) return;
           const left = Math.round(Math.min(side, width * 0.52));
           const columns = `${left}px ${width - left}px`;
@@ -826,7 +836,15 @@
             tab.setAttribute('aria-selected', String(selected));
             tab.tabIndex = selected ? 0 : -1;
             const panel = document.getElementById(tab.getAttribute('aria-controls'));
-            if (panel) panel.hidden = !selected;
+            if (!panel) return;
+            panel.hidden = !selected;
+            /* Hidden boxes stay rendered (visibility), so restart the fade-in by hand */
+            const text = panel.querySelector('p');
+            if (selected && text) {
+              text.style.animation = 'none';
+              void text.offsetWidth;
+              text.style.animation = '';
+            }
           });
           if (focus) this.tabs[index]?.focus();
         }
