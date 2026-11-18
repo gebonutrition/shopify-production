@@ -146,6 +146,211 @@
       },
       "disabled": true
     },
+    "rg_feel": {
+      "type": "rg-feel",
+      "blocks": {
+        "rg_feel_chip_1": {
+          "type": "chip",
+          "settings": {
+            "text": "Hot or iced"
+          }
+        },
+        "rg_feel_chip_2": {
+          "type": "chip",
+          "settings": {
+            "text": "Clean label"
+          }
+        },
+        "rg_feel_chip_3": {
+          "type": "chip",
+          "settings": {
+            "text": "Second-cup safe"
+          }
+        },
+        "rg_feel_chip_4": {
+          "type": "chip",
+          "settings": {
+            "text": "Work & gym"
+          }
+        },
+        "rg_feel_chip_5": {
+          "type": "chip",
+          "settings": {
+            "text": "Made in USA"
+          }
+        },
+        "rg_feel_stat_1": {
+          "type": "stat",
+          "settings": {
+            "value": "<48 mg",
+            "label": "Caffeine"
+          }
+        },
+        "rg_feel_stat_2": {
+          "type": "stat",
+          "settings": {
+            "value": "10 g",
+            "label": "Lion’s Mane"
+          }
+        },
+        "rg_feel_stat_3": {
+          "type": "stat",
+          "settings": {
+            "value": "3 g",
+            "label": "Creatine"
+          }
+        },
+        "rg_feel_bullet_1": {
+          "type": "bullet",
+          "settings": {
+            "icon": "focus",
+            "text": "Focus and mental clarity"
+          }
+        },
+        "rg_feel_bullet_2": {
+          "type": "bullet",
+          "settings": {
+            "icon": "energy",
+            "text": "Clean energy, no crash"
+          }
+        },
+        "rg_feel_bullet_3": {
+          "type": "bullet",
+          "settings": {
+            "icon": "calm",
+            "text": "Calm from L-Theanine"
+          }
+        },
+        "rg_feel_bullet_4": {
+          "type": "bullet",
+          "settings": {
+            "icon": "flask",
+            "text": "Full doses, no blends"
+          }
+        },
+        "rg_feel_tab_1": {
+          "type": "tab",
+          "settings": {
+            "title": "vs Coffee",
+            "text": "Half the caffeine of a regular cup, with the same taste and ritual. You also get focus that doesn’t fade."
+          }
+        },
+        "rg_feel_tab_2": {
+          "type": "tab",
+          "settings": {
+            "title": "vs Energy drinks",
+            "text": "No sugar and no 150–200 mg caffeine hit. Energy that stays level instead of spiking."
+          }
+        },
+        "rg_feel_tab_3": {
+          "type": "tab",
+          "settings": {
+            "title": "vs Supplements",
+            "text": "One cup instead of a handful of capsules. Every dose is listed on the label."
+          }
+        },
+        "rg_feel_faq_1": {
+          "type": "faq",
+          "settings": {
+            "question": "Will I like the taste?",
+            "answer": "Yes. It’s a smooth medium roast with notes of chocolate and hazelnut."
+          }
+        },
+        "rg_feel_faq_2": {
+          "type": "faq",
+          "settings": {
+            "question": "How do I make it?",
+            "answer": "One scoop in water or milk, hot or iced. Ready in 30 seconds."
+          }
+        },
+        "rg_feel_faq_3": {
+          "type": "faq",
+          "settings": {
+            "question": "Will it affect my sleep?",
+            "answer": "Under 48 mg of caffeine per cup, so you can enjoy it in the afternoon too."
+          }
+        },
+        "rg_feel_badge_1": {
+          "type": "badge",
+          "settings": {
+            "icon": "cup",
+            "line_1": "48 MG",
+            "line_2": "CAFFEINE"
+          }
+        },
+        "rg_feel_badge_2": {
+          "type": "badge",
+          "settings": {
+            "icon": "gluten",
+            "line_1": "GLUTEN",
+            "line_2": "FREE"
+          }
+        },
+        "rg_feel_badge_3": {
+          "type": "badge",
+          "settings": {
+            "icon": "vegan",
+            "line_1": "100%",
+            "line_2": "VEGAN"
+          }
+        },
+        "rg_feel_badge_4": {
+          "type": "badge",
+          "settings": {
+            "icon": "sugar",
+            "line_1": "NO",
+            "line_2": "SUGAR"
+          }
+        },
+        "rg_feel_badge_5": {
+          "type": "badge",
+          "settings": {
+            "icon": "gmo",
+            "line_1": "NON",
+            "line_2": "GMO"
+          }
+        }
+      },
+      "block_order": [
+        "rg_feel_chip_1",
+        "rg_feel_chip_2",
+        "rg_feel_chip_3",
+        "rg_feel_chip_4",
+        "rg_feel_chip_5",
+        "rg_feel_stat_1",
+        "rg_feel_stat_2",
+        "rg_feel_stat_3",
+        "rg_feel_bullet_1",
+        "rg_feel_bullet_2",
+        "rg_feel_bullet_3",
+        "rg_feel_bullet_4",
+        "rg_feel_tab_1",
+        "rg_feel_tab_2",
+        "rg_feel_tab_3",
+        "rg_feel_faq_1",
+        "rg_feel_faq_2",
+        "rg_feel_faq_3",
+        "rg_feel_badge_1",
+        "rg_feel_badge_2",
+        "rg_feel_badge_3",
+        "rg_feel_badge_4",
+        "rg_feel_badge_5"
+      ],
+      "settings": {
+        "anchor": "benefits",
+        "eyebrow": "FUNCTIONAL BENEFITS",
+        "heading_start": "FEEL THE",
+        "heading_accent": "DIFFERENCE",
+        "photo_alt": "Iced Raw Coffee+ with cream",
+        "label_button": "READ THE LABEL",
+        "label_alt": "Supplement Facts Raw Coffee+",
+        "brand": "RAW COFFEE+",
+        "badge": "4 CLINICAL ACTIVES",
+        "headline_1": "Half the caffeine.",
+        "headline_2": "Full focus.",
+        "compare_label": "Compare"
+      }
+    },
     "rg_differentiators": {
       "type": "rg-differentiators",
       "blocks": {
@@ -234,7 +439,8 @@
         "rg_diff_card_4"
       ],
       "settings": {
-        "anchor": "benefits",
+        "anchor": "benefits-cards",
+        "show_main": false,
         "image": "shopify://shop_images/rg-different.jpg",
         "eyebrow": "FUNCTIONAL BENEFITS",
         "heading_start": "What Makes It",
@@ -872,6 +1078,7 @@
   "order": [
     "rg_hero",
     "rg_benefits_band",
+    "rg_feel",
     "rg_differentiators",
     "rg_ingredients",
     "rg_video_reviews",

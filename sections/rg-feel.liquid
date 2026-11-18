@@ -1,0 +1,1177 @@
+{%- comment -%}
+  RAW GRAVITY · "Feel the difference" (functional benefits, v7).
+  Reference: shopify-production_temp\raw-gravity-benefits-v7\ (index.html, source/Raw Gravity Benefits v7.dc.html,
+  artifact LXDwt8v4K1k42tZRGZZKe1), 2026-11-18.
+  Desktop: the reference pixel values 1:1 (no .rg-z). As in the reference script, the photo column is fitted to
+  the card: photo (square) + 16px + button = card height, at most 52% of the row; without JS the columns are 50/50.
+  Phones and tablets (< 990px): one column (600px on tablets); the reference's mobile rules apply up to 520px.
+  Images: photo and label from the image pickers, otherwise the theme assets rg-feel-photo(.jpg/-720.jpg)
+  and rg-supplement-facts.jpg.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign uid = section.id | handle
+  assign tab_index = 0
+  assign faq_index = 0
+-%}
+
+<rg-feel
+  class="rg rg-feel"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="rg-feel__wrap">
+    <div class="rg-feel__intro">
+      {%- if s.eyebrow != blank -%}
+        <p class="rg-feel__eyebrow">{{ s.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h2 class="rg-feel__heading">
+        {{- s.heading_start | escape -}}
+        {%- if s.heading_accent != blank %} <span>{{ s.heading_accent | escape }}</span>{% endif -%}
+      </h2>
+      <ul class="rg-feel__chips" role="list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'chip' -%}
+            <li class="rg-feel__chip" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    <div class="rg-feel__grid" data-rg-feel-grid>
+      <div class="rg-feel__media">
+        <div class="rg-feel__photo">
+          {%- if s.photo != blank -%}
+            {{
+              s.photo
+              | image_url: width: 1254
+              | image_tag:
+                widths: '360, 720, 1000, 1254',
+                sizes: '(min-width: 990px) min(612px, 46vw), (min-width: 750px) 600px, calc(100vw - 32px)',
+                loading: 'lazy',
+                alt: s.photo_alt,
+                class: 'rg-feel__img'
+            }}
+          {%- else -%}
+            <img
+              class="rg-feel__img"
+              src="{{ 'rg-feel-photo.jpg' | asset_url }}"
+              srcset="{{ 'rg-feel-photo-720.jpg' | asset_url }} 720w, {{ 'rg-feel-photo.jpg' | asset_url }} 1254w"
+              sizes="(min-width: 990px) min(612px, 46vw), (min-width: 750px) 600px, calc(100vw - 32px)"
+              width="1254"
+              height="1254"
+              loading="lazy"
+              alt="{{ s.photo_alt | escape }}"
+            >
+          {%- endif -%}
+        </div>
+        {%- if s.label_button != blank -%}
+          <button type="button" class="rg-feel__label-btn" aria-haspopup="dialog" data-rg-feel-open>
+            {{- s.label_button | escape -}}
+            <span aria-hidden="true">→</span>
+          </button>
+        {%- endif -%}
+      </div>
+
+      <article class="rg-feel__card" data-rg-feel-card>
+        <div class="rg-feel__body">
+          <div class="rg-feel__head">
+            <p class="rg-feel__brand">{{ s.brand | escape }}</p>
+            {%- if s.badge != blank -%}
+              <span class="rg-feel__badge">{{ s.badge | escape }}</span>
+            {%- endif -%}
+          </div>
+          <h3 class="rg-feel__headline">
+            {{- s.headline_1 | escape -}}
+            {%- if s.headline_2 != blank -%}
+              <br><span>{{ s.headline_2 | escape }}</span>
+            {%- endif -%}
+          </h3>
+
+          <div class="rg-feel__stats">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'stat' -%}
+                <div class="rg-feel__stat" {{ block.shopify_attributes }}>
+                  <b>{{ block.settings.value | escape }}</b>
+                  <small>{{ block.settings.label | escape }}</small>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          <ul class="rg-feel__bullets" role="list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'bullet' -%}
+                {%- case block.settings.icon -%}
+                  {%- when 'energy' -%}
+                    {%- assign path = 'M11 2 5 11.5h5L9 18l6-9.5h-5z' -%}
+                  {%- when 'calm' -%}
+                    {%- assign path = 'M3 10c2-3 4-3 7 0s5 3 7 0' -%}
+                  {%- when 'flask' -%}
+                    {%- assign path = 'M8 3h4M9 3v5l-4 8h10l-4-8V3' -%}
+                  {%- else -%}
+                    {%- assign path = 'M10 3a5 5 0 0 0-5 5c0 2 1 3 2 4v2h6v-2c1-1 2-2 2-4a5 5 0 0 0-5-5zM8 17h4' -%}
+                {%- endcase -%}
+                <li {{ block.shopify_attributes }}>
+                  <span class="rg-feel__ico" aria-hidden="true">
+                    <svg viewBox="0 0 20 20" width="13" height="13" focusable="false"><path d="{{ path }}"/></svg>
+                  </span>
+                  {{- block.settings.text | escape -}}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+
+          <div class="rg-feel__compare">
+            <div class="rg-feel__tabs" role="tablist" aria-label="{{ s.compare_label | escape }}">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'tab' -%}
+                  <button
+                    type="button"
+                    class="rg-feel__tab"
+                    role="tab"
+                    id="RgFeelTab-{{ uid }}-{{ tab_index }}"
+                    aria-controls="RgFeelPanel-{{ uid }}-{{ tab_index }}"
+                    aria-selected="{% if tab_index == 0 %}true{% else %}false{% endif %}"
+                    {% unless tab_index == 0 %}
+                      tabindex="-1"
+                    {% endunless %}
+                    data-rg-feel-tab="{{ tab_index }}"
+                    {{ block.shopify_attributes }}
+                  >
+                    {{- block.settings.title | escape -}}
+                  </button>
+                  {%- assign tab_index = tab_index | plus: 1 -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+            <div class="rg-feel__panels">
+              {%- assign tab_index = 0 -%}
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'tab' -%}
+                  <div
+                    class="rg-feel__panel"
+                    role="tabpanel"
+                    id="RgFeelPanel-{{ uid }}-{{ tab_index }}"
+                    aria-labelledby="RgFeelTab-{{ uid }}-{{ tab_index }}"
+                    {% unless tab_index == 0 %}
+                      hidden
+                    {% endunless %}
+                  >
+                    <p>{{ block.settings.text | escape | newline_to_br }}</p>
+                  </div>
+                  {%- assign tab_index = tab_index | plus: 1 -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+
+        <div class="rg-feel__faq">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'faq' -%}
+              <div class="rg-feel__faq-item" {{ block.shopify_attributes }}>
+                <button
+                  type="button"
+                  class="rg-feel__faq-q"
+                  aria-expanded="false"
+                  aria-controls="RgFeelFaq-{{ uid }}-{{ faq_index }}"
+                  data-rg-feel-faq
+                >
+                  <span>{{ block.settings.question | escape }}</span>
+                  <span class="rg-feel__faq-sign" aria-hidden="true">+</span>
+                </button>
+                <p class="rg-feel__faq-a" id="RgFeelFaq-{{ uid }}-{{ faq_index }}" hidden>
+                  {{- block.settings.answer | escape | newline_to_br -}}
+                </p>
+              </div>
+              {%- assign faq_index = faq_index | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <ul class="rg-feel__trust" role="list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'badge' -%}
+              {%- case block.settings.icon -%}
+                {%- when 'gluten' -%}
+                  {%- assign path = 'M10 17V5M10 8 7 6M10 8l3-2M10 12 7 10M10 12l3-2M3 17 17 3' -%}
+                {%- when 'vegan' -%}
+                  {%- assign path = 'M5 15C5 8 9 5 15 5c0 6-3 10-10 10zM5 15l6-6' -%}
+                {%- when 'sugar' -%}
+                  {%- assign path = 'M4 7l6-3 6 3v7l-6 3-6-3zM4 7l6 3 6-3M10 10v7M3 17 17 3' -%}
+                {%- when 'gmo' -%}
+                  {%- assign path = 'M8 3h4M9 3v5l-4 8h10l-4-8V3M3 17 17 3' -%}
+                {%- else -%}
+                  {%- assign path = 'M4 8h10v4a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4zM14 9h2a2 2 0 0 1 0 4h-2' -%}
+              {%- endcase -%}
+              <li {{ block.shopify_attributes }}>
+                <svg viewBox="0 0 20 20" width="24" height="24" aria-hidden="true" focusable="false">
+                  <path d="{{ path }}"/>
+                </svg>
+                <span>
+                  {{- block.settings.line_1 | escape -}}
+                  {%- if block.settings.line_2 != blank -%}<br>{{ block.settings.line_2 | escape }}{%- endif -%}
+                </span>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </article>
+    </div>
+  </div>
+
+  {%- if s.label_button != blank -%}
+    <dialog class="rg-feel__lb" aria-label="{{ s.label_alt | escape }}">
+      {%- if s.label_image != blank -%}
+        {{
+          s.label_image
+          | image_url: width: 1040
+          | image_tag: widths: '520, 1040', sizes: '488px', loading: 'lazy', alt: s.label_alt
+        }}
+      {%- else -%}
+        <img
+          src="{{ 'rg-supplement-facts.jpg' | asset_url }}"
+          width="474"
+          height="534"
+          loading="lazy"
+          alt="{{ s.label_alt | escape }}"
+        >
+      {%- endif -%}
+      <button type="button" class="rg-feel__lb-close" aria-label="Close" data-rg-feel-close>×</button>
+    </dialog>
+  {%- endif -%}
+</rg-feel>
+
+{% stylesheet %}
+  @keyframes rg-feel-fade {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .rg-feel {
+    display: block;
+    background: #f6f5f3;
+    color: #1a1a1a;
+    font-family: var(--rg-font-body);
+    line-height: normal;
+    scroll-margin-top: calc(var(--header-group-height, 94px) + 8px);
+  }
+
+  .rg-feel *,
+  .rg-feel *::before,
+  .rg-feel *::after {
+    box-sizing: border-box;
+  }
+
+  .rg-feel button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .rg-feel__wrap {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 40px 16px 32px;
+  }
+
+  /* Intro */
+  .rg-feel__intro {
+    padding: 16px 0 40px;
+    text-align: center;
+  }
+
+  .rg-feel__eyebrow {
+    margin: 0 0 14px;
+    color: #1ec8f0;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: 0.35em;
+  }
+
+  .rg-feel__heading {
+    margin: 0 0 20px;
+    color: #1a1a1a;
+    font-family: var(--rg-font-body);
+    font-size: clamp(30px, 3.4vw, 48px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-transform: none;
+  }
+
+  .rg-feel__heading span {
+    color: #1ec8f0;
+  }
+
+  .rg-feel__chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rg-feel__chip {
+    padding: 6px 14px;
+    border: 1px solid rgba(26, 26, 26, 0.25);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  /* Grid: one column below 990px */
+  .rg-feel__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .rg-feel__media {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+  }
+
+  .rg-feel__photo {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    background: #e9dccf;
+  }
+
+  .rg-feel__photo .rg-feel__img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .rg-feel .rg-feel__label-btn {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px 24px;
+    border-radius: 12px;
+    background: #2f2f2f;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: 0.12em;
+    transition: background 0.2s;
+  }
+
+  .rg-feel .rg-feel__label-btn:hover {
+    background: #3a3a3a;
+  }
+
+  .rg-feel__label-btn span {
+    color: #1ec8f0;
+    font-size: 18px;
+    letter-spacing: 0;
+  }
+
+  /* Card */
+  .rg-feel__card {
+    overflow: hidden;
+    min-width: 0;
+    border: 1px solid rgba(26, 26, 26, 0.1);
+    border-radius: 16px;
+    background: #ffffff;
+  }
+
+  .rg-feel__body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 18px 0;
+  }
+
+  .rg-feel__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .rg-feel__brand {
+    margin: 0;
+    color: #0b9fc7;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: 0.14em;
+  }
+
+  .rg-feel__badge {
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: #f1f2f3;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .rg-feel__headline {
+    margin: 0;
+    color: #1a1a1a;
+    font-family: var(--rg-font-body);
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-transform: none;
+  }
+
+  .rg-feel__headline span {
+    color: #9a9a9a;
+  }
+
+  .rg-feel__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid rgba(26, 26, 26, 0.1);
+    border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+  }
+
+  .rg-feel__stat {
+    padding: 9px 0 9px 14px;
+    border-left: 1px solid rgba(26, 26, 26, 0.1);
+  }
+
+  .rg-feel__stat:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .rg-feel__stat b {
+    display: block;
+    font-size: 22px;
+    font-weight: 900;
+    line-height: normal;
+  }
+
+  .rg-feel__stat small {
+    display: block;
+    margin-top: 2px;
+    color: #777777;
+    font-size: 11px;
+    line-height: normal;
+  }
+
+  .rg-feel__bullets {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rg-feel__bullets li {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .rg-feel__ico {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #e3f6fc;
+  }
+
+  .rg-feel__ico svg {
+    fill: none;
+    stroke: #0b9fc7;
+    stroke-width: 1.8px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Compare tabs */
+  .rg-feel__compare {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 12px;
+    background: #f1f2f3;
+  }
+
+  .rg-feel__tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .rg-feel .rg-feel__tab {
+    padding: 9px 6px;
+    border-radius: 9px;
+    color: #777777;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+    transition: all 0.2s;
+  }
+
+  .rg-feel .rg-feel__tab[aria-selected='true'] {
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    color: #1a1a1a;
+  }
+
+  .rg-feel__panel {
+    height: 110px;
+    padding: 9px 14px;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #3a3a3a;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .rg-feel__panel[hidden] {
+    display: none;
+  }
+
+  .rg-feel__panel p {
+    margin: 0;
+    animation: rg-feel-fade 0.35s ease;
+  }
+
+  /* FAQ */
+  .rg-feel__faq {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 18px 0;
+  }
+
+  .rg-feel__faq-item {
+    border-radius: 10px;
+    background: #f1f2f3;
+    transition: background 0.2s;
+  }
+
+  .rg-feel__faq-item:hover {
+    background: #eaecee;
+  }
+
+  .rg-feel .rg-feel__faq-q {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 11px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: normal;
+    text-align: left;
+  }
+
+  .rg-feel__faq-sign {
+    color: #0b9fc7;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  .rg-feel__faq-a {
+    margin: -5px 0 0;
+    padding: 0 14px 11px;
+    color: #555555;
+    font-size: 13px;
+    line-height: 1.5;
+    animation: rg-feel-fade 0.3s ease;
+  }
+
+  .rg-feel__faq-a[hidden] {
+    display: none;
+  }
+
+  /* Trust icons */
+  .rg-feel__trust {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0;
+    padding: 12px 18px;
+    list-style: none;
+  }
+
+  .rg-feel__trust li {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    color: #555555;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+
+  .rg-feel__trust svg {
+    fill: none;
+    stroke: #1a1a1a;
+    stroke-width: 1.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Label lightbox */
+  .rg-feel__lb {
+    overflow: visible;
+    max-width: min(520px, calc(100% - 48px));
+    max-height: calc(100% - 48px);
+    margin: auto;
+    padding: 16px;
+    border: 0;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  }
+
+  .rg-feel__lb[open] {
+    display: flex;
+    animation: rg-feel-fade 0.25s ease;
+  }
+
+  .rg-feel__lb::backdrop {
+    background: rgba(20, 20, 20, 0.6);
+    cursor: zoom-out;
+  }
+
+  /* Fixed width (Supplement Facts image is 474px wide) so the box has its size before the lazy image loads */
+  .rg-feel__lb img {
+    display: block;
+    width: min(474px, calc(100vw - 80px));
+    max-width: 100%;
+    height: auto;
+    max-height: calc(100vh - 80px);
+    object-fit: contain;
+  }
+
+  .rg-feel .rg-feel__lb-close {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    color: #ffffff;
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  /* Phones (reference: max-width 520px) */
+  @media screen and (max-width: 520px) {
+    .rg-feel__bullets {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .rg-feel__trust {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      row-gap: 16px;
+    }
+
+    .rg-feel__panel {
+      height: auto;
+      min-height: 110px;
+    }
+  }
+
+  /* Tablets: one 600px column */
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .rg-feel__wrap {
+      padding: 56px 24px 40px;
+    }
+
+    .rg-feel__grid {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  /* Desktop: reference values 1:1 */
+  @media screen and (min-width: 990px) {
+    .rg-feel__wrap {
+      padding: 64px 48px 48px;
+    }
+
+    .rg-feel__grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      justify-content: center;
+      gap: 48px;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  if (!customElements.get('rg-feel')) {
+    customElements.define(
+      'rg-feel',
+      class RgFeel extends HTMLElement {
+        connectedCallback() {
+          this.grid = this.querySelector('[data-rg-feel-grid]');
+          this.card = this.querySelector('[data-rg-feel-card]');
+          this.button = this.querySelector('[data-rg-feel-open]');
+          this.dialog = this.querySelector('dialog');
+          this.tabs = [...this.querySelectorAll('[data-rg-feel-tab]')];
+          this.desktop = window.matchMedia('(min-width: 990px)');
+
+          this.addEventListener('click', this.onClick.bind(this));
+          this.querySelector('[role="tablist"]')?.addEventListener('keydown', this.onTabKey.bind(this));
+          this.dialog?.addEventListener('click', this.onDialogClick.bind(this));
+
+          /* Fit the photo column to the card (reference: photo + 16px + button = card, max 52%) */
+          this.fit = this.fit.bind(this);
+          if (this.grid && this.card && 'ResizeObserver' in window) {
+            this.observer = new ResizeObserver(() => requestAnimationFrame(this.fit));
+            this.observer.observe(this.card);
+            this.observer.observe(this.grid);
+            this.desktop.addEventListener('change', this.fit);
+            this.fit();
+          }
+        }
+
+        disconnectedCallback() {
+          this.observer?.disconnect();
+          this.desktop?.removeEventListener('change', this.fit);
+        }
+
+        fit() {
+          if (!this.desktop.matches) {
+            this.grid.style.removeProperty('grid-template-columns');
+            this.columns = '';
+            return;
+          }
+          const gap = 48;
+          const width = this.grid.clientWidth - gap;
+          const side = this.card.offsetHeight - (this.button ? this.button.offsetHeight + 16 : 0);
+          if (width <= 0 || side <= 200) return;
+          const left = Math.round(Math.min(side, width * 0.52));
+          const columns = `${left}px ${width - left}px`;
+          if (columns === this.columns) return;
+          this.columns = columns;
+          this.grid.style.gridTemplateColumns = columns;
+        }
+
+        onClick(event) {
+          const tab = event.target.closest('[data-rg-feel-tab]');
+          if (tab) {
+            this.selectTab(this.tabs.indexOf(tab));
+            return;
+          }
+
+          const question = event.target.closest('[data-rg-feel-faq]');
+          if (question) {
+            this.toggleFaq(question);
+            return;
+          }
+
+          if (event.target.closest('[data-rg-feel-open]')) this.openLabel();
+        }
+
+        selectTab(index, focus) {
+          this.tabs.forEach((tab, i) => {
+            const selected = i === index;
+            tab.setAttribute('aria-selected', String(selected));
+            tab.tabIndex = selected ? 0 : -1;
+            const panel = document.getElementById(tab.getAttribute('aria-controls'));
+            if (panel) panel.hidden = !selected;
+          });
+          if (focus) this.tabs[index]?.focus();
+        }
+
+        onTabKey(event) {
+          const current = this.tabs.findIndex((tab) => tab.getAttribute('aria-selected') === 'true');
+          const count = this.tabs.length;
+          if (event.key === 'ArrowRight') this.selectTab((current + 1) % count, true);
+          else if (event.key === 'ArrowLeft') this.selectTab((current - 1 + count) % count, true);
+          else return;
+          event.preventDefault();
+        }
+
+        /* At most one answer open */
+        toggleFaq(question) {
+          const open = question.getAttribute('aria-expanded') !== 'true';
+          this.querySelectorAll('[data-rg-feel-faq]').forEach((button) => {
+            const expanded = open && button === question;
+            button.setAttribute('aria-expanded', String(expanded));
+            const sign = button.querySelector('.rg-feel__faq-sign');
+            if (sign) sign.textContent = expanded ? '−' : '+';
+            const answer = document.getElementById(button.getAttribute('aria-controls'));
+            if (answer) answer.hidden = !expanded;
+          });
+        }
+
+        openLabel() {
+          if (!this.dialog || this.dialog.open) return;
+          this.dialog.showModal();
+          /* Horizon's own scroll lock: on desktop .page-wrapper is the scroll container */
+          document.documentElement.setAttribute('scroll-lock', '');
+          this.dialog.addEventListener(
+            'close',
+            () => {
+              document.documentElement.removeAttribute('scroll-lock');
+              this.button?.focus();
+            },
+            { once: true }
+          );
+        }
+
+        /* Close on the backdrop or the × button (Esc is handled by <dialog>) */
+        onDialogClick(event) {
+          if (event.target.closest('[data-rg-feel-close]')) {
+            this.dialog.close();
+            return;
+          }
+          if (event.target !== this.dialog) return;
+          const box = this.dialog.getBoundingClientRect();
+          const inside =
+            event.clientX >= box.left &&
+            event.clientX <= box.right &&
+            event.clientY >= box.top &&
+            event.clientY <= box.bottom;
+          if (!inside) this.dialog.close();
+        }
+      }
+    );
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "RG · Feel the difference",
+  "class": "rg-feel-section",
+  "max_blocks": 40,
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor ID",
+      "default": "benefits",
+      "info": "Used by links such as /#benefits."
+    },
+    {
+      "type": "header",
+      "content": "Intro"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "FUNCTIONAL BENEFITS"
+    },
+    {
+      "type": "text",
+      "id": "heading_start",
+      "label": "Heading",
+      "default": "FEEL THE"
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Heading, accent part",
+      "default": "DIFFERENCE"
+    },
+    {
+      "type": "header",
+      "content": "Photo and label"
+    },
+    {
+      "type": "image_picker",
+      "id": "photo",
+      "label": "Photo",
+      "info": "Square. Empty = the theme's photo with callouts (rg-feel-photo.jpg)."
+    },
+    {
+      "type": "text",
+      "id": "photo_alt",
+      "label": "Photo alt text",
+      "default": "Iced Raw Coffee+ with cream"
+    },
+    {
+      "type": "text",
+      "id": "label_button",
+      "label": "Label button",
+      "default": "READ THE LABEL",
+      "info": "Empty = no button and no label popup."
+    },
+    {
+      "type": "image_picker",
+      "id": "label_image",
+      "label": "Label image",
+      "info": "Empty = the theme's Supplement Facts (rg-supplement-facts.jpg)."
+    },
+    {
+      "type": "text",
+      "id": "label_alt",
+      "label": "Label alt text",
+      "default": "Supplement Facts Raw Coffee+"
+    },
+    {
+      "type": "header",
+      "content": "Card"
+    },
+    {
+      "type": "text",
+      "id": "brand",
+      "label": "Brand",
+      "default": "RAW COFFEE+"
+    },
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge",
+      "default": "4 CLINICAL ACTIVES"
+    },
+    {
+      "type": "text",
+      "id": "headline_1",
+      "label": "Headline",
+      "default": "Half the caffeine."
+    },
+    {
+      "type": "text",
+      "id": "headline_2",
+      "label": "Headline, grey line",
+      "default": "Full focus."
+    },
+    {
+      "type": "text",
+      "id": "compare_label",
+      "label": "Compare tabs, accessible name",
+      "default": "Compare"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "chip",
+      "name": "Chip",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Hot or iced"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "name": "Stat",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "<48 mg"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Caffeine"
+        }
+      ]
+    },
+    {
+      "type": "bullet",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "focus", "label": "Light bulb" },
+            { "value": "energy", "label": "Lightning" },
+            { "value": "calm", "label": "Wave" },
+            { "value": "flask", "label": "Flask" }
+          ],
+          "default": "focus"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Focus and mental clarity"
+        }
+      ]
+    },
+    {
+      "type": "tab",
+      "name": "Compare tab",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Tab",
+          "default": "vs Coffee"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Half the caffeine of a regular cup, with the same taste and ritual. You also get focus that doesn’t fade."
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Will I like the taste?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Yes. It’s a smooth medium roast with notes of chocolate and hazelnut."
+        }
+      ]
+    },
+    {
+      "type": "badge",
+      "name": "Badge",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "cup", "label": "Cup" },
+            { "value": "gluten", "label": "Gluten free" },
+            { "value": "vegan", "label": "Leaf" },
+            { "value": "sugar", "label": "No sugar" },
+            { "value": "gmo", "label": "Non-GMO" }
+          ],
+          "default": "cup"
+        },
+        {
+          "type": "text",
+          "id": "line_1",
+          "label": "Line 1",
+          "default": "48 MG"
+        },
+        {
+          "type": "text",
+          "id": "line_2",
+          "label": "Line 2",
+          "default": "CAFFEINE"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RG · Feel the difference",
+      "blocks": [
+        { "type": "chip", "settings": { "text": "Hot or iced" } },
+        { "type": "chip", "settings": { "text": "Clean label" } },
+        { "type": "chip", "settings": { "text": "Second-cup safe" } },
+        { "type": "chip", "settings": { "text": "Work & gym" } },
+        { "type": "chip", "settings": { "text": "Made in USA" } },
+        { "type": "stat", "settings": { "value": "<48 mg", "label": "Caffeine" } },
+        { "type": "stat", "settings": { "value": "10 g", "label": "Lion’s Mane" } },
+        { "type": "stat", "settings": { "value": "3 g", "label": "Creatine" } },
+        { "type": "bullet", "settings": { "icon": "focus", "text": "Focus and mental clarity" } },
+        { "type": "bullet", "settings": { "icon": "energy", "text": "Clean energy, no crash" } },
+        { "type": "bullet", "settings": { "icon": "calm", "text": "Calm from L-Theanine" } },
+        { "type": "bullet", "settings": { "icon": "flask", "text": "Full doses, no blends" } },
+        { "type": "tab", "settings": { "title": "vs Coffee" } },
+        {
+          "type": "tab",
+          "settings": {
+            "title": "vs Energy drinks",
+            "text": "No sugar and no 150–200 mg caffeine hit. Energy that stays level instead of spiking."
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "title": "vs Supplements",
+            "text": "One cup instead of a handful of capsules. Every dose is listed on the label."
+          }
+        },
+        { "type": "faq" },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How do I make it?",
+            "answer": "One scoop in water or milk, hot or iced. Ready in 30 seconds."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Will it affect my sleep?",
+            "answer": "Under 48 mg of caffeine per cup, so you can enjoy it in the afternoon too."
+          }
+        },
+        { "type": "badge", "settings": { "icon": "cup", "line_1": "48 MG", "line_2": "CAFFEINE" } },
+        { "type": "badge", "settings": { "icon": "gluten", "line_1": "GLUTEN", "line_2": "FREE" } },
+        { "type": "badge", "settings": { "icon": "vegan", "line_1": "100%", "line_2": "VEGAN" } },
+        { "type": "badge", "settings": { "icon": "sugar", "line_1": "NO", "line_2": "SUGAR" } },
+        { "type": "badge", "settings": { "icon": "gmo", "line_1": "NON", "line_2": "GMO" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -3,6 +3,7 @@
   Light part: photo (left half on desktop, top strip on mobile) and a dark accordion
   (exclusive <details>, no JS). Dark band below: 4 benefit cards with outline icons.
   Reference: Raw Gravity Landing(.dc.html) + Mobile, sections "Differentiators" and "Benefits" (2026-11 update).
+  "Show photo and accordion" off = only the dark band (the home page uses rg-feel above it since 2026-11-18).
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
@@ -22,6 +23,7 @@
     id="{{ s.anchor | handle }}"
   {% endif %}
 >
+  {%- if s.show_main -%}
   <section class="rg-diff__main">
     <div class="rg-diff__media" aria-hidden="true">
       {%- if s.image != blank -%}
@@ -103,6 +105,7 @@
       </div>
     </div>
   </section>
+  {%- endif -%}
 
   {%- if has_cards -%}
     <section class="rg-diff__band">
@@ -582,6 +585,13 @@
       "label": "Anchor ID",
       "default": "benefits",
       "info": "Used by links such as /#benefits."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_main",
+      "label": "Show photo and accordion",
+      "default": true,
+      "info": "Off = only the dark band with the benefit cards."
     },
     {
       "type": "image_picker",
