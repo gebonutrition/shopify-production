@@ -4,6 +4,7 @@
   Every ingredient block has a detail panel in a native <dialog> (prev/next through all blocks, in block order).
   The lists show the blocks named in "Left column" / "Right column" (block numbers, e.g. 2,3,1,4).
   Buy-box ingredient tiles open the same dialog (data-rg-ing-host, see sections/rg-pdp-main.liquid).
+  Layout "Product page", desktop: the dialog follows the client handoff "PDP Raw Coffee+" modal (2026-11-18).
   Dialog behaviour: <rg-ingredients> from assets/rg-ingredients.js.
   Layout "Home page" (rg-ingp--home): main landing typography; on mobile the heading is centred
   with the glass below it, and the dialog is a bottom sheet.
@@ -749,6 +750,146 @@
       background: rgba(255, 255, 255, 0.08);
       backdrop-filter: none;
       font-size: 22px;
+    }
+  }
+
+  /* ---------- Layout "Product page", desktop dialog = client handoff "PDP Raw Coffee+" modal (2026-11-18) ----------
+     The handoff modal is in fixed pixels, so the section zoom (.rg-z) is cancelled on the dialog. */
+  @media screen and (min-width: 990px) {
+    .rg-ingp--product .rg-ingp__dialog {
+      zoom: calc(1 / var(--rg-z, 1));
+      width: min(780px, calc(100vw - 48px));
+      height: fit-content;
+      min-height: 480px;
+      max-height: calc(100vh - 48px);
+      border: 0;
+      border-radius: 28px;
+      background: #1c1c1e;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+    }
+
+    .rg-ingp--product .rg-ingp__panel:not([hidden]) {
+      grid-template-columns: minmax(0, 330px) minmax(0, 1fr);
+      height: auto;
+      min-height: 480px;
+    }
+
+    .rg-ingp--product .rg-ingp__panel-media {
+      height: auto;
+      background: #2a2a2c;
+    }
+
+    .rg-ingp--product .rg-ingp__panel-body {
+      gap: 0;
+      height: auto;
+      padding: 40px 36px 28px;
+    }
+
+    .rg-ingp--product .rg-ingp__panel-scroll {
+      gap: 0;
+      padding: 0;
+    }
+
+    .rg-ingp--product .rg-ingp__panel-tag {
+      font-size: 13px;
+      font-weight: 800;
+      line-height: normal;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #1ecbf5;
+    }
+
+    .rg-ingp--product .rg-ingp__panel-title {
+      margin-top: 10px;
+      padding-right: 40px;
+      font-size: 30px;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.3px;
+      color: #ffffff;
+    }
+
+    .rg-ingp--product .rg-ingp__panel-dose {
+      margin-top: 16px;
+      padding: 8px 14px;
+      border: 0;
+      border-radius: 8px;
+      background: #2a2a2c;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: normal;
+    }
+
+    .rg-ingp--product .rg-ingp__panel-text {
+      margin-top: 18px;
+      font-size: 16px;
+      line-height: 1.65;
+      color: #b5b5b8;
+    }
+
+    .rg-ingp--product .rg-ingp__points {
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .rg-ingp--product .rg-ingp__points li {
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: normal;
+      color: #ffffff;
+    }
+
+    .rg-ingp--product .rg-ingp__points span {
+      color: #1ecbf5;
+      font-weight: 800;
+    }
+
+    .rg-ingp--product .rg-ingp__panel-nav {
+      margin-top: auto;
+      padding: 18px 0 0;
+      border-top: 1px solid #333336;
+    }
+
+    .rg-ingp--product .rg-ingp__nav-btn,
+    .rg-ingp--product .rg-ingp__nav-btn--next {
+      height: 44px;
+      padding: 0 18px;
+      border: 1px solid #3a3a3c;
+      border-radius: 10px;
+      background: transparent;
+      box-shadow: none;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .rg-ingp--product .rg-ingp__nav-btn:hover {
+      border-color: #3a3a3c;
+    }
+
+    .rg-ingp--product .rg-ingp__nav-btn--next,
+    .rg-ingp--product .rg-ingp__nav-btn--next:hover {
+      border-color: #ffffff;
+    }
+
+    .rg-ingp--product .rg-ingp__counter {
+      font-size: 15px;
+      font-weight: 700;
+      color: #8a8a8e;
+    }
+
+    .rg-ingp--product .rg-ingp__close {
+      top: 18px;
+      right: 18px;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      background: #2e2e30;
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 700;
     }
   }
 
