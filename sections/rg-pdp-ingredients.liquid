@@ -753,6 +753,125 @@
     }
   }
 
+  /* ---------- Layout "Product page", phones and tablets: the handoff modal colours and type on the card dialog ---------- */
+  @media screen and (max-width: 989px) {
+    .rg-ingp--product .rg-ingp__dialog {
+      border: 0;
+      border-radius: 20px;
+      background: #1c1c1e;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+    }
+
+    .rg-ingp--product .rg-ingp__panel-media {
+      background: #2a2a2c;
+    }
+
+    .rg-ingp--product .rg-ingp__panel-media::after {
+      background: linear-gradient(180deg, rgba(28, 28, 30, 0), #1c1c1e);
+    }
+
+    .rg-ingp--product .rg-ingp__panel-scroll {
+      gap: 0;
+      padding: 12px 20px 14px;
+    }
+
+    .rg-ingp--product .rg-ingp__panel-tag {
+      font-size: 11px;
+      font-weight: 800;
+      line-height: normal;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #1ecbf5;
+    }
+
+    .rg-ingp--product .rg-ingp__panel-title {
+      margin-top: 8px;
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.3px;
+      color: #ffffff;
+    }
+
+    .rg-ingp--product .rg-ingp__panel-dose {
+      margin-top: 12px;
+      padding: 7px 12px;
+      border: 0;
+      border-radius: 8px;
+      background: #2a2a2c;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: normal;
+    }
+
+    .rg-ingp--product .rg-ingp__panel-text {
+      margin-top: 14px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #b5b5b8;
+    }
+
+    .rg-ingp--product .rg-ingp__points {
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .rg-ingp--product .rg-ingp__points li {
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      line-height: normal;
+      color: #ffffff;
+    }
+
+    .rg-ingp--product .rg-ingp__points span {
+      color: #1ecbf5;
+      font-weight: 800;
+    }
+
+    .rg-ingp--product .rg-ingp__panel-nav {
+      padding: 12px 20px 16px;
+      border-top: 1px solid #333336;
+    }
+
+    .rg-ingp--product .rg-ingp__nav-btn,
+    .rg-ingp--product .rg-ingp__nav-btn--next {
+      height: 40px;
+      padding: 0 14px;
+      border: 1px solid #3a3a3c;
+      border-radius: 10px;
+      background: transparent;
+      box-shadow: none;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .rg-ingp--product .rg-ingp__nav-btn--next {
+      border-color: #ffffff;
+    }
+
+    .rg-ingp--product .rg-ingp__counter {
+      font-size: 13px;
+      font-weight: 700;
+      color: #8a8a8e;
+    }
+
+    .rg-ingp--product .rg-ingp__close {
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      border: 0;
+      background: #2e2e30;
+      backdrop-filter: none;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
+
   /* ---------- Layout "Product page", desktop dialog = client handoff "PDP Raw Coffee+" modal (2026-11-18) ----------
      The handoff modal is in fixed pixels, so the section zoom (.rg-z) is cancelled on the dialog. */
   @media screen and (min-width: 990px) {

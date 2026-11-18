@@ -386,6 +386,33 @@
     }
   }
 
+  /* Product pages, phones and tablets: the desktop handoff look at the mobile bar size (height/size from settings) */
+  @media screen and (max-width: 989px) {
+    .rg-marquee.rg-marquee--pdp {
+      background: #2b2b2b;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    .rg-marquee--pdp .rg-marquee__item {
+      gap: 0;
+      padding-inline-end: 0;
+    }
+
+    .rg-marquee--pdp .rg-marquee__dot {
+      width: auto;
+      height: auto;
+      margin: 0 18px;
+      border-radius: 0;
+      background: none;
+    }
+
+    .rg-marquee--pdp .rg-marquee__dot::before {
+      content: '•';
+      color: var(--rg-mq-accent);
+    }
+  }
+
   /* Product pages (client handoff "PDP Raw Coffee+"): 40px bar, 13px/700/3px, "•" with 36px on both sides,
      no pause on hover. 20s per copy of the items, as in the reference (40s for two copies). */
   @media screen and (min-width: 990px) {

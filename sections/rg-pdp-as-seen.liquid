@@ -1,7 +1,7 @@
 {%- comment -%}
   RAW GRAVITY · "As seen in" strip (dark band with a white pill).
   Desktop: client handoff "PDP Raw Coffee+" (2026-11-18), fixed pixel values (80px band).
-  Mobile: Raw Coffee Product Page Mobile v2, section "04 As Seen In".
+  Phones and tablets: the same band at a smaller size.
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 
@@ -75,6 +75,44 @@
     display: block;
     width: auto;
     height: 18px;
+  }
+
+  /* Phones and tablets: the desktop handoff band at a smaller size */
+  @media screen and (max-width: 989px) {
+    .rg-seen {
+      border: 0;
+      background: linear-gradient(90deg, #2b2b2b 0%, #2b2b2b 55%, #24393f 100%);
+    }
+
+    .rg-seen__inner {
+      gap: 14px;
+      min-height: 60px;
+      padding: 0 16px;
+    }
+
+    .rg-seen__label {
+      font-size: 11px;
+      font-weight: 800;
+      line-height: normal;
+      letter-spacing: 3px;
+      color: #1ecbf5;
+    }
+
+    .rg-seen__pill {
+      height: auto;
+      padding: 6px 14px;
+      border-radius: 18px;
+      box-shadow: 0 0 14px rgba(30, 203, 245, 0.35);
+      color: #111111;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: normal;
+      letter-spacing: -0.2px;
+    }
+
+    .rg-seen__accent {
+      color: #1ecbf5;
+    }
   }
 
   @media screen and (min-width: 990px) {
