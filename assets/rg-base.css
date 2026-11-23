@@ -674,27 +674,37 @@ body {
   height: auto !important;
 }
 
-/* Scroll snapping (desktop and tablet, html.rg-snap from the script): a wheel step, Space / Page Down or a
-   swipe moves exactly one screen. Screens stop right under the sticky header (--rg-hh); the first one at the
-   top of the page, with the announcement bar (--rg-bar). The scroll container is .page-wrapper from 990px
-   (base.css) and the document below. A screen taller than the window scrolls freely inside. */
+/* Scrolling between screens (desktop and tablet, html.rg-snap from the script): with a mouse the script moves
+   10 wheel notches per screen and Space / Page Down one screen; the stops are where a screen starts right under
+   the sticky header (scroll-padding-top = --rg-hh; the first one at the top of the page, with the announcement
+   bar --rg-bar). Touch screens scroll natively and settle on the nearest screen (proximity snapping).
+   The scroll container is .page-wrapper from 990px (base.css) and the document below. */
 @media screen and (min-width: 990px) {
   html.rg-snap .page-wrapper {
-    scroll-snap-type: y mandatory;
     scroll-padding-top: var(--rg-hh, 76px);
   }
 }
 
 @media screen and (min-width: 750px) and (max-width: 989px) {
   html.rg-snap {
-    scroll-snap-type: y mandatory;
     scroll-padding-top: var(--rg-hh, 60px);
+  }
+}
+
+@media screen and (pointer: coarse) and (min-width: 990px) {
+  html.rg-snap .page-wrapper {
+    scroll-snap-type: y proximity;
+  }
+}
+
+@media screen and (pointer: coarse) and (min-width: 750px) and (max-width: 989px) {
+  html.rg-snap {
+    scroll-snap-type: y proximity;
   }
 }
 
 html.rg-snap #MainContent > .shopify-section:has(> [data-rg-screen]:not([data-rg-screen='join'])) {
   scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
 
 /* A section sharing the previous screen: its end is a stop too (matters when the screen is taller than the window) */

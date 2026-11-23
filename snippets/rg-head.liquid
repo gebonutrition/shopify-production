@@ -41,7 +41,8 @@
        Each section root with [data-rg-screen] fills one screen below the sticky header (the first one:
        below the whole header group); [data-rg-screen="join"] shares the previous section's screen.
        A screen whose content is taller is scaled down (--rg-fit); on tablets not below the phone size.
-       Desktop and tablet: html.rg-snap turns on scroll snapping (each wheel step / Space / swipe = one screen). */
+       Desktop and tablet (html.rg-snap): with a mouse, 10 wheel notches = exactly one screen, eased; Space / Page Down /
+       Page Up = one screen; touch screens scroll natively with proximity snapping (rg-base.css §5). */
     (function () {
       var root = document.documentElement;
       var CANVAS_W = 1800;
@@ -175,33 +176,27 @@
       });
       document.addEventListener('shopify:section:load', schedule);
 
-      /* Space / Shift+Space / Page Down / Page Up: exactly one screen (the browser's own step is 87.5% of the
-         window and depends on which element it treats as the scroller). Inside a screen taller than the
-         window the step is one window. */
-      document.addEventListener('keydown', function (event) {
-        if (!root.classList.contains('rg-snap') || event.defaultPrevented) return;
-        if (event.altKey || event.ctrlKey || event.metaKey || root.hasAttribute('scroll-lock')) return;
-        var space = event.key === ' ' || event.key === 'Spacebar';
-        var down = event.key === 'PageDown' || (space && !event.shiftKey);
-        var up = event.key === 'PageUp' || (space && event.shiftKey);
-        if (!down && !up) return;
-        var target = event.target;
-        if (
-          target &&
-          (target.isContentEditable ||
-            (space && target.closest && target.closest('a, button, input, textarea, select, summary, [role="button"]')))
-        )
-          return;
+      /* Wheel and keys (2026-11-23, client: "10 wheel notches per block"). Stops = every screen's start and,
+         when a screen is taller than the window (tablets), its end. A mouse-wheel notch moves 1/10 of the way
+         to the next stop, so 10 notches land exactly on the next screen; a touchpad moves proportionally
+         (1000px of wheel delta per screen); Space / Shift+Space / Page Down / Page Up move one whole stop.
+         The movement is eased (requestAnimationFrame). Inner scrollable areas, zoom (Ctrl+wheel), horizontal
+         wheels and open dialogs/drawers (html[scroll-lock]) keep the browser's own behaviour. */
+      var NOTCH = 0.1;
+      var motion = { scroller: null, progress: null, target: 0, frame: 0, rest: -1 };
+      var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+      function scrollerFor() {
         var wrap = document.querySelector('.page-wrapper');
-        var scroller = window.innerWidth >= 990 && wrap ? wrap : document.scrollingElement || root;
+        return window.innerWidth >= 990 && wrap ? wrap : document.scrollingElement || root;
+      }
+
+      function stopsFor(scroller) {
+        var wrap = document.querySelector('.page-wrapper');
         var current = scroller.scrollTop;
         var max = scroller.scrollHeight - scroller.clientHeight;
         var view = scroller === wrap ? wrap.getBoundingClientRect().top : 0;
         var padding = parseFloat(getComputedStyle(scroller).scrollPaddingTop) || 0;
-        var page = scroller.clientHeight - padding;
-        /* Stops: every screen's start and, when a screen is taller than the window (tablets), its end,
-           so no part of the page is skipped */
         var stops = [0, max];
         var screens = Array.prototype.filter.call(
           document.querySelectorAll('#MainContent > .shopify-section'),
@@ -221,25 +216,120 @@
           var end = box.bottom - view + current - scroller.clientHeight;
           if (last && end > start + 2) stops.push(end);
         });
-        stops = stops
+        return stops
           .map(function (stop) {
-            return Math.round(Math.min(max, Math.max(0, stop)));
+            return Math.min(max, Math.max(0, stop));
           })
           .sort(function (a, b) {
             return a - b;
+          })
+          .filter(function (stop, index, list) {
+            return index === 0 || stop - list[index - 1] > 2;
           });
+      }
 
-        var next = current;
-        if (down) {
-          for (var i = 0; i < stops.length; i++) if (stops[i] > current + 2) { next = stops[i]; break; }
-          next = Math.min(next, current + page);
-        } else {
-          for (var j = stops.length - 1; j >= 0; j--) if (stops[j] < current - 2) { next = stops[j]; break; }
-          next = Math.max(next, current - page);
+      function toProgress(position, stops) {
+        for (var k = 0; k < stops.length; k++) if (Math.abs(position - stops[k]) <= 2) return k;
+        for (var i = 0; i < stops.length - 1; i++) {
+          if (position < stops[i + 1]) return i + Math.max(0, position - stops[i]) / (stops[i + 1] - stops[i]);
         }
-        if (next === current) return;
-        event.preventDefault();
-        scroller.scrollTo({ top: next, behavior: 'smooth' });
+        return stops.length - 1;
+      }
+
+      function fromProgress(progress, stops) {
+        var i = Math.floor(progress);
+        if (i >= stops.length - 1) return stops[stops.length - 1];
+        return stops[i] + (progress - i) * (stops[i + 1] - stops[i]);
+      }
+
+      function animate() {
+        var scroller = motion.scroller;
+        var distance = motion.target - scroller.scrollTop;
+        if (Math.abs(distance) < 1) {
+          scroller.scrollTo({ top: motion.target, behavior: 'instant' });
+          motion.frame = 0;
+          motion.rest = scroller.scrollTop;
+          return;
+        }
+        var step = distance * 0.16;
+        if (Math.abs(step) < 1) step = distance > 0 ? 1 : -1;
+        scroller.scrollTo({ top: scroller.scrollTop + step, behavior: 'instant' });
+        motion.frame = requestAnimationFrame(animate);
+      }
+
+      /* amount: screens to move (a notch = 0.1); whole: move to the next / previous stop */
+      function move(amount, whole) {
+        var scroller = scrollerFor();
+        var stops = stopsFor(scroller);
+        if (stops.length < 2) return false;
+        /* Keep counting from the last target unless the page was scrolled some other way (scrollbar, keys) */
+        var moved = !motion.frame && Math.abs(scroller.scrollTop - motion.rest) > 2;
+        if (motion.scroller !== scroller || motion.progress === null || moved) {
+          motion.scroller = scroller;
+          motion.progress = toProgress(scroller.scrollTop, stops);
+        }
+        var progress = whole
+          ? amount > 0
+            ? Math.floor(motion.progress + 1e-4) + 1
+            : Math.ceil(motion.progress - 1e-4) - 1
+          : motion.progress + amount;
+        progress = Math.max(0, Math.min(stops.length - 1, progress));
+        if (Math.abs(progress - Math.round(progress)) < 1e-4) progress = Math.round(progress);
+        motion.progress = progress;
+        motion.target = Math.round(fromProgress(progress, stops));
+        if (reducedMotion.matches) {
+          scroller.scrollTo({ top: motion.target, behavior: 'instant' });
+          motion.rest = scroller.scrollTop;
+        } else if (!motion.frame) {
+          motion.frame = requestAnimationFrame(animate);
+        }
+        return true;
+      }
+
+      function active() {
+        return root.classList.contains('rg-snap') && !root.hasAttribute('scroll-lock');
+      }
+
+      window.addEventListener(
+        'wheel',
+        function (event) {
+          if (!active() || event.defaultPrevented || event.ctrlKey || !event.deltaY) return;
+          if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+          var scroller = scrollerFor();
+          for (var el = event.target; el && el.nodeType === 1 && el !== scroller && el !== root; el = el.parentElement) {
+            var overflow = getComputedStyle(el).overflowY;
+            if ((overflow === 'auto' || overflow === 'scroll') && el.scrollHeight > el.clientHeight + 1) {
+              if (event.deltaY > 0 ? el.scrollTop + el.clientHeight < el.scrollHeight - 1 : el.scrollTop > 0) return;
+            }
+          }
+          var pixels = event.deltaY * (event.deltaMode === 1 ? 100 / 3 : event.deltaMode === 2 ? 1000 : 1);
+          var amount =
+            Math.abs(pixels) >= 50
+              ? (pixels > 0 ? 1 : -1) * Math.max(1, Math.round(Math.abs(pixels) / 100)) * NOTCH
+              : pixels / 1000;
+          if (move(amount, false)) event.preventDefault();
+        },
+        { passive: false }
+      );
+
+      document.addEventListener('keydown', function (event) {
+        if (!active() || event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
+        var space = event.key === ' ' || event.key === 'Spacebar';
+        var down = event.key === 'PageDown' || (space && !event.shiftKey);
+        var up = event.key === 'PageUp' || (space && event.shiftKey);
+        if (!down && !up) return;
+        var target = event.target;
+        if (
+          target &&
+          (target.isContentEditable ||
+            (space && target.closest && target.closest('a, button, input, textarea, select, summary, [role="button"]')))
+        )
+          return;
+        if (move(down ? 1 : -1, true)) event.preventDefault();
+      });
+
+      window.addEventListener('resize', function () {
+        motion.progress = null;
       });
     })();
   </script>
